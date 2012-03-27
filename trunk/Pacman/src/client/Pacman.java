@@ -1,4 +1,4 @@
-package pacman;
+package client;
 
 public class Pacman {
 
