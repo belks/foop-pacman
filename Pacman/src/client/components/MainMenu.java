@@ -20,6 +20,8 @@ public class MainMenu extends JPanel implements ActionListener{
 	private JButton exit = null;
 	private Client client = null;
 
+	
+	
 	public MainMenu(Client client){
 		this.setOpaque(true);
 		this.client = client;
