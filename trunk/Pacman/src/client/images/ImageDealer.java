@@ -13,9 +13,19 @@ public class ImageDealer {
 	private static ImageIcon createImageIcon(String name) {
 			URL imgURL = ImageDealer.class.getResource(name);
 			if (imgURL != null) {
-					return new ImageIcon(imgURL);
+				ImageIcon icon = new ImageIcon(imgURL);
+				
+				if(icon != null){
+					System.out.println("Loaded image "+name+" successfully.");
+					return icon;
+					
+				}else{
+					System.out.println("Found image "+name+", but was unable to load it. Image == null");
+					return null;
+				}
+				
 			} else {
-				System.err.println("Couldn't find file: " + name);
+				System.out.println("Couldn't find image "+name+" !!!");
 				return null;
 			}
 	}

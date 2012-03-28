@@ -4,15 +4,21 @@ import javax.swing.JPanel;
 
 import client.Client;
 
-public class StartGame extends JPanel {
+public class ConnectMenu extends JPanel {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	StartGame(Client client){
+	ConnectMenu(Client client){
 		
 	}
 
+	
+	
+	
+	public String toString(){
+		return "ConnectMenu";
+	}
 }
