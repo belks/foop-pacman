@@ -1,6 +1,7 @@
 package client.components;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,7 @@ public class Options extends JPanel implements ActionListener {
 		super();
 		this.client = client;
 		this.setLayout(new FlowLayout());
-		
+		this.setOpaque(false);
 		
 		toggleFullScreen = new JButton(client.getConfig().get("client.options.button.toggleFullScreen"));
 		back = new JButton(client.getConfig().get("client.options.button.back"));
@@ -31,6 +32,7 @@ public class Options extends JPanel implements ActionListener {
 		JButton[] buttons = {toggleFullScreen, back};
 		for(JButton b : buttons){
 			this.add(b);
+			b.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 			b.addActionListener(this);
 		}
 		
@@ -49,6 +51,11 @@ public class Options extends JPanel implements ActionListener {
 				client.setFullScreen(true);
 			}
 		}
+	}
+	
+	
+	public String toString(){
+		return "Options";
 	}
 
 }

@@ -7,6 +7,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -36,17 +39,24 @@ public class MessageBox extends JPanel{
 	class FilteredStream extends FilterOutputStream {
 	      public FilteredStream(OutputStream aStream) {
 	         super(aStream);
-	         }
+	      }
 
 	      public void write(byte b[]) throws IOException {
-	         String aString = new String(b);
-	         text.append(aString);
+	         String aString = new String(b).trim();
+	         if(!aString.isEmpty()){
+	        	 text.append(getTime()+" - "+aString+"\n");
+	        	 text.setCaretPosition(text.getText().length());
 	         }
+	      }
 
 	      public void write(byte b[], int off, int len) throws IOException {
 	         String aString = new String(b , off , len);
-	         text.append(aString);
-	 
+	         this.write(aString.getBytes());
+	      }
+	      
+	      private String getTime(){
+	    	  SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
+	    	  return df.format(new Date(System.currentTimeMillis()));
 	      }
 	   }
 	

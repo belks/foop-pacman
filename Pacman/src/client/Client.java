@@ -36,6 +36,7 @@ public class Client extends JFrame implements KeyEventDispatcher{
 	
 	public Client(String[] args){
 		super();
+		System.out.println("Application started.");
 		this.setTitle(this.config.get("client.title"));
 		this.setLayout(new BorderLayout());
 		
@@ -75,20 +76,24 @@ public class Client extends JFrame implements KeyEventDispatcher{
 	public void setFullScreen(boolean b){
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		this.dispose();
-		System.out.println("Changing to fullscreen="+b);
 		
 		if(b==true && gd.isFullScreenSupported()){
+			System.out.println("Changing to fullscreen mode.");
 			this.setUndecorated(true);
 			this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight()));
 			gd.setFullScreenWindow(this);
 			this.fullScreenMode = true;
 			
-		}else{
+		}else if(b==true && !gd.isFullScreenSupported()){
+			System.out.println("Fullscreen is not supported by this system!");
+			
+		}else if(b==false && gd.isFullScreenSupported()){
+			System.out.println("Changing to window mode.");
 			this.setUndecorated(false);
 			this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
 			gd.setFullScreenWindow(null);
 			this.fullScreenMode = false;
-		}
+		}	
 		
 		this.pack();
 		this.validate();
@@ -103,6 +108,8 @@ public class Client extends JFrame implements KeyEventDispatcher{
 	
 	
 	public void setView(JComponent c){
+		System.out.println("Changing from "+oldComp+" to "+c);
+		
 		if(oldComp!=null){
 			this.remove(oldComp);
 		}
