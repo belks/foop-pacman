@@ -16,19 +16,39 @@ public class Options extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Client client = null;
+	private JButton back = null;
+	private JButton toggleFullScreen = null;
 
 	Options(Client client){
 		super();
 		this.client = client;
 		this.setLayout(new FlowLayout());
-		JButton back = new JButton("back");
-		this.add(back);
-		back.addActionListener(this);
+		
+		
+		toggleFullScreen = new JButton(client.getConfig().get("client.options.button.toggleFullScreen"));
+		back = new JButton(client.getConfig().get("client.options.button.back"));
+		
+		JButton[] buttons = {toggleFullScreen, back};
+		for(JButton b : buttons){
+			this.add(b);
+			b.addActionListener(this);
+		}
+		
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		client.setView(new MainMenu(client));
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(back)){
+			client.setView(new MainMenu(client));
+		}
+		
+		if(e.getSource().equals(toggleFullScreen)){
+			if(client.isFullScreen()){
+				client.setFullScreen(false);
+			}else{
+				client.setFullScreen(true);
+			}
+		}
 	}
 
 }
