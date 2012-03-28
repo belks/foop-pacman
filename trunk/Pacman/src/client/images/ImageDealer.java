@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import javax.swing.ImageIcon;
 
 public class ImageDealer {
-	static LinkedHashMap<String, ImageIcon> icons = new LinkedHashMap<String, ImageIcon>();
+	private static LinkedHashMap<String, ImageIcon> icons = new LinkedHashMap<String, ImageIcon>();
 	
 	
 	private static ImageIcon createImageIcon(String name) {

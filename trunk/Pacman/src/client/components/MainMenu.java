@@ -60,11 +60,11 @@ public class MainMenu extends JPanel implements ActionListener{
 			System.exit(0);
 			
 		}else if(e.getSource().equals(this.options)){
-			client.addMessage("Changing from mainmenu to options.");
+			System.out.println("Changing from mainmenu to options.");
 			client.setView(new Options(client));
 			
 		}else if(e.getSource().equals(this.newGame)){
-			client.addMessage("Changing from mainmenu to newgame.");
+			System.out.println("Changing from mainmenu to newgame.");
 			client.setView(new Game(client));
 		}
 	}
