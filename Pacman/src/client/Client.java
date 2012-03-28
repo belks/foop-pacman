@@ -61,8 +61,6 @@ public class Client extends JFrame implements KeyEventDispatcher{
         manager.addKeyEventDispatcher(this);
 
 		
-	
-		
 		this.pack();
 		this.validate();
 		this.setVisible(true);
