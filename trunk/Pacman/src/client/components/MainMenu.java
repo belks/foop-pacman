@@ -34,7 +34,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		this.setLayout(new BorderLayout());
 		
 		
-		this.add(new JLabel(ImageDealer.createImageIcon(config.get("client.mainmenu.image"))), BorderLayout.CENTER);
+		this.add(new JLabel(ImageDealer.getIcon(config.get("client.mainmenu.image"))), BorderLayout.CENTER);
 		
 		
 		newGame = new JButton(config.get("client.mainmenu.button.newgame"));
