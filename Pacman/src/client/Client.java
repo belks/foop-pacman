@@ -40,21 +40,19 @@ public class Client extends JFrame{
 			e.printStackTrace();
 		}
 		
-		
-		this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
-		this.setBackground(Color.BLACK);
+		this.getContentPane().setBackground(Color.BLACK);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		this.setView(new MainMenu(this));
+		
+		if(config.getBoolean("client.fullscreen")){
+			this.setFullScreen(true);
+		}else{
+			this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
+		}
 		
 		this.pack();
 		this.validate();
 		this.setVisible(true);
-		
-		if(config.getBoolean("client.fullscreen")){
-			this.setFullScreen(true);
-		}
-		
 	}
 	
 	
@@ -65,12 +63,23 @@ public class Client extends JFrame{
 	
 	public void setFullScreen(boolean b){
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		this.dispose();
+		
 		
 		if(b=true && gd.isFullScreenSupported()){
+			this.setUndecorated(true);
+			this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight()));
 			gd.setFullScreenWindow(this);
+			
 		}else{
+			this.setUndecorated(false);
 			gd.setFullScreenWindow(null);
+			this.setSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
 		}
+		
+		this.pack();
+		this.validate();
+		this.setVisible(true);
 	}
 	
 	
@@ -81,6 +90,7 @@ public class Client extends JFrame{
 		}
 		this.add(c, BorderLayout.CENTER);
 		this.oldComp = c;
+		this.pack();
 		this.validate();
 	}
 	
