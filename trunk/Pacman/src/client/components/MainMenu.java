@@ -1,12 +1,16 @@
 package client.components;
 
 
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import client.Client;
+import client.images.ImageDealer;
 import common.Config;
 
 public class MainMenu extends JPanel implements ActionListener{
@@ -23,21 +27,29 @@ public class MainMenu extends JPanel implements ActionListener{
 	
 	
 	public MainMenu(Client client){
-		this.setOpaque(true);
+		super();
+		this.setOpaque(false);
 		this.client = client;
 		Config config = client.getConfig();
-		this.setLayout(new GridLayout(3,0,20,20));
+		this.setLayout(new BorderLayout());
+		
+		
+		this.add(new JLabel(ImageDealer.createImageIcon(config.get("client.mainmenu.image"))), BorderLayout.CENTER);
+		
 		
 		newGame = new JButton(config.get("client.mainmenu.button.newgame"));
 		options = new JButton(config.get("client.mainmenu.button.options"));
 		exit = new JButton(config.get("client.mainmenu.button.exit"));
 		
+		JPanel buttonPanel = new JPanel(new GridLayout(3,0,10,10));
+		buttonPanel.setOpaque(false);
 		JButton[] buttons = {newGame, options, exit};
 		for(JButton b : buttons){
-			//b.setAlignmentX(Component.CENTER_ALIGNMENT);
 			b.addActionListener(this);
-			this.add(b);
+			b.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+			buttonPanel.add(b);
 		}
+		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 
