@@ -40,6 +40,7 @@ public class Client extends JFrame{
 			e.printStackTrace();
 		}
 		
+		
 		this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
 		this.setBackground(Color.BLACK);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,6 +54,7 @@ public class Client extends JFrame{
 		if(config.getBoolean("client.fullscreen")){
 			this.setFullScreen(true);
 		}
+		
 	}
 	
 	
