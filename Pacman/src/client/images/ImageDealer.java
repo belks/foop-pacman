@@ -1,5 +1,6 @@
 package client.images;
 
+import java.awt.Image;
 import java.net.URL;
 import java.util.LinkedHashMap;
 
@@ -28,6 +29,11 @@ public class ImageDealer {
 			icons.put(name, icon);
 			return icon;
 		}
+	}
+	
+	
+	public static Image getImage(String name){
+		return getIcon(name).getImage();
 	}
 
 }
