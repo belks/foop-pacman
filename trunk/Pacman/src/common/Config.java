@@ -1,6 +1,7 @@
 package common;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
@@ -11,15 +12,18 @@ public class Config{
 	
 	
 	
-	public Config(String path){
+	public Config(InputStream file){
 		try {	
-			BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(path)));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 			String buffer = null;
 			
 			while( (buffer = reader.readLine()) != null){
-				String key = buffer.substring(0, buffer.indexOf('='));
-				String value = buffer.substring(buffer.indexOf('=')+1);
-				config.put(key, value);
+				if(!buffer.startsWith("#") && !buffer.isEmpty()){
+					String key = buffer.substring(0, buffer.indexOf('='));
+					String value = buffer.substring(buffer.indexOf('=')+1);
+					config.put(key, value);
+				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -28,7 +32,7 @@ public class Config{
 	
 	
 	
-	public String getString(String key){
+	public String get(String key){
 		return config.get(key);
 	}
 	
