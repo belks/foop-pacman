@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import client.Client;
 
-public class Options extends JPanel implements ActionListener {
+public class OptionsMenu extends JPanel implements ActionListener {
 	
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class Options extends JPanel implements ActionListener {
 	private JButton back = null;
 	private JButton toggleFullScreen = null;
 
-	Options(Client client){
+	OptionsMenu(Client client){
 		super();
 		this.client = client;
 		this.setLayout(new FlowLayout());
