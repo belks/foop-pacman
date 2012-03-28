@@ -4,14 +4,14 @@ import javax.swing.JPanel;
 
 import client.Client;
 
-public class Game extends JPanel {
+public class StartGame extends JPanel {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Game(Client client){
+	StartGame(Client client){
 		
 	}
 
