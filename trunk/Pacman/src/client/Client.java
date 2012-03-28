@@ -127,14 +127,17 @@ public class Client extends JFrame implements KeyEventDispatcher{
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		if (e.getID() == KeyEvent.KEY_PRESSED) {
-						
-			if(e.getKeyCode()==KeyEvent.VK_F1){
+								
+			if(e.getKeyCode() == config.getInteger("client.keys.log")){
+				//key F1 pressed - open/close MessageBox(log)
 				if(messages.isVisible()){
 					messages.setVisible(false);
 				}else{
 					messages.setVisible(true);
 				}			
 			}
+			
+			
 			
         }
 
