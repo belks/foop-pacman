@@ -60,7 +60,7 @@ public class MainMenu extends JPanel implements ActionListener{
 			System.exit(0);
 			
 		}else if(e.getSource().equals(this.options)){
-			client.setView(new Options(client));
+			client.setView(new OptionsMenu(client));
 			
 		}else if(e.getSource().equals(this.newGame)){
 			client.setView(new ConnectMenu(client));
