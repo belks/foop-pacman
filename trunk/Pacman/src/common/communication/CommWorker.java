@@ -1,7 +1,9 @@
-package common;
+package common.communication;
 
 import java.io.*;
 import java.net.*;
+
+import common.Logging;
 
 /**
  * 
