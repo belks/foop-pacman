@@ -1,4 +1,4 @@
-package gui;
+package client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,8 +11,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import gui.components.MainMenu;
-import gui.components.MessageBox;
+
+import client.gui.components.MainMenu;
+import client.gui.components.MessageBox;
 import common.tools.Config;
 
 

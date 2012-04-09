@@ -1,8 +1,9 @@
-package gui.components;
+package client.gui.components;
 
-import gui.ClientGUI;
 
 import javax.swing.JPanel;
+
+import client.gui.ClientGUI;
 
 
 public class ConnectMenu extends JPanel {

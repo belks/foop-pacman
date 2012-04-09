@@ -1,7 +1,6 @@
-package gui.components;
+package client.gui.components;
 
 
-import gui.ClientGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -11,7 +10,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import gui.images.ImageDealer;
+
+import client.gui.ClientGUI;
+import client.gui.images.ImageDealer;
 import common.tools.Config;
 
 public class MainMenu extends JPanel implements ActionListener{
