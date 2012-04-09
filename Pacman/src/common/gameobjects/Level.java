@@ -1,5 +1,6 @@
 package common.gameobjects;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Map;
 
@@ -10,27 +11,34 @@ import java.util.Map;
 
 public class Level {
 
-	/**
-	 * @uml.property   name="map"
-	 */
+	
 	private byte[][] maps;
-	/**
-	 * @uml.property   name="lastChanges"
-	 */
 	private Map<Point, FieldState> lastChanges;
+	private Dimension mapSize = null;
+	
+	
+	/**
+	 * Constructor
+	 */
+	public Level(int width, int height){
+		this.maps = new byte[width][height];
+		this.setMapSize(new Dimension(width, height));
+	}
+	
+	
+	
 	/**
 	 * Getter of the property <tt>map</tt>
 	 * @return  Returns the maps.
-	 * @uml.property  name="map"
 	 */
 	public byte[][] getMap() {
 		return maps;
 	}
 
+	
 	/**
 	 * Setter of the property <tt>map</tt>
 	 * @param map  The maps to set.
-	 * @uml.property  name="map"
 	 */
 	public void setMap(byte[][] map) {
 		maps = map;
@@ -39,50 +47,30 @@ public class Level {
 	/** 
 	 * Getter of the property <tt>lastChanges</tt>
 	 * @return  Returns the lastChanges.
-	 * @uml.property  name="lastChanges"
 	 */
-	Map getLastChanges() {
+	public Map<Point, FieldState> getLastChanges() {
 		return lastChanges;
 	}
 
+	
 	/** 
 	 * Setter of the property <tt>lastChanges</tt>
 	 * @param lastChanges  The lastChanges to set.
-	 * @uml.property  name="lastChanges"
 	 */
 	public void setLastChanges(Map<Point, FieldState> value) {
 		lastChanges = value;
 	}
 
-		
-		/**
-		 */
-		public Level(int height, int width){
-		}
 
 
-		/**
-		 * @uml.property   name="game"
-		 * @uml.associationEnd   inverse="level:common.Game"
-		 * @uml.association   name="contains"
-		 */
-		private Game game;
-		/**
-		 * Getter of the property <tt>game</tt>
-		 * @return  Returns the game.
-		 * @uml.property  name="game"
-		 */
-		public Game getGame() {
-			return game;
-		}
+	public void setMapSize(Dimension mapSize) {
+		this.mapSize = mapSize;
+	}
 
-		/**
-		 * Setter of the property <tt>game</tt>
-		 * @param game  The game to set.
-		 * @uml.property  name="game"
-		 */
-		public void setGame(Game game) {
-			this.game = game;
-		}
+
+
+	public Dimension getMapSize() {
+		return mapSize;
+	}
 
 }
