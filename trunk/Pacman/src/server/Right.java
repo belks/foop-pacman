@@ -3,7 +3,7 @@ package server;
 import common.Position;
 
 
-public class Rigth implements IStrategy {
+public class Right implements IStrategy {
 
 	@Override
 	public Position move(Position position) {
