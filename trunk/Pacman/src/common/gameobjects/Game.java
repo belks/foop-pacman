@@ -1,9 +1,8 @@
 package common.gameobjects;
 
-import java.util.Collection;
-import java.util.Iterator;
+
 import java.util.List;
-import java.util.Map;
+
 
 
 
@@ -29,8 +28,10 @@ public class Game {
 		return pacmans;
 	}
 
-	public boolean addPacman(Pacman pacman) {
-		return this.pacmans.add(pacman);
+	public void addPacman(Pacman pacman) {
+		if(!this.pacmans.contains(pacman)){
+			this.pacmans.add(pacman);
+		}
 	}
 
 	
@@ -49,11 +50,9 @@ public class Game {
 	/**
 	 * Removes all of the elements from this collection (optional operation).
 	 */
-	public void clearPacman() {
+	public void clearAllPacmans() {
 		this.pacmans.clear();
 	}
-
-	
 	
 	
 	public Level getLevel() {
@@ -61,11 +60,11 @@ public class Game {
 	}
 
 	
-	
+	/*
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-
+	*/
 		
 		
 
