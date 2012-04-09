@@ -1,4 +1,4 @@
-package gui.images;
+package client.gui.images;
 
 import java.awt.Image;
 import java.net.URL;

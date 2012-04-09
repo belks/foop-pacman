@@ -1,6 +1,6 @@
 package application;
 
-import gui.ClientGUI;
+import client.gui.ClientGUI;
 
 public class PacmanGame {
 	

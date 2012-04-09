@@ -1,6 +1,5 @@
-package gui.components;
+package client.gui.components;
 
-import gui.ClientGUI;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,6 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import client.gui.ClientGUI;
 
 
 public class OptionsMenu extends JPanel implements ActionListener {
