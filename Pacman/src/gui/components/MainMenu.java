@@ -1,4 +1,4 @@
-package client.components;
+package gui.components;
 
 
 import gui.Client;
