@@ -1,5 +1,7 @@
 package client.gui.components.game;
 
+import java.awt.Graphics;
+
 import javax.swing.JLabel;
 
 import client.gui.images.ImageDealer;
@@ -33,5 +35,7 @@ public class Tile extends JLabel{
 		this.setIcon(ImageDealer.getIcon(FieldState.getStringValue(FieldState.getState(state))));
 	}
 	
-	
+	public void paintComponent(Graphics g){
+		
+	}
 }
