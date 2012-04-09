@@ -1,4 +1,4 @@
-package client.gui.components;
+package client.gui.components.menu;
 
 
 
@@ -12,10 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import client.gui.ClientGUI;
+import client.gui.components.View;
 import client.gui.images.ImageDealer;
 import common.tools.Config;
 
-public class MainMenu extends JPanel implements ActionListener{
+public class MainMenu extends View implements ActionListener{
 	
 	/**
 	 * 

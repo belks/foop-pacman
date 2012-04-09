@@ -8,12 +8,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-
-import client.gui.components.MainMenu;
 import client.gui.components.MessageBox;
+import client.gui.components.View;
+import client.gui.components.menu.MainMenu;
 import common.tools.Config;
 
 
@@ -25,7 +24,7 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Config config = new Config(this.getClass().getResourceAsStream("gui.properties"));
-	private JComponent oldComp = null;
+	private View oldComp = null;
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
 
@@ -104,7 +103,7 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	
 	
 	
-	public void setView(JComponent c){
+	public void setView(View c){
 		System.out.println("Changing from "+oldComp+" to "+c);
 		
 		if(oldComp!=null){
@@ -138,7 +137,6 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 			
         }
 
-		
 		return false;
 	}
 
