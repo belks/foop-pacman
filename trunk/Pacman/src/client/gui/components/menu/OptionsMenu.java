@@ -2,7 +2,6 @@ package client.gui.components.menu;
 
 
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -16,15 +15,16 @@ public class OptionsMenu extends View implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ClientGUI client = null;
+	
 	private JButton back = null;
 	private JButton toggleFullScreen = null;
 
+	
+	
 	OptionsMenu(ClientGUI client){
-		super();
-		this.client = client;
+		super("Options", client);
 		this.setLayout(new FlowLayout());
-		this.setOpaque(false);
+		
 		
 		toggleFullScreen = new JButton(client.getConfig().get("client.options.button.toggleFullScreen"));
 		back = new JButton(client.getConfig().get("client.options.button.back"));
@@ -32,30 +32,30 @@ public class OptionsMenu extends View implements ActionListener {
 		JButton[] buttons = {toggleFullScreen, back};
 		for(JButton b : buttons){
 			this.add(b);
-			b.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+			b.setFont(this.getDefaultFont());
 			b.addActionListener(this);
 		}
 		
 	}
 
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(back)){
-			client.setView(new MainMenu(client));
+			this.getClientGUI().setView(new MainMenu(this.getClientGUI()));
 		}
 		
 		if(e.getSource().equals(toggleFullScreen)){
-			if(client.isFullScreen()){
-				client.setFullScreen(false);
+			if(this.getClientGUI().isFullScreen()){
+				this.getClientGUI().setFullScreen(false);
 			}else{
-				client.setFullScreen(true);
+				this.getClientGUI().setFullScreen(true);
 			}
 		}
 	}
 	
 	
-	public String toString(){
-		return "Options";
-	}
+	
 
 }

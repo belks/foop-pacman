@@ -18,13 +18,9 @@ public class ConnectMenu extends View{
 
 
 	ConnectMenu(ClientGUI client){
-		
+		super("ConnectMenu", client);
 	}
 
 	
 	
-	
-	public String toString(){
-		return "ConnectMenu";
-	}
 }

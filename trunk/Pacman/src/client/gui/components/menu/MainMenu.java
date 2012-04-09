@@ -3,7 +3,6 @@ package client.gui.components.menu;
 
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,14 +24,12 @@ public class MainMenu extends View implements ActionListener{
 	private JButton newGame = null;
 	private JButton options = null;
 	private JButton exit = null;
-	private ClientGUI client = null;
-
+	
 	
 	
 	public MainMenu(ClientGUI client){
-		super();
-		this.setOpaque(false);
-		this.client = client;
+		super("MainMenu", client);
+		
 		Config config = client.getConfig();
 		this.setLayout(new BorderLayout());
 		
@@ -49,7 +46,7 @@ public class MainMenu extends View implements ActionListener{
 		JButton[] buttons = {newGame, options, exit};
 		for(JButton b : buttons){
 			b.addActionListener(this);
-			b.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+			b.setFont(this.getDefaultFont());
 			buttonPanel.add(b);
 		}
 		this.add(buttonPanel, BorderLayout.SOUTH);
@@ -63,16 +60,14 @@ public class MainMenu extends View implements ActionListener{
 			System.exit(0);
 			
 		}else if(e.getSource().equals(this.options)){
-			client.setView(new OptionsMenu(client));
+			this.getClientGUI().setView(new OptionsMenu(this.getClientGUI()));
 			
 		}else if(e.getSource().equals(this.newGame)){
-			client.setView(new ConnectMenu(client));
+			this.getClientGUI().setView(new ConnectMenu(this.getClientGUI()));
 		}
 	}
 	
 	
-	public String toString(){
-		return "MainMenu";
-	}
+	
 
 }
