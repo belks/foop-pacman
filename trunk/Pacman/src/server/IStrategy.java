@@ -1,6 +1,8 @@
 package server;
 
-import common.gameobjects.Position;
+import java.awt.Point;
+
+
 
 
 /** 
@@ -10,10 +12,10 @@ public interface IStrategy {
 
 		
 			
-			/** 
-			 * calculate the next position of the pacman. Gets the curent position and returns the new position.
-			 */
-			public abstract Position move(Position position);
+	/** 
+	 * calculate the next position of the pacman. Gets the curent position and returns the new position.
+	 */
+	public abstract Point move(Point position);
 			
 		
 
