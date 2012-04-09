@@ -4,7 +4,7 @@ package common.gameobjects;
 public enum FieldState {
 	Pacman, Wall, Coin, Free;
 	
-	public byte getByteValue(FieldState fs){
+	public static byte getByteValue(FieldState fs){
 		if(fs == FieldState.Wall){
 			return 0;
 		} else if(fs == FieldState.Coin){
@@ -19,7 +19,7 @@ public enum FieldState {
 	}
 	
 	
-	public FieldState getField(byte b){
+	public static FieldState getState(byte b){
 		if(b == 0){
 			return FieldState.Wall;
 		} else if(b == 1){
@@ -30,6 +30,20 @@ public enum FieldState {
 			return FieldState.Pacman;
 		} else {
 			return null;
+		}
+	}
+	
+	public static String getStringValue(FieldState fs){
+		if(fs == FieldState.Wall){
+			return "Wall";
+		} else if(fs == FieldState.Coin){
+			return "Coin";
+		} else if(fs == FieldState.Free){
+			return "Free";
+		} else if(fs == FieldState.Pacman){
+			return "Pacman";
+		} else {
+			return "Unknown";
 		}
 	}
 }

@@ -4,7 +4,7 @@ package common.gameobjects;
 public enum Color {
 	Blue, Red, White;
 	
-	public int getValue(Color c){
+	public static int getValue(Color c){
 		if(c == Color.Blue){
 			return 0;
 		} else if(c == Color.Red){
@@ -17,7 +17,7 @@ public enum Color {
 	}
 	
 	
-	public Color getColor(byte b){
+	public static Color getColor(byte b){
 		if(b == 0){
 			return Color.Blue;
 		} else if(b == 1){
