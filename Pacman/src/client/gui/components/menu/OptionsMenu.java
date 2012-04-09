@@ -1,18 +1,16 @@
-package client.gui.components;
+package client.gui.components.menu;
 
 
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import client.gui.ClientGUI;
+import client.gui.components.View;
 
 
-public class OptionsMenu extends JPanel implements ActionListener {
+public class OptionsMenu extends View implements ActionListener {
 	
 	/**
 	 * 
