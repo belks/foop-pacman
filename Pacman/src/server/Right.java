@@ -1,12 +1,14 @@
 package server;
 
-import common.gameobjects.Position;
+import java.awt.Point;
+
+
 
 
 public class Right implements IStrategy {
 
 	@Override
-	public Position move(Position position) {
+	public Point move(Point position) {
 		// TODO Auto-generated method stub
 		return null;
 	}

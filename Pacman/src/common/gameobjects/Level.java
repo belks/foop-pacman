@@ -1,5 +1,6 @@
 package common.gameobjects;
 
+import java.awt.Point;
 import java.util.Map;
 
 
@@ -16,7 +17,7 @@ public class Level {
 	/**
 	 * @uml.property   name="lastChanges"
 	 */
-	private Map<Position, FieldState> lastChanges;
+	private Map<Point, FieldState> lastChanges;
 	/**
 	 * Getter of the property <tt>map</tt>
 	 * @return  Returns the maps.
@@ -49,7 +50,7 @@ public class Level {
 	 * @param lastChanges  The lastChanges to set.
 	 * @uml.property  name="lastChanges"
 	 */
-	public void setLastChanges(Map<Position, FieldState> value) {
+	public void setLastChanges(Map<Point, FieldState> value) {
 		lastChanges = value;
 	}
 

@@ -1,26 +1,31 @@
 package common.gameobjects;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.awt.Point;
+
 
 
 
 
 public class Pacman {
-
-	/**
-	 * @uml.property   name="position"
-	 * @uml.associationEnd   aggregation="shared" inverse="pacman:common.Position"
-	 * @uml.association   name="have a"
-	 */
-	private Position position = new common.gameobjects.Position();
+	
+	private Point position = null;
+	private String name = null;
+	private int coints = 0;
+	private Color color = null;
+	
+	
+	public Pacman(String name, Color color){
+		this.name = name;
+		this.color = color;
+	}
+	
 
 	/** 
 	 * Getter of the property <tt>position</tt>
 	 * @return  Returns the position.
 	 * @uml.property  name="position"
 	 */
-	public Position getPosition() {
+	public Point getPosition() {
 		return position;
 	}
 
@@ -29,14 +34,11 @@ public class Pacman {
 	 * @param position  The position to set.
 	 * @uml.property  name="position"
 	 */
-	public void setPosition(Position position) {
+	public void setPosition(Point position) {
 		this.position = position;
 	}
 
-	/**
-	 * @uml.property  name="Name"
-	 */
-	private String name;
+	
 
 	/**
 	 * Getter of the property <tt>Name</tt>
@@ -56,10 +58,7 @@ public class Pacman {
 		this.name = name;
 	}
 
-	/**
-	 * @uml.property  name="coints"
-	 */
-	private int coints;
+	
 
 	/**
 	 * Getter of the property <tt>coints</tt>
@@ -79,10 +78,7 @@ public class Pacman {
 		this.coints = coints;
 	}
 
-	/**
-	 * @uml.property  name="color"
-	 */
-	private Color color;
+	
 
 	/**
 	 * Getter of the property <tt>color</tt>
@@ -102,29 +98,6 @@ public class Pacman {
 		this.color = color;
 	}
 
-	/**
-	 * @uml.property   name="game"
-	 * @uml.associationEnd   inverse="pacman:common.Game"
-	 * @uml.association   name="contains"
-	 */
-	private Game game;
 
-	/** 
-	 * Getter of the property <tt>game</tt>
-	 * @return  Returns the game.
-	 * @uml.property  name="game"
-	 */
-	public Game getGame() {
-		return game;
-	}
-
-	/** 
-	 * Setter of the property <tt>game</tt>
-	 * @param game  the game to set.
-	 * @uml.property  name="game"
-	 */
-	public void setGame(Game game) {
-		this.game = game;
-	}
 
 }
