@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.util.Vector;
 import java.util.logging.Level;
 import common.Logging;
-import common.communication.CommMsg;
 import common.communication.CommMsg_Level;
 
 /**
@@ -14,7 +13,10 @@ import common.communication.CommMsg_Level;
  *
  * This class listens to a socket for client connections and creates a 
  * separate worker thread for each connection. Usage: (with 1234 as port)
- * <code>Thread t = new Thread(new CommServer(1234));</code>
+ * <code>
+ * Thread t = new Thread(new CommServer(1234));
+ * t.start();
+ * </code>
  * @param <worker>
  */
 public class Comm_Server<worker> implements Runnable {
