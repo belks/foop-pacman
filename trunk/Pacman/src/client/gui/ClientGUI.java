@@ -24,7 +24,7 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Config config = new Config(this.getClass().getResourceAsStream("client.properties"));
+	private Config config = new Config(this.getClass().getResourceAsStream("gui.properties"));
 	private JComponent oldComp = null;
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
