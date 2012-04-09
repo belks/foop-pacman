@@ -2,7 +2,6 @@ package common.communication;
 
 import java.io.*;
 import java.net.*;
-
 import common.Logging;
 
 /**
@@ -93,4 +92,8 @@ public abstract class CommWorker implements Runnable {
 		super.finalize();
 		shutdown();
 	}	
+	
+	public void sendMessage(CommMsg msg) {		
+		println(msg.toString());
+	}
 }
