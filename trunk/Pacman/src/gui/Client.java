@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import client.components.MainMenu;
-import client.components.MessageBox;
+import gui.components.MainMenu;
+import gui.components.MessageBox;
 import common.Config;
 
 

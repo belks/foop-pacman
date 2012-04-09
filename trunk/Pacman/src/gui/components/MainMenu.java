@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import client.images.ImageDealer;
+import gui.images.ImageDealer;
 import common.Config;
 
 public class MainMenu extends JPanel implements ActionListener{
