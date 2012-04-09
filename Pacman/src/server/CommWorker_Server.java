@@ -1,5 +1,8 @@
+package server;
+
 import java.net.Socket;
-import common.CommWorker;
+
+import common.communication.CommWorker;
 
 public class CommWorker_Server extends CommWorker {
 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Vector;
 import java.util.logging.Level;
-import common.Comm;
 import common.Logging;
 
 /**
@@ -15,7 +14,7 @@ import common.Logging;
  * separate worker thread for each connection. Usage: (with 1234 as port)
  * <code>Thread t = new Thread(new CommServer(1234));</code>
  */
-public class Comm_Server extends Comm implements Runnable {
+public class Comm_Server implements Runnable {
 
 	private ServerSocket server;
 	private volatile boolean disconnect;
@@ -45,7 +44,7 @@ public class Comm_Server extends Comm implements Runnable {
 				if (!disconnect) {
 					Logging.log("ServerSocket accept failed: ", Level.SEVERE);
 					Logging.logException(e);
-					System.exit(-1); //Exit -> Wenn listen auf Port nicht klappt, macht Server keinen Sinn
+					System.exit(-1); //Exit -> Wenn listen auf Port nicht klappt, macht ganzer Server keinen Sinn. Bei multiport müsste man das ändern.
 				}
 			}
 		}
