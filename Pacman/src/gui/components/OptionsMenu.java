@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.Client;
+import gui.ClientGUI;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,11 +17,11 @@ public class OptionsMenu extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Client client = null;
+	private ClientGUI client = null;
 	private JButton back = null;
 	private JButton toggleFullScreen = null;
 
-	OptionsMenu(Client client){
+	OptionsMenu(ClientGUI client){
 		super();
 		this.client = client;
 		this.setLayout(new FlowLayout());

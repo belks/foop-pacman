@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Vector;
 import java.util.logging.Level;
-import common.Logging;
 import common.communication.CommMsg_Level;
+import common.tools.Logging;
 
 /**
  * 

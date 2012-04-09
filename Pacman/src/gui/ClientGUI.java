@@ -13,12 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import gui.components.MainMenu;
 import gui.components.MessageBox;
-import common.Config;
+import common.tools.Config;
 
 
 
 
-public class Client extends JFrame implements KeyEventDispatcher{
+public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	/**
 	 * 
 	 */
@@ -28,13 +28,9 @@ public class Client extends JFrame implements KeyEventDispatcher{
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
 
-	
-	public static void main(String[] args){
-		new Client(args);
-	}
 
 	
-	public Client(String[] args){
+	public ClientGUI(String[] args){
 		super();
 		System.out.println("Application started.");
 		this.setTitle(this.config.get("client.title"));

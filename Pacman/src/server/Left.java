@@ -1,6 +1,6 @@
 package server;
 
-import common.Position;
+import common.gameobjects.Position;
 
 
 public class Left implements IStrategy {
