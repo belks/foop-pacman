@@ -16,11 +16,11 @@ public abstract class CommMsg {
 	}
 
 	protected String msg;
-	
+
 	public String getMsg() {
 		return msg;
 	}
-	
+
 	protected CommMsg() {
 	}
 
@@ -28,20 +28,23 @@ public abstract class CommMsg {
 		if (!msg.startsWith(getPrefix()))
 			throw new IllegalArgumentException("msg beginnt nicht mit Prefix "
 					+ getPrefix());
-		this.msg=msg;
+		this.msg = msg;
 	}
 
 	public abstract String getPrefix();
-	
-	
+
 	@SuppressWarnings("unchecked")
-	public static CommMsg fromMessage(String msg) {		
+	public static CommMsg fromMessage(String msg) {
+		int separatorIndex = msg.indexOf(SEPARATOR);
+		if (separatorIndex < 1)
+			return null;
 		try {
-			//Klasse zum Prefix suchen und mit der Nachricht instanzieren
-			Class cl = allMsgTypes.get(msg.substring(0,msg.indexOf(SEPARATOR)));
-			if (cl == null) return null;
-			Constructor co = cl.getConstructor(new Class[]{String.class});
-			CommMsg m = (CommMsg) co.newInstance(new Object[]{msg});
+			// Klasse zum Prefix suchen und mit der Nachricht instanzieren
+			Class cl = allMsgTypes.get(msg.substring(0, separatorIndex));
+			if (cl == null)
+				return null;
+			Constructor co = cl.getConstructor(new Class[] { String.class });
+			CommMsg m = (CommMsg) co.newInstance(new Object[] { msg });
 			return m;
 		} catch (Exception e) {
 			e.printStackTrace();

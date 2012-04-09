@@ -94,6 +94,6 @@ public abstract class CommWorker implements Runnable {
 	}	
 	
 	public void sendMessage(CommMsg msg) {		
-		println(msg.toString());
+		println(msg.getMsg());
 	}
 }
