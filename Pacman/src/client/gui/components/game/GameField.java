@@ -40,10 +40,13 @@ public class GameField extends View{
 		for(byte[] line : map){
 			
 			for(byte state : line){
-				
+				gamefield.add(new Tile(state));
 			}
 			
 		}
+		
+		
+		
 	}
 	
 }
