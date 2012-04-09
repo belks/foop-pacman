@@ -1,4 +1,4 @@
-package common;
+package common.gameobjects;
 
 
 public enum FieldState {

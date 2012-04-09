@@ -1,6 +1,6 @@
 package server;
 
-import common.Level;
+import common.gameobjects.Level;
 
 
 /**

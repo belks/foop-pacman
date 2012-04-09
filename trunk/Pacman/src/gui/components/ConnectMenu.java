@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.Client;
+import gui.ClientGUI;
 
 import javax.swing.JPanel;
 
@@ -12,7 +12,7 @@ public class ConnectMenu extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	ConnectMenu(Client client){
+	ConnectMenu(ClientGUI client){
 		
 	}
 

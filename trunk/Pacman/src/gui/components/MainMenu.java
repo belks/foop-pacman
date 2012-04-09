@@ -1,7 +1,7 @@
 package gui.components;
 
 
-import gui.Client;
+import gui.ClientGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import gui.images.ImageDealer;
-import common.Config;
+import common.tools.Config;
 
 public class MainMenu extends JPanel implements ActionListener{
 	
@@ -23,11 +23,11 @@ public class MainMenu extends JPanel implements ActionListener{
 	private JButton newGame = null;
 	private JButton options = null;
 	private JButton exit = null;
-	private Client client = null;
+	private ClientGUI client = null;
 
 	
 	
-	public MainMenu(Client client){
+	public MainMenu(ClientGUI client){
 		super();
 		this.setOpaque(false);
 		this.client = client;

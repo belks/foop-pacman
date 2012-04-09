@@ -1,7 +1,8 @@
-package common;
+package common.gameobjects;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 
 
 
@@ -12,7 +13,7 @@ public class Pacman {
 	 * @uml.associationEnd   aggregation="shared" inverse="pacman:common.Position"
 	 * @uml.association   name="have a"
 	 */
-	private Position position = new common.Position();
+	private Position position = new common.gameobjects.Position();
 
 	/** 
 	 * Getter of the property <tt>position</tt>
