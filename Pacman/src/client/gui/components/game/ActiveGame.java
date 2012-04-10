@@ -41,7 +41,7 @@ public class ActiveGame extends View implements CommEventListener{
 			}
 		}
 		
-		Level level = new Level(1,1);
+		Level level = new Level(30,30);
 		level.setMap(temp);
 		
 		this.createLevel(level);
