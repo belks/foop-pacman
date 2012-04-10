@@ -21,7 +21,8 @@ public class ConnectMenu extends View implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JButton connect = null;
-	//private JButton startServer = null;
+	private JButton startServer = null;
+	private JButton back = null;
 
 
 
@@ -30,15 +31,15 @@ public class ConnectMenu extends View implements ActionListener{
 		this.setLayout(new FlowLayout());
 		
 		this.connect = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.connect"));
-		this.connect.addActionListener(this);
+		this.startServer = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.startServer"));
+		this.back = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.back"));
 		
+		JButton[] buttons = {startServer, connect, back};
+		for(JButton b:buttons){
+			b.addActionListener(this);
+			this.add(b);
+		}
 		
-		//this.startServer = new JButton(this.getClientGUI().getConfig().get("client.connectmenu.button.startServer"));
-		//this.startServer.addActionListener(this);
-		
-		
-		//this.add(startServer);
-		this.add(connect);
 	}
 
 
@@ -50,9 +51,13 @@ public class ConnectMenu extends View implements ActionListener{
 			this.getGUI().getListener().connect("localhost", 4444);
 		}
 		
-		//if(arg0.getSource().equals(startServer)){
-		//	this.getClientGUI().getListener().createServer(4444);
-		//}
+		if(arg0.getSource().equals(startServer)){
+			this.getGUI().getListener().createServer(4444);
+		}
+		
+		if(arg0.getSource().equals(back)){
+			this.getGUI().setView(new MainMenu(this.getGUI()));
+		}
 	}
 
 	
