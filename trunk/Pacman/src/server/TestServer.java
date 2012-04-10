@@ -13,7 +13,7 @@ public class TestServer {
 		byte[][] temp = new byte[20][20];
 		for (int i = 0; i < temp.length; i++) {
 			for (int j = 0; j < temp[0].length; j++) {
-				temp[i][j] = (byte) r.nextInt(10);
+				temp[i][j] = (byte) r.nextInt(4);
 			}
 		}
 		
