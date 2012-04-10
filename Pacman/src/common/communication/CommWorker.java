@@ -2,6 +2,7 @@ package common.communication;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
 
 import common.tools.Logging;
 
@@ -96,5 +97,6 @@ public abstract class CommWorker implements Runnable {
 	
 	public void sendMessage(CommMsg msg) {		
 		println(msg.getMsg());
+		Logging.log(msg.getMsg(), Level.FINE);
 	}
 }

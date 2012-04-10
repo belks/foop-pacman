@@ -17,9 +17,8 @@ import common.tools.Logging;
  * Thread t = new Thread(new CommServer(1234));
  * t.start();
  * </code>
- * @param <worker>
  */
-public class Comm_Server<worker> implements Runnable {
+public class Comm_Server implements Runnable {
 
 	private ServerSocket server;
 	private volatile boolean disconnect;
@@ -43,6 +42,7 @@ public class Comm_Server<worker> implements Runnable {
 				workerList.add(w);
 				Logging.log("Client connected.", Level.INFO);
 				Thread t = new Thread(w);
+				//t.setDaemon(true); //TODO: SetDaemon als Sicherheits-Netz?
 				t.start();
 				Logging.log("Thread for Client started.", Level.INFO);
 			} catch (IOException e) {
@@ -83,7 +83,7 @@ public class Comm_Server<worker> implements Runnable {
 		shutdown();
 	}
 	
-	public void sendLevel(byte[][] level) {		
+	public void sendLevel(common.gameobjects.Level level) {		
 		for(CommWorker_Server worker : workerList){
 			worker.sendMessage(new CommMsg_Level(level));
 		}
