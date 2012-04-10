@@ -85,7 +85,9 @@ public class Comm_Server implements Runnable {
 	
 	public void sendLevel(common.gameobjects.Level level) {		
 		for(CommWorker_Server worker : workerList){
-			worker.sendMessage(new CommMsg_Level(level));
+			if (worker.isConnected()) {
+				worker.sendMessage(new CommMsg_Level(level));
+			}
 		}
 	}
 }

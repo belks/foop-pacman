@@ -30,10 +30,9 @@ public class TestServer {
 		Comm_Server test = new Comm_Server(4444);
 		Thread t = new Thread(test);
 		t.start();
-
-		Level level = getRandomLevel();		
 		
 		while(true) {
+			Level level = getRandomLevel();
 			test.sendLevel(level);
 			try {
 				Thread.sleep(2000);
