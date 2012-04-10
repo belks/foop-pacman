@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.images.ImageDealer;
 import common.tools.Config;
@@ -27,7 +27,7 @@ public class MainMenu extends View implements ActionListener{
 	
 	
 	
-	public MainMenu(GUI client){
+	public MainMenu(PacmanGUI client){
 		super("MainMenu", client);
 		
 		Config config = client.getConfig();
@@ -60,10 +60,10 @@ public class MainMenu extends View implements ActionListener{
 			System.exit(0);
 			
 		}else if(e.getSource().equals(this.options)){
-			this.getClientGUI().setView(new OptionsMenu(this.getClientGUI()));
+			this.getGUI().setView(new OptionsMenu(this.getGUI()));
 			
 		}else if(e.getSource().equals(this.newGame)){
-			this.getClientGUI().setView(new ConnectMenu(this.getClientGUI()));
+			this.getGUI().setView(new ConnectMenu(this.getGUI()));
 		}
 	}
 	

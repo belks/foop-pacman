@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 import client.gui.components.View;
 
 
@@ -21,7 +21,7 @@ public class OptionsMenu extends View implements ActionListener {
 
 	
 	
-	OptionsMenu(GUI client){
+	OptionsMenu(PacmanGUI client){
 		super("Options", client);
 		this.setLayout(new FlowLayout());
 		
@@ -43,14 +43,14 @@ public class OptionsMenu extends View implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(back)){
-			this.getClientGUI().setView(new MainMenu(this.getClientGUI()));
+			this.getGUI().setView(new MainMenu(this.getGUI()));
 		}
 		
 		if(e.getSource().equals(toggleFullScreen)){
-			if(this.getClientGUI().isFullScreen()){
-				this.getClientGUI().setFullScreen(false);
+			if(this.getGUI().isFullScreen()){
+				this.getGUI().setFullScreen(false);
 			}else{
-				this.getClientGUI().setFullScreen(true);
+				this.getGUI().setFullScreen(true);
 			}
 		}
 	}

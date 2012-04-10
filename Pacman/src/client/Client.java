@@ -4,18 +4,18 @@ package client;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.Direction;
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 import client.gui.GUIListener;
 
 
 
 
 public class Client extends Thread implements GUIListener, CommEventListener{
-	private GUI gui = null;	
+	private PacmanGUI gui = null;	
 	
 	
 	public Client(String[] args){
-		gui = new GUI(args, this);
+		gui = new PacmanGUI(args, this);
 	}
 
 

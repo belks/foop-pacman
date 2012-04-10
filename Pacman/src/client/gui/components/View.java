@@ -4,7 +4,7 @@ import java.awt.Font;
 
 import javax.swing.JPanel;
 
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 
 public class View extends JPanel {
 
@@ -13,9 +13,9 @@ public class View extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String title = null;
-	private GUI client = null;
+	private PacmanGUI client = null;
 	
-	public View(String title, GUI client){
+	public View(String title, PacmanGUI client){
 		super();
 		this.client = client;
 		this.title = title;
@@ -30,7 +30,7 @@ public class View extends JPanel {
 		return this.title;
 	}
 	
-	public GUI getClientGUI(){
+	public PacmanGUI getGUI(){
 		return this.client;
 	}
 
