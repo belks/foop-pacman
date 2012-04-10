@@ -11,7 +11,7 @@ import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg_Level;
 import common.gameobjects.Level;
-import client.gui.ClientGUI;
+import client.gui.GUI;
 import client.gui.components.View;
 import client.gui.components.menu.ConnectMenu;
 
@@ -25,7 +25,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	private static final long serialVersionUID = 1L;
 	private GameArea gameArea = new GameArea(null);
 
-	public ActiveGame(ClientGUI client){
+	public ActiveGame(GUI client){
 		super("ActiveGame", client);	
 		this.setLayout(new BorderLayout());
 		

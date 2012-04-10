@@ -20,7 +20,7 @@ import common.tools.Config;
 
 
 
-public class ClientGUI extends JFrame implements KeyEventDispatcher, CommEventListener{
+public class GUI extends JFrame implements KeyEventDispatcher, CommEventListener{
 	/**
 	 * 
 	 */
@@ -33,7 +33,7 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 
 
 	
-	public ClientGUI(String[] args, GUIListener listener){
+	public GUI(String[] args, GUIListener listener){
 		super();
 		System.out.println("Application started.");
 		this.setListener(listener);

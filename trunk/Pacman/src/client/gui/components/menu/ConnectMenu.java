@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import client.gui.ClientGUI;
+import client.gui.GUI;
 import client.gui.components.View;
 import client.gui.components.game.ActiveGame;
 
@@ -25,7 +25,7 @@ public class ConnectMenu extends View implements ActionListener{
 
 
 
-	public ConnectMenu(ClientGUI client){
+	public ConnectMenu(GUI client){
 		super("ConnectMenu", client);
 		this.setLayout(new FlowLayout());
 		

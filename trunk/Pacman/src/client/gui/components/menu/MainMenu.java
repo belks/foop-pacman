@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import client.gui.ClientGUI;
+import client.gui.GUI;
 import client.gui.components.View;
 import client.gui.images.ImageDealer;
 import common.tools.Config;
@@ -27,7 +27,7 @@ public class MainMenu extends View implements ActionListener{
 	
 	
 	
-	public MainMenu(ClientGUI client){
+	public MainMenu(GUI client){
 		super("MainMenu", client);
 		
 		Config config = client.getConfig();
