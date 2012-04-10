@@ -19,9 +19,8 @@ public class GameArea extends JPanel{
 	private Level level = null;
 	
 
-	public GameArea(Level level) {
+	public GameArea() {
 		super();
-		this.setLevel(level);
 		this.setOpaque(false);
 	}
 	

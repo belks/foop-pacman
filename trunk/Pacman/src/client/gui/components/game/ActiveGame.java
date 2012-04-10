@@ -23,7 +23,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private GameArea gameArea = new GameArea(null);
+	private GameArea gameArea = new GameArea();
 
 	public ActiveGame(PacmanGUI client){
 		super("ActiveGame", client);	
