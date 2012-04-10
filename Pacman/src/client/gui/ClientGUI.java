@@ -13,12 +13,14 @@ import javax.swing.UIManager;
 import client.gui.components.MessageBox;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
+import common.communication.CommEventListener;
+import common.communication.CommEventObject;
 import common.tools.Config;
 
 
 
 
-public class ClientGUI extends JFrame implements KeyEventDispatcher{
+public class ClientGUI extends JFrame implements KeyEventDispatcher, CommEventListener{
 	/**
 	 * 
 	 */
@@ -157,6 +159,19 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	public GUIListener getListener() {
 		return listener;
 	}
+
+
+	@Override
+	public void handleCommEvent(CommEventObject e) {
+		if(this.currentView instanceof CommEventListener){
+			CommEventListener l = (CommEventListener) this.currentView;
+			l.handleCommEvent(e);
+		}else{
+			System.out.println("Unhandled communication event: "+e.getMsg());
+		}
+	}
+
+
 	
 	
 	
