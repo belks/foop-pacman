@@ -7,6 +7,21 @@ import common.gameobjects.Level;
 
 public class TestServer {
 
+	
+	private static Level getRandomLevel() {
+		Random r = new Random();
+		byte[][] temp = new byte[20][20];
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				temp[i][j] = (byte) r.nextInt(10);
+			}
+		}
+		
+		Level level = new Level(temp.length, temp[0].length);
+		level.setMap(temp);
+		return level;
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -16,17 +31,7 @@ public class TestServer {
 		Thread t = new Thread(test);
 		t.start();
 
-		
-		Random r = new Random();
-		byte[][] temp = new byte[4][6];
-		for (int i = 0; i < temp.length; i++) {
-			for (int j = 0; j < temp[0].length; j++) {
-				temp[i][j] = (byte) r.nextInt(10);
-			}
-		}
-		
-		Level level = new Level(temp.length, temp[0].length);
-		level.setMap(temp);
+		Level level = getRandomLevel();		
 		
 		while(true) {
 			test.sendLevel(level);
