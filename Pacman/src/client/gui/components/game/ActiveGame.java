@@ -1,7 +1,11 @@
 package client.gui.components.game;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
@@ -9,16 +13,16 @@ import common.communication.CommMsg_Level;
 import common.gameobjects.Level;
 import client.gui.ClientGUI;
 import client.gui.components.View;
+import client.gui.components.menu.ConnectMenu;
 
 
 
 
-public class ActiveGame extends View implements CommEventListener, Runnable{
+public class ActiveGame extends View implements CommEventListener, Runnable, ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel infoArea = new JPanel();
 	private GameArea gameArea = new GameArea(null);
 
 	public ActiveGame(ClientGUI client){
@@ -26,10 +30,9 @@ public class ActiveGame extends View implements CommEventListener, Runnable{
 		this.setLayout(new BorderLayout());
 		
 		
-		infoArea.setOpaque(false);
-		
+		this.add(createInfoArea(), BorderLayout.WEST);
 		this.add(gameArea, BorderLayout.CENTER);
-		this.add(infoArea, BorderLayout.WEST);
+		
 		
 		
 		
@@ -49,6 +52,17 @@ public class ActiveGame extends View implements CommEventListener, Runnable{
 		(new Thread(this)).start();
 	}
 	
+	
+	
+	
+	private JPanel createInfoArea(){
+		JPanel infoArea = new JPanel(new BorderLayout());
+		infoArea.setOpaque(false);
+		
+		JButton abortGame = new JButton(this.getClientGUI().getConfig().get("client.activegame.button.abort"));
+		abortGame.addActionListener(this);
+		return infoArea;
+	}
 	
 	
 	
@@ -84,6 +98,15 @@ public class ActiveGame extends View implements CommEventListener, Runnable{
 				e.printStackTrace();
 			}
 		}
+	}
+
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		this.getClientGUI().getListener().disconnect();
+		this.getClientGUI().setView(new ConnectMenu(this.getClientGUI()));
 	}
 	
 }
