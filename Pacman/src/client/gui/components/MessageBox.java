@@ -30,7 +30,7 @@ public class MessageBox extends JPanel{
 		this.setBorder(new TitledBorder("Log: "));
 		this.add(new JScrollPane(text), BorderLayout.CENTER);
 		this.setVisible(false);
-		this.setPreferredSize(new Dimension(800,100));
+		this.setPreferredSize(new Dimension(800,200));
 		//System.setErr(aPrintStream);
 		System.setOut(aPrintStream);
 	}

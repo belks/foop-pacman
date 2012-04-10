@@ -13,13 +13,13 @@ import client.gui.components.View;
 
 
 
-public class ActiveGame extends View implements CommEventListener{
+public class ActiveGame extends View implements CommEventListener, Runnable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel infoArea = new JPanel();
-	private GameArea gameArea = null;
+	private GameArea gameArea = new GameArea(null);
 
 	public ActiveGame(ClientGUI client){
 		super("ActiveGame", client);	
@@ -45,12 +45,18 @@ public class ActiveGame extends View implements CommEventListener{
 		level.setMap(temp);
 		
 		this.createLevel(level);
+		
+		(new Thread(this)).start();
 	}
+	
+	
+	
+	
 	
 	
 	public void createLevel(Level level){
 		System.out.println("Creating level.");
-		this.gameArea = new GameArea(level);
+		this.gameArea.setLevel(level);
 	}
 
 
@@ -60,6 +66,23 @@ public class ActiveGame extends View implements CommEventListener{
 		if(e.getSource() instanceof CommMsg_Level){
 			CommMsg_Level message = (CommMsg_Level) e.getSource();
 			this.createLevel(message.getLevel());
+		}
+	}
+
+
+
+
+
+
+	@Override
+	public void run() {
+		while(true){
+			try {
+				Thread.sleep(500);
+				this.gameArea.repaint();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
