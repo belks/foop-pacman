@@ -22,17 +22,19 @@ public class Tile extends JLabel{
 	}
 	
 	Tile(byte b){
-		this();
-		this.changeState(b);
+		super(ImageDealer.getIcon(FieldState.getStringValue(FieldState.getState(b))));
+		this.setOpaque(false);
+		this.setBorder(null);	
 	}
 	
 	
 	public void changeState(FieldState state){
 		this.setIcon(ImageDealer.getIcon(FieldState.getStringValue(state)));
+		this.repaint();
 	}
 	
 	public void changeState(byte state){
-		this.setIcon(ImageDealer.getIcon(FieldState.getStringValue(FieldState.getState(state))));
+		this.changeState(FieldState.getState(state));
 	}
 	
 	public void paintComponent(Graphics g){
