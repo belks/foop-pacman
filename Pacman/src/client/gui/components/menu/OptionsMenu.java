@@ -28,7 +28,7 @@ public class OptionsMenu extends View implements ActionListener {
 		
 		
 		
-		this.add(createButtonPanel(), BorderLayout.WEST);	
+		this.add(createButtonPanel(), BorderLayout.CENTER);	
 	}
 
 	private JPanel createButtonPanel(){
