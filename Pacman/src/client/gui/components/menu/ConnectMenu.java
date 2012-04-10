@@ -25,7 +25,6 @@ public class ConnectMenu extends View implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private JButton connect = null;
 	private JButton startServer = null;
-	private JButton back = null;
 
 
 
@@ -70,9 +69,6 @@ public class ConnectMenu extends View implements ActionListener{
 			this.getGUI().getListener().createServer(4444);
 		}
 		
-		if(arg0.getSource().equals(back)){
-			this.getGUI().setView(new MainMenu(this.getGUI()));
-		}
 	}
 
 	
