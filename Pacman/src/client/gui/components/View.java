@@ -34,4 +34,7 @@ public class View extends JPanel {
 		return this.client;
 	}
 
+	public void printMessage(String msg){
+		System.out.println(msg);
+	}
 }

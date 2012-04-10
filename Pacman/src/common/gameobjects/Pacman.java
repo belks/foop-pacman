@@ -12,6 +12,7 @@ public class Pacman {
 	private String name = null;
 	private int coints = 0;
 	private Color color = null;
+	private Direction direction = Direction.Right;
 	
 	
 	public Pacman(String name, Color color){
@@ -96,6 +97,16 @@ public class Pacman {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+
+	public Direction getDirection() {
+		return direction;
 	}
 
 
