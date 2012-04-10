@@ -2,15 +2,18 @@ package client.gui.components.game;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-
 import javax.swing.JPanel;
-
-import common.gameobjects.Game;
-
+import common.communication.CommEventListener;
+import common.communication.CommEventObject;
+import common.communication.CommMsg_Level;
+import common.gameobjects.Level;
 import client.gui.ClientGUI;
 import client.gui.components.View;
 
-public class GameField extends View{
+
+
+
+public class GameField extends View implements CommEventListener{
 	/**
 	 * 
 	 */
@@ -19,7 +22,7 @@ public class GameField extends View{
 	private JPanel gamefield = new JPanel();
 	private JPanel infoArea = new JPanel();
 
-	GameField(ClientGUI client){
+	public GameField(ClientGUI client){
 		super("GameField", client);	
 		this.setLayout(new BorderLayout());
 		
@@ -29,12 +32,14 @@ public class GameField extends View{
 	}
 	
 	
-	public void createField(Game game){
-		int width = game.getLevel().getMapSize().width;
-		int height = game.getLevel().getMapSize().height;
+	public void createLevel(Level level){
+		System.out.println("Drawing level.");
+		
+		int width = level.getMapSize().width;
+		int height = level.getMapSize().height;
 		tiles = new Tile[width][height];
 		
-		byte[][] map = game.getLevel().getMap();
+		byte[][] map = level.getMap();
 		
 		
 		for(byte[] line : map){
@@ -47,6 +52,16 @@ public class GameField extends View{
 		
 		
 		
+	}
+
+
+	@Override
+	public void handleCommEvent(CommEventObject e) {
+		System.out.println(e.getMsg());
+		if(e.getSource() instanceof CommMsg_Level){
+			CommMsg_Level message = (CommMsg_Level) e.getSource();
+			this.createLevel(message.getLevel());
+		}
 	}
 	
 }
