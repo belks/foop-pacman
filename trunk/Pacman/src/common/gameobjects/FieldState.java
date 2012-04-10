@@ -33,6 +33,10 @@ public enum FieldState {
 		}
 	}
 	
+	public static String getStringValue(byte b){
+		return getStringValue(getState(b));
+	}
+	
 	public static String getStringValue(FieldState fs){
 		if(fs == FieldState.Wall){
 			return "Wall";
