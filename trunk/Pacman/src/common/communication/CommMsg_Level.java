@@ -62,6 +62,7 @@ public class CommMsg_Level extends CommMsg {
 			}
 		}
 		
-		
+		this.level=new Level(length,width);
+		this.level.setMap(map);
 	}
 }
