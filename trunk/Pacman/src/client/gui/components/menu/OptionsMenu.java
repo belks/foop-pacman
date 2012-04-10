@@ -1,10 +1,12 @@
 package client.gui.components.menu;
 
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 
@@ -21,20 +23,32 @@ public class OptionsMenu extends View implements ActionListener {
 
 	
 	
-	OptionsMenu(PacmanGUI client){
+	public OptionsMenu(PacmanGUI client){
 		super("Options", client);
-		this.setLayout(new FlowLayout());
+		this.setLayout(new BorderLayout());
 		
 		
 		toggleFullScreen = new JButton(client.getConfig().get("client.options.button.toggleFullScreen"));
-		back = new JButton(client.getConfig().get("client.options.button.back"));
 		
-		JButton[] buttons = {toggleFullScreen, back};
+		
+		
+		JPanel optionsPanel = new JPanel();
+		optionsPanel.setOpaque(false);
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+		
+		JButton[] buttons = {toggleFullScreen};
 		for(JButton b : buttons){
-			this.add(b);
 			b.setFont(this.getDefaultFont());
 			b.addActionListener(this);
+			optionsPanel.add(b);
 		}
+		
+		this.add(optionsPanel, BorderLayout.CENTER);
+		
+		back = new JButton(client.getConfig().get("client.options.button.back"));
+		back.addActionListener(this);
+		back.setFont(this.getDefaultFont());
+		this.add(back, BorderLayout.SOUTH);
 		
 	}
 

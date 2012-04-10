@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import common.communication.CommEventListener;
@@ -24,6 +24,8 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	 */
 	private static final long serialVersionUID = 1L;
 	private GameArea gameArea = new GameArea();
+	private JButton abortGame = null;
+	private JButton toggleFullScreen = null;
 
 	public ActiveGame(PacmanGUI client){
 		super("ActiveGame", client);	
@@ -36,18 +38,9 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		
 		
 		
-		Random r = new Random();
-		byte[][] temp = new byte[30][30];
-		for (int i = 0; i < temp.length; i++) {
-			for (int j = 0; j < temp[0].length; j++) {
-				temp[i][j] = (byte) r.nextInt(4);
-			}
-		}
 		
-		Level level = new Level(30,30);
-		level.setMap(temp);
 		
-		this.createLevel(level);
+		this.createLevel(randomTestLevel());
 		
 		(new Thread(this)).start();
 	}
@@ -56,15 +49,49 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	
 	
 	private JPanel createInfoArea(){
+		
+		
+		
+		
+		
+		
+		
+		//---------------------------------
+		abortGame = new JButton(this.getGUI().getConfig().get("client.activegame.button.abort"));
+		toggleFullScreen = new JButton(this.getGUI().getConfig().get("client.activegame.button.toggleFullScreen"));
+		
+		JPanel south = new JPanel();
+		south.setLayout(new BoxLayout(south, BoxLayout.Y_AXIS));
+				
+		JButton[] buttons = {toggleFullScreen, abortGame};
+		for(JButton b:buttons){
+			b.setFont(this.getDefaultFont());
+			b.addActionListener(this);
+			south.add(b);
+		}
+		
 		JPanel infoArea = new JPanel(new BorderLayout());
 		infoArea.setOpaque(false);
+		infoArea.add(south, BorderLayout.SOUTH);
 		
-		JButton abortGame = new JButton(this.getGUI().getConfig().get("client.activegame.button.abort"));
-		abortGame.addActionListener(this);
 		return infoArea;
 	}
 	
 	
+	private Level randomTestLevel(){
+		Random r = new Random();
+		byte[][] temp = new byte[60][30];
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				temp[i][j] = (byte) r.nextInt(3);
+			}
+		}
+		
+		Level level = new Level(60,30);
+		level.setMap(temp);
+		
+		return level;
+	}
 	
 	
 	
@@ -90,9 +117,13 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 
 	@Override
 	public void run() {
+		int millis = this.getGUI().getConfig().getInteger("client.activegame.repaint.intervall.milliseconds");
+		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
+		
 		while(true){
 			try {
-				Thread.sleep(500);
+				Thread.sleep(millis);
+				//this.gameArea.setLevel(this.randomTestLevel());
 				this.gameArea.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -105,8 +136,18 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		this.getGUI().getListener().disconnect();
-		this.getGUI().setView(new ConnectMenu(this.getGUI()));
+		if(arg0.getSource().equals(abortGame)){
+			this.getGUI().getListener().disconnect();
+			this.getGUI().setView(new ConnectMenu(this.getGUI()));
+		}	
+		
+		if(arg0.getSource().equals(toggleFullScreen)){
+			if(this.getGUI().isFullScreen()){
+				this.getGUI().setFullScreen(false);
+			}else{
+				this.getGUI().setFullScreen(true);
+			}
+		}
 	}
 	
 }

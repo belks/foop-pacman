@@ -15,6 +15,7 @@ import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
+import common.gameobjects.Direction;
 import common.tools.Config;
 
 
@@ -138,6 +139,29 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 			}
 			
 			
+			if(e.getKeyCode() == config.getInteger("client.keys.togglefullscreen")){
+				if(this.isFullScreen()){
+					this.setFullScreen(false);
+				}else{
+					this.setFullScreen(true);
+				}
+			}
+			
+			if(e.getKeyCode() == config.getInteger("client.keys.up")){
+				this.listener.changeDirection(Direction.Up);
+			}
+			
+			if(e.getKeyCode() == config.getInteger("client.keys.down")){
+				this.listener.changeDirection(Direction.Down);
+			}
+			
+			if(e.getKeyCode() == config.getInteger("client.keys.left")){
+				this.listener.changeDirection(Direction.Left);
+			}
+			
+			if(e.getKeyCode() == config.getInteger("client.keys.right")){
+				this.listener.changeDirection(Direction.Right);
+			}
 			
         }
 
