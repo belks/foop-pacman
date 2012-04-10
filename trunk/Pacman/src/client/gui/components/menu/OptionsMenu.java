@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 
@@ -23,7 +22,7 @@ public class OptionsMenu extends View implements ActionListener {
 	
 	
 	public OptionsMenu(PacmanGUI gui){
-		super("Options", gui);
+		super(gui.getConfig().get("client.optionsmenu"), gui);
 		this.setLayout(new BorderLayout());
 		
 		
@@ -38,7 +37,7 @@ public class OptionsMenu extends View implements ActionListener {
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		
 		
-		toggleFullScreen = new JButton(this.getGUI().getConfig().get("client.options.button.toggleFullScreen"));
+		toggleFullScreen = new JButton(this.getGUI().getConfig().get("client.optionsmenu.button.toggleFullScreen"));
 		
 		JButton[] buttons = {toggleFullScreen};
 		for(JButton b : buttons){
@@ -47,7 +46,7 @@ public class OptionsMenu extends View implements ActionListener {
 			optionsPanel.add(b);
 		}
 		
-		optionsPanel.setBorder(new TitledBorder(this.getGUI().getConfig().get("client.options")));
+		this.setPanelBorder(optionsPanel);
 		
 		return optionsPanel;
 	}

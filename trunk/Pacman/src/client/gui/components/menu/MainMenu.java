@@ -9,7 +9,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.images.ImageDealer;
@@ -29,8 +28,8 @@ public class MainMenu extends View implements ActionListener{
 	
 	
 	
-	public MainMenu(PacmanGUI client){
-		super("MainMenu", client);
+	public MainMenu(PacmanGUI gui){
+		super(gui.getConfig().get("client.mainmenu"), gui);
 		this.setLayout(new BorderLayout());
 		this.add(new JLabel(ImageDealer.getIcon(this.getGUI().getConfig().get("client.mainmenu.image"))), BorderLayout.CENTER);
 		this.add(this.createButtonPanel(), BorderLayout.WEST);
@@ -63,8 +62,7 @@ public class MainMenu extends View implements ActionListener{
 		exit.addActionListener(this);
 		exit.setFont(this.getDefaultFont());
 		buttonPanel.add(exit, BorderLayout.SOUTH);
-		
-		buttonPanel.setBorder(new TitledBorder(this.getGUI().getConfig().get("client.mainmenu")));
+		this.setPanelBorder(buttonPanel);	
 		
 		return buttonPanel;
 	}
