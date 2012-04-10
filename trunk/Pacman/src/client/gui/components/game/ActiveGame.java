@@ -13,7 +13,7 @@ import common.communication.CommMsg_Level;
 import common.gameobjects.Level;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
-import client.gui.components.menu.ConnectMenu;
+import client.gui.components.menu.MainMenu;
 
 
 
@@ -138,7 +138,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(abortGame)){
 			this.getGUI().getListener().disconnect();
-			this.getGUI().setView(new ConnectMenu(this.getGUI()));
+			this.getGUI().setView(new MainMenu(this.getGUI()));
 		}	
 		
 		if(arg0.getSource().equals(toggleFullScreen)){

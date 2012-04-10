@@ -18,8 +18,6 @@ public class OptionsMenu extends View implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private JButton back = null;
 	private JButton toggleFullScreen = null;
 
 	
@@ -58,10 +56,7 @@ public class OptionsMenu extends View implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(back)){
-			this.getGUI().setView(new MainMenu(this.getGUI()));
-		}
-		
+				
 		if(e.getSource().equals(toggleFullScreen)){
 			if(this.getGUI().isFullScreen()){
 				this.getGUI().setFullScreen(false);
