@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 
@@ -23,18 +24,23 @@ public class OptionsMenu extends View implements ActionListener {
 
 	
 	
-	public OptionsMenu(PacmanGUI client){
-		super("Options", client);
+	public OptionsMenu(PacmanGUI gui){
+		super("Options", gui);
 		this.setLayout(new BorderLayout());
 		
 		
-		toggleFullScreen = new JButton(client.getConfig().get("client.options.button.toggleFullScreen"));
 		
 		
-		
+		this.add(createButtonPanel(), BorderLayout.WEST);	
+	}
+
+	private JPanel createButtonPanel(){
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setOpaque(false);
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+		
+		
+		toggleFullScreen = new JButton(this.getGUI().getConfig().get("client.options.button.toggleFullScreen"));
 		
 		JButton[] buttons = {toggleFullScreen};
 		for(JButton b : buttons){
@@ -43,15 +49,11 @@ public class OptionsMenu extends View implements ActionListener {
 			optionsPanel.add(b);
 		}
 		
-		this.add(optionsPanel, BorderLayout.CENTER);
+		optionsPanel.setBorder(new TitledBorder(this.getGUI().getConfig().get("client.options")));
 		
-		back = new JButton(client.getConfig().get("client.options.button.back"));
-		back.addActionListener(this);
-		back.setFont(this.getDefaultFont());
-		this.add(back, BorderLayout.SOUTH);
-		
+		return optionsPanel;
 	}
-
+	
 	
 	
 	@Override
