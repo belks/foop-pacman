@@ -1,9 +1,11 @@
 package client.gui.components;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import client.gui.PacmanGUI;
 
@@ -51,6 +53,13 @@ public class View extends JPanel {
 		this.currentSubView = c;
 		
 		this.validate();
+	}
+	
+	
+	public void setPanelBorder(JPanel p){
+		TitledBorder tb = new TitledBorder(title);
+		tb.setTitleColor(Color.WHITE);
+		p.setBorder(tb);
 	}
 	
 	
