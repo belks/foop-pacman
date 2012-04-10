@@ -11,7 +11,7 @@ import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg_Level;
 import common.gameobjects.Level;
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.ConnectMenu;
 
@@ -25,7 +25,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	private static final long serialVersionUID = 1L;
 	private GameArea gameArea = new GameArea(null);
 
-	public ActiveGame(GUI client){
+	public ActiveGame(PacmanGUI client){
 		super("ActiveGame", client);	
 		this.setLayout(new BorderLayout());
 		
@@ -59,7 +59,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		JPanel infoArea = new JPanel(new BorderLayout());
 		infoArea.setOpaque(false);
 		
-		JButton abortGame = new JButton(this.getClientGUI().getConfig().get("client.activegame.button.abort"));
+		JButton abortGame = new JButton(this.getGUI().getConfig().get("client.activegame.button.abort"));
 		abortGame.addActionListener(this);
 		return infoArea;
 	}
@@ -105,8 +105,8 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		this.getClientGUI().getListener().disconnect();
-		this.getClientGUI().setView(new ConnectMenu(this.getClientGUI()));
+		this.getGUI().getListener().disconnect();
+		this.getGUI().setView(new ConnectMenu(this.getGUI()));
 	}
 	
 }

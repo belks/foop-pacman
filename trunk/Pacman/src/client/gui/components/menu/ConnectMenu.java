@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import client.gui.GUI;
+import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.game.ActiveGame;
 
@@ -25,11 +25,11 @@ public class ConnectMenu extends View implements ActionListener{
 
 
 
-	public ConnectMenu(GUI client){
+	public ConnectMenu(PacmanGUI client){
 		super("ConnectMenu", client);
 		this.setLayout(new FlowLayout());
 		
-		this.connect = new JButton(this.getClientGUI().getConfig().get("client.connectmenu.button.connect"));
+		this.connect = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.connect"));
 		this.connect.addActionListener(this);
 		
 		
@@ -46,8 +46,8 @@ public class ConnectMenu extends View implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(connect)){
-			this.getClientGUI().setView(new ActiveGame(this.getClientGUI()));
-			this.getClientGUI().getListener().connect("localhost", 4444);
+			this.getGUI().setView(new ActiveGame(this.getGUI()));
+			this.getGUI().getListener().connect("localhost", 4444);
 		}
 		
 		//if(arg0.getSource().equals(startServer)){
