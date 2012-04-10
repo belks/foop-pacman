@@ -22,6 +22,7 @@ public class View extends JPanel {
 		this.client = client;
 		this.title = title;
 		this.setOpaque(false);
+		this.setLayout(new BorderLayout());
 	}
 	
 	public Font getDefaultFont(){
@@ -51,4 +52,6 @@ public class View extends JPanel {
 		
 		this.validate();
 	}
+	
+	
 }

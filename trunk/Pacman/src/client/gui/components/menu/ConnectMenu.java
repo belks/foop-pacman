@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.game.ActiveGame;
@@ -47,15 +49,14 @@ public class ConnectMenu extends View implements ActionListener{
 			connectOptions.add(b);
 		}
 		
-		this.add(connectOptions, BorderLayout.CENTER);
+		
+		connectOptions.setBorder(new TitledBorder(this.getGUI().getConfig().get("client.connectmenu")));
 		
 		
-		back = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.back"));
-		back.addActionListener(this);
-		back.setFont(this.getDefaultFont());
-		this.add(back, BorderLayout.SOUTH);
+		this.add(connectOptions, BorderLayout.WEST);
 	}
 
+	
 
 
 	@Override

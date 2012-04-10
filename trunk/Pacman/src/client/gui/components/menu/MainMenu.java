@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.images.ImageDealer;
@@ -46,7 +47,7 @@ public class MainMenu extends View implements ActionListener{
 		
 		
 		JPanel p1 = new JPanel();
-		p1.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
 		p1.setOpaque(false);
 		JButton[] buttons = {newGame, options};
 		for(JButton b : buttons){
@@ -59,8 +60,11 @@ public class MainMenu extends View implements ActionListener{
 		
 		
 		exit = new JButton(config.get("client.mainmenu.button.exit"));
+		exit.addActionListener(this);
+		exit.setFont(this.getDefaultFont());
 		buttonPanel.add(exit, BorderLayout.SOUTH);
 		
+		buttonPanel.setBorder(new TitledBorder(this.getGUI().getConfig().get("client.mainmenu")));
 		
 		return buttonPanel;
 	}
@@ -75,10 +79,10 @@ public class MainMenu extends View implements ActionListener{
 			System.exit(0);
 			
 		}else if(e.getSource().equals(this.options)){
-			this.getGUI().setView(new OptionsMenu(this.getGUI()));
+			this.setSubView(new OptionsMenu(this.getGUI()));
 			
 		}else if(e.getSource().equals(this.newGame)){
-			this.getGUI().setView(new ConnectMenu(this.getGUI()));
+			this.setSubView(new ConnectMenu(this.getGUI()));
 		}
 	}
 	
