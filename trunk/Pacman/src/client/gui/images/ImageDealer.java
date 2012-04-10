@@ -11,7 +11,9 @@ public class ImageDealer {
 	
 	
 	private static ImageIcon createImageIcon(String name) {
-			URL imgURL = ImageDealer.class.getResource(name);
+			URL imgURL = ImageDealer.class.getResource(name.toLowerCase()+".png");
+			
+			
 			if (imgURL != null) {
 				ImageIcon icon = new ImageIcon(imgURL);
 				
