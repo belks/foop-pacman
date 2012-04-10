@@ -30,34 +30,38 @@ public class GameArea extends JPanel{
 	
 	
 	public void paintComponent(Graphics g){
-		int cols = level.getMapSize().width;
-		int rows = level.getMapSize().height;
-		byte[][] map = level.getMap();
+		super.paintComponent(g);
 		
-		int tileWidth = Math.round(this.getWidth()/cols);
-		int tileHeight = Math.round(this.getHeight()/rows);
-		int sideLenght = Math.min(tileWidth, tileHeight);
-		
-		
-		
-		int rowCount = 0;
-		for(byte[] line : map){
+		if(level != null){
+			System.out.println("Repainting game Area");
+			int cols = level.getMapSize().width;
+			int rows = level.getMapSize().height;
+			byte[][] map = level.getMap();
 			
-			int colCount = 0;
-			for(byte state: line){
-				int startingX = colCount*sideLenght;
-				int startingY = rowCount*sideLenght;
+			int tileWidth = Math.round(this.getWidth()/cols);
+			int tileHeight = Math.round(this.getHeight()/rows);
+			int sideLenght = Math.min(tileWidth, tileHeight);
+			
+			
+			
+			int rowCount = 0;
+			for(byte[] line : map){
 				
-				Image img = ImageDealer.getImage(FieldState.getStringValue(state));
+				int colCount = 0;
+				for(byte state: line){
+					int startingX = colCount*sideLenght;
+					int startingY = rowCount*sideLenght;
+					
+					Image img = ImageDealer.getImage(FieldState.getStringValue(state));
+					
+					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
+					
+					colCount++;
+				}
 				
-				g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
-				
-				colCount++;
+				rowCount++;
 			}
-			
-			rowCount++;
 		}
-		
 	}
 
 
