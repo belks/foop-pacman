@@ -24,15 +24,17 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Config config = new Config(this.getClass().getResourceAsStream("gui.properties"));
-	private View oldComp = null;
+	private View currentView = null;
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
+	private GUIListener listener = null;
 
 
 	
-	public ClientGUI(String[] args){
+	public ClientGUI(String[] args, GUIListener listener){
 		super();
 		System.out.println("Application started.");
+		this.setListener(listener);
 		this.setTitle(this.config.get("client.title"));
 		this.setLayout(new BorderLayout());
 		
@@ -104,13 +106,13 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 	
 	
 	public void setView(View c){
-		System.out.println("Changing from "+oldComp+" to "+c);
+		System.out.println("Changing from "+currentView+" to "+c);
 		
-		if(oldComp!=null){
-			this.remove(oldComp);
+		if(currentView!=null){
+			this.remove(currentView);
 		}
 		this.add(c, BorderLayout.CENTER);
-		this.oldComp = c;
+		this.currentView = c;
 		
 		this.pack();
 		this.validate();
@@ -142,7 +144,19 @@ public class ClientGUI extends JFrame implements KeyEventDispatcher{
 
 
 
+	public void printMessage(String msg){
+		this.currentView.printMessage(msg);
+	}
 
+
+	public void setListener(GUIListener listener) {
+		this.listener = listener;
+	}
+
+
+	public GUIListener getListener() {
+		return listener;
+	}
 	
 	
 	

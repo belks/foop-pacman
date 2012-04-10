@@ -1,8 +1,8 @@
 package application;
 
 import common.tools.Tools;
+import client.Client;
 
-import client.gui.ClientGUI;
 
 public class PacmanGame {
 	
@@ -12,7 +12,7 @@ public class PacmanGame {
 			//start server only ...
 			
 		}else{
-			new ClientGUI(args);
+			new Client(args);
 		}
 		
 	}
