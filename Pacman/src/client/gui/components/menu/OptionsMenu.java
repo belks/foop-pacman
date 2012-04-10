@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import client.gui.ClientGUI;
+import client.gui.GUI;
 import client.gui.components.View;
 
 
@@ -21,7 +21,7 @@ public class OptionsMenu extends View implements ActionListener {
 
 	
 	
-	OptionsMenu(ClientGUI client){
+	OptionsMenu(GUI client){
 		super("Options", client);
 		this.setLayout(new FlowLayout());
 		

@@ -4,18 +4,18 @@ package client;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.Direction;
-import client.gui.ClientGUI;
+import client.gui.GUI;
 import client.gui.GUIListener;
 
 
 
 
 public class Client extends Thread implements GUIListener, CommEventListener{
-	private ClientGUI gui = null;	
+	private GUI gui = null;	
 	
 	
 	public Client(String[] args){
-		gui = new ClientGUI(args, this);
+		gui = new GUI(args, this);
 	}
 
 

@@ -4,7 +4,7 @@ import java.awt.Font;
 
 import javax.swing.JPanel;
 
-import client.gui.ClientGUI;
+import client.gui.GUI;
 
 public class View extends JPanel {
 
@@ -13,9 +13,9 @@ public class View extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String title = null;
-	private ClientGUI client = null;
+	private GUI client = null;
 	
-	public View(String title, ClientGUI client){
+	public View(String title, GUI client){
 		super();
 		this.client = client;
 		this.title = title;
@@ -30,7 +30,7 @@ public class View extends JPanel {
 		return this.title;
 	}
 	
-	public ClientGUI getClientGUI(){
+	public GUI getClientGUI(){
 		return this.client;
 	}
 
