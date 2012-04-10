@@ -3,11 +3,12 @@ package client.gui.components.menu;
 
 
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.game.ActiveGame;
@@ -28,18 +29,31 @@ public class ConnectMenu extends View implements ActionListener{
 
 	public ConnectMenu(PacmanGUI client){
 		super("ConnectMenu", client);
-		this.setLayout(new FlowLayout());
+		this.setLayout(new BorderLayout());
 		
 		this.connect = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.connect"));
 		this.startServer = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.startServer"));
-		this.back = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.back"));
 		
-		JButton[] buttons = {startServer, connect, back};
+		
+		
+		JPanel connectOptions = new JPanel();
+		connectOptions.setOpaque(false);
+		connectOptions.setLayout(new BoxLayout(connectOptions, BoxLayout.Y_AXIS));
+		
+		JButton[] buttons = {startServer, connect};
 		for(JButton b:buttons){
+			b.setFont(this.getDefaultFont());
 			b.addActionListener(this);
-			this.add(b);
+			connectOptions.add(b);
 		}
 		
+		this.add(connectOptions, BorderLayout.CENTER);
+		
+		
+		back = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.back"));
+		back.addActionListener(this);
+		back.setFont(this.getDefaultFont());
+		this.add(back, BorderLayout.SOUTH);
 	}
 
 

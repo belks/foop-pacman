@@ -1,5 +1,6 @@
 package client.gui.components;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ public class View extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private String title = null;
 	private PacmanGUI client = null;
+	private View currentSubView = null;
 	
 	public View(String title, PacmanGUI client){
 		super();
@@ -36,5 +38,17 @@ public class View extends JPanel {
 
 	public void printMessage(String msg){
 		System.out.println(msg);
+	}
+	
+	public void setSubView(View c){
+		System.out.println("Changing from "+currentSubView+" to "+c);
+		
+		if(currentSubView!=null){
+			this.remove(currentSubView);
+		}
+		this.add(c, BorderLayout.CENTER);
+		this.currentSubView = c;
+		
+		this.validate();
 	}
 }
