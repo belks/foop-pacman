@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import client.gui.ClientGUI;
 import client.gui.components.View;
-import client.gui.components.game.Ingame;
+import client.gui.components.game.ActiveGame;
 
 
 
@@ -46,7 +46,7 @@ public class ConnectMenu extends View implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(connect)){
-			this.getClientGUI().setView(new Ingame(this.getClientGUI()));
+			this.getClientGUI().setView(new ActiveGame(this.getClientGUI()));
 			this.getClientGUI().getListener().connect("localhost", 4444);
 		}
 		

@@ -1,10 +1,7 @@
 package client.gui.components.game;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.GridLayout;
 import java.util.Random;
-
 import javax.swing.JPanel;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
@@ -16,35 +13,34 @@ import client.gui.components.View;
 
 
 
-public class Ingame extends View implements CommEventListener{
+public class ActiveGame extends View implements CommEventListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Tile[][] tiles = new Tile[30][30]; 
-	//private JPanel gamefield = new JPanel(new GridLayout(30,30));
 	private JPanel infoArea = new JPanel();
-	private Canvas canvas = new Canvas();
+	private GameArea gameArea = null;
 
-	public Ingame(ClientGUI client){
-		super("InGame", client);	
+	public ActiveGame(ClientGUI client){
+		super("ActiveGame", client);	
 		this.setLayout(new BorderLayout());
 		
-		//gamefield.setOpaque(false);
-		//infoArea.setOpaque(false);
-		//this.add(gamefield, BorderLayout.CENTER);
+		
+		infoArea.setOpaque(false);
+		
+		this.add(gameArea, BorderLayout.CENTER);
 		this.add(infoArea, BorderLayout.WEST);
 		
 		
-		/*
+		
 		Random r = new Random();
 		byte[][] temp = new byte[30][30];
 		for (int i = 0; i < temp.length; i++) {
 			for (int j = 0; j < temp[0].length; j++) {
 				temp[i][j] = (byte) r.nextInt(4);
 			}
-		}*/
-		byte[][] temp = {{0}};
+		}
+		
 		Level level = new Level(1,1);
 		level.setMap(temp);
 		
@@ -54,32 +50,7 @@ public class Ingame extends View implements CommEventListener{
 	
 	public void createLevel(Level level){
 		System.out.println("Creating level.");
-		
-		int width = level.getMapSize().width;
-		int height = level.getMapSize().height;
-		
-		
-		
-		
-		/*gamefield.removeAll();
-		gamefield.setLayout(new GridLayout(width, height));
-		
-		tiles = new Tile[width][height];
-		
-		byte[][] map = level.getMap();
-		
-		
-		for(byte[] line : map){
-			
-			for(byte state : line){
-				gamefield.add(new Tile(state));
-			}
-			
-		}
-		
-		
-		this.getClientGUI().repaint();
-		*/
+		this.gameArea = new GameArea(level);
 	}
 
 
