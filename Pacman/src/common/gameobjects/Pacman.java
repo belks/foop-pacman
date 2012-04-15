@@ -7,19 +7,23 @@ import java.awt.Point;
 
 
 public class Pacman {
-	
+	private int id= 0;
 	private Point position = null;
 	private String name = null;
 	private int coints = 0;
 	private Color color = null;
 	private Direction direction = Direction.Right;
 	
-	
 	public Pacman(String name, Color color){
 		this.name = name;
 		this.color = color;
 	}
 	
+	public Pacman(int id, String name, Color color){
+		this.id = id;
+		this.name = name;
+		this.color = color;
+	}
 
 	/** 
 	 * Getter of the property <tt>position</tt>
@@ -110,5 +114,17 @@ public class Pacman {
 	}
 
 
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void addCoints(int coints){
+		this.coints = this.coints + coints;
+	}
 
 }
