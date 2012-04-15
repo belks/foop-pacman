@@ -2,14 +2,14 @@ package common.gameobjects;
 
 
 public enum Color {
-	Blue, Red, White;
+	Blue, Red, Green;
 	
 	public static int getValue(Color c){
 		if(c == Color.Blue){
 			return 0;
 		} else if(c == Color.Red){
 			return 1;
-		} else if(c == Color.White){
+		} else if(c == Color.Green){
 			return 2;
 		} else {
 			return -1;
@@ -23,7 +23,7 @@ public enum Color {
 		} else if(b == 1){
 			return Color.Red;
 		} else if(b == 2){
-			return Color.White;
+			return Color.Green;
 		} else {
 			return null;
 		}
