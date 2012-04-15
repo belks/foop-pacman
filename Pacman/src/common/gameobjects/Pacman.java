@@ -2,17 +2,13 @@ package common.gameobjects;
 
 import java.awt.Point;
 
-
-
-
-
 public class Pacman {
 	private int id= 0;
 	private Point position = null;
 	private String name = null;
+	private int totalCoints = 0;
 	private int coints = 0;
 	private Color color = null;
-	private Direction direction = Direction.Right;
 	
 	public Pacman(String name, Color color){
 		this.name = name;
@@ -43,8 +39,6 @@ public class Pacman {
 		this.position = position;
 	}
 
-	
-
 	/**
 	 * Getter of the property <tt>Name</tt>
 	 * @return  Returns the name.
@@ -62,8 +56,6 @@ public class Pacman {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	
 
 	/**
 	 * Getter of the property <tt>coints</tt>
@@ -83,8 +75,6 @@ public class Pacman {
 		this.coints = coints;
 	}
 
-	
-
 	/**
 	 * Getter of the property <tt>color</tt>
 	 * @return  Returns the color.
@@ -103,21 +93,9 @@ public class Pacman {
 		this.color = color;
 	}
 
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-
-
-	public Direction getDirection() {
-		return direction;
-	}
-
-
 	public int getId() {
 		return id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
@@ -127,4 +105,16 @@ public class Pacman {
 		this.coints = this.coints + coints;
 	}
 
+	public int getTotalCoints() {
+		return totalCoints;
+	}
+
+	public void setTotalCoints(int totalCoints) {
+		this.totalCoints = totalCoints;
+	}
+	
+	public void cpCointsToTotalCoints() {
+		totalCoints = totalCoints + coints;
+		coints = 0;
+	}
 }
