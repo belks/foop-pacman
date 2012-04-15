@@ -9,8 +9,6 @@ public class Up implements IStrategy {
 
 	@Override
 	public Point move(Point position) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Point(position.x, position.y + 1);
 	}
-
 }

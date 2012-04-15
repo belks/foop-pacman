@@ -2,12 +2,11 @@ package server;
 
 import java.awt.Point;
 
-
-public class Down implements IStrategy {
+public class Stop implements IStrategy{
 
 	@Override
 	public Point move(Point position) {
-		return new Point(position.x, position.y - 1);
+		return position;
 	}
 
 }
