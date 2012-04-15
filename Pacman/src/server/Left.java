@@ -9,8 +9,7 @@ public class Left implements IStrategy {
 
 	@Override
 	public Point move(Point position) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Point(position.x - 1, position.y);
 	}
 
 }
