@@ -17,6 +17,9 @@ public class PacmanController extends Observable implements IController{
 	private Level level = null;
 	private static PacmanController instance = null;
 	private MovingThread movingThread = null;
+	private int roundCount = 0;
+	private boolean isRoundEnd = false;
+	private boolean isGameEnd = false;
 	
 	private PacmanController(){
 		pacmans = new ArrayList<Pacman>();
@@ -56,21 +59,26 @@ public class PacmanController extends Observable implements IController{
 		level.setFiel(whitePacman.getPosition(), FieldState.Pacman);
 		
 		movingThread = new MovingThread();
+		
+		isGameEnd = false;
+		isRoundEnd = false;
+		roundCount = 3;
 	}
 
 	@Override
-	public synchronized void startGame() {		
-		if(null != movingThread && !movingThread.isAlive()){
-			movingThread.start();
-			
-			try {
-				movingThread.join();
-				
-				//TODO add round end sign
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public synchronized void startGame() {	
+//		while(!isGameEnd){
+			if(null != movingThread && !movingThread.isAlive()){
+				isRoundEnd = false;
+				movingThread.start();
 			}
-		}
+			
+//			try {
+//				movingThread.join();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 	
 	@Override
@@ -86,6 +94,8 @@ public class PacmanController extends Observable implements IController{
 	public synchronized void stopGame() {
 		if(null != movingThread){
 			movingThread.close();
+			isGameEnd = true;
+			isRoundEnd = true;
 		}
 	}
 	
@@ -168,5 +178,32 @@ public class PacmanController extends Observable implements IController{
 				pac.setColor(color);
 			}
 		}
+	}
+	
+	public synchronized void setRoundCount(int rc){
+		this.roundCount = rc;
+	}
+	
+	public synchronized void decrementRoundCount(){
+		this.roundCount--;
+		if(0 >= roundCount){
+			isGameEnd = true;
+		}
+	}
+
+	public boolean isRoundEnd() {
+		return isRoundEnd;
+	}
+
+	public synchronized void setRoundEnd(boolean isRoundEnd) {
+		this.isRoundEnd = isRoundEnd;
+	}
+
+	public synchronized boolean isGameEnd() {
+		return isGameEnd;
+	}
+
+	public synchronized void setGameEnd(boolean isGameEnd) {
+		this.isGameEnd = isGameEnd;
 	}
 }

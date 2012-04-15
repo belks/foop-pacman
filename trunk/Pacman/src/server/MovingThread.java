@@ -83,12 +83,23 @@ public class MovingThread extends Thread{
 					}
 				}
 				
-				pc.notifyAll();
+				
 				if(0 == pc.getLevelCoints()){
 					ct.close();
+					pacmans = pc.getPacmanList();
+					for (Pacman pac : pacmans) {
+						pac.cpCointsToTotalCoints();
+					}
+					
+					pc.decrementRoundCount();
+					pc.setRoundEnd(true);
+					
+					pc.notifyAll();
+					
 					break;
 				}
 				
+				pc.notifyAll();
 				sleep(100);
 			}
 		} catch (InterruptedException e) {
