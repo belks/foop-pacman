@@ -16,6 +16,10 @@ import client.gui.components.menu.MainMenu;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.Direction;
+import common.gameobjects.Down;
+import common.gameobjects.Left;
+import common.gameobjects.Right;
+import common.gameobjects.Up;
 import common.tools.Config;
 
 
@@ -148,19 +152,19 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.up")){
-				this.listener.changeDirection(Direction.Up);
+				this.listener.changeDirection(new Up());
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.down")){
-				this.listener.changeDirection(Direction.Down);
+				this.listener.changeDirection(new Down());
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.left")){
-				this.listener.changeDirection(Direction.Left);
+				this.listener.changeDirection(new Left());
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.right")){
-				this.listener.changeDirection(Direction.Right);
+				this.listener.changeDirection(new Right());
 			}
 			
         }

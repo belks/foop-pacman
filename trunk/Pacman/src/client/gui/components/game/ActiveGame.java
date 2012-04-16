@@ -107,6 +107,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		if(e.getSource() instanceof CommMsg_Level){
 			CommMsg_Level message = (CommMsg_Level) e.getSource();
 			this.createLevel(message.getLevel());
+			message.
 		}
 	}
 
