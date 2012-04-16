@@ -1,7 +1,5 @@
 package common.gameobjects;
 
-public enum Direction {
-	
-	Right, Left, Up, Down;
+public class Direction {
 
 }

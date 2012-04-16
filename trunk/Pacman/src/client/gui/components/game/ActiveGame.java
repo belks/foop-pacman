@@ -11,6 +11,7 @@ import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg_Level;
 import common.gameobjects.Level;
+import client.gui.GUIListener;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
@@ -107,7 +108,6 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		if(e.getSource() instanceof CommMsg_Level){
 			CommMsg_Level message = (CommMsg_Level) e.getSource();
 			this.createLevel(message.getLevel());
-			message.
 		}
 	}
 
@@ -138,7 +138,9 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(abortGame)){
-			this.getGUI().getListener().disconnect();
+			for(GUIListener l : this.getGUI().getListeners()){
+				l.disconnect();
+			}
 			this.getGUI().setView(new MainMenu(this.getGUI()));
 		}	
 		

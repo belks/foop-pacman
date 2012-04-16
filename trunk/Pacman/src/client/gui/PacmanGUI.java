@@ -8,6 +8,9 @@ import java.awt.GraphicsEnvironment;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import client.gui.components.MessageBox;
@@ -15,7 +18,6 @@ import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
-import common.gameobjects.Direction;
 import common.gameobjects.Down;
 import common.gameobjects.Left;
 import common.gameobjects.Right;
@@ -34,14 +36,14 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 	private View currentView = null;
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
-	private GUIListener listener = null;
+	private LinkedList<GUIListener> listeners = new LinkedList<GUIListener>();
 
 
 	
-	public PacmanGUI(String[] args, GUIListener listener){
+	public PacmanGUI(String[] args){
 		super();
 		System.out.println("Application started.");
-		this.setListener(listener);
+	
 		this.setTitle(this.config.get("client.title"));
 		this.setLayout(new BorderLayout());
 		
@@ -152,19 +154,27 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.up")){
-				this.listener.changeDirection(new Up());
+				for(GUIListener l : this.listeners){
+					l.changeDirection(new Up());
+				}
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.down")){
-				this.listener.changeDirection(new Down());
+				for(GUIListener l : this.listeners){
+					l.changeDirection(new Down());
+				}
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.left")){
-				this.listener.changeDirection(new Left());
+				for(GUIListener l : this.listeners){
+					l.changeDirection(new Left());
+				}
 			}
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.right")){
-				this.listener.changeDirection(new Right());
+				for(GUIListener l : this.listeners){
+					l.changeDirection(new Right());
+				}
 			}
 			
         }
@@ -179,13 +189,17 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 	}
 
 
-	public void setListener(GUIListener listener) {
-		this.listener = listener;
+	public void addListener(GUIListener listener) {
+		this.listeners.add(listener);
 	}
 
 
-	public GUIListener getListener() {
-		return listener;
+	public void removeListener(GUIListener listener) {
+		listeners.remove(listener);
+	}
+	
+	public List<GUIListener> getListeners(){
+		return this.listeners;
 	}
 
 

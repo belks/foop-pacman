@@ -13,9 +13,8 @@ public class PacmanGame {
 		
 		if(Tools.arrayContains(args, "server")){
 			try {
-				new ServerMain(args);
+				new ServerMain(4444);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{
