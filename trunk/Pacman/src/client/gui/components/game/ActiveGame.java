@@ -27,6 +27,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	private GameArea gameArea = new GameArea();
 	private JButton abortGame = null;
 	private JButton toggleFullScreen = null;
+	private JButton ready = null;
 
 	public ActiveGame(PacmanGUI client){
 		super("ActiveGame", client);	
@@ -35,10 +36,6 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		
 		this.add(createInfoArea(), BorderLayout.WEST);
 		this.add(gameArea, BorderLayout.CENTER);
-		
-		
-		
-		
 		
 		
 		this.createLevel(randomTestLevel());
@@ -50,29 +47,32 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	
 	
 	private JPanel createInfoArea(){
+		JPanel infoArea = new JPanel(new BorderLayout());
+		infoArea.setOpaque(false);
 		
 		
-		
-		
-		
+		JPanel north = new JPanel();
+		north.setLayout(new BoxLayout(north, BoxLayout.Y_AXIS));
+		north.setOpaque(false);
 		
 		
 		//---------------------------------
+		ready = new JButton(this.getGUI().getConfig().get("client.activegame.button.ready"));
 		abortGame = new JButton(this.getGUI().getConfig().get("client.activegame.button.abort"));
 		toggleFullScreen = new JButton(this.getGUI().getConfig().get("client.activegame.button.toggleFullScreen"));
 		
 		JPanel south = new JPanel();
+		south.setOpaque(false);
 		south.setLayout(new BoxLayout(south, BoxLayout.Y_AXIS));
 				
-		JButton[] buttons = {toggleFullScreen, abortGame};
+		JButton[] buttons = {ready,toggleFullScreen, abortGame};
 		for(JButton b:buttons){
 			b.setFont(this.getDefaultFont());
 			b.addActionListener(this);
 			south.add(b);
 		}
 		
-		JPanel infoArea = new JPanel(new BorderLayout());
-		infoArea.setOpaque(false);
+		
 		infoArea.add(south, BorderLayout.SOUTH);
 		
 		return infoArea;
@@ -124,7 +124,6 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		while(true){
 			try {
 				Thread.sleep(millis);
-				//this.gameArea.setLevel(this.randomTestLevel());
 				this.gameArea.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -150,6 +149,14 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 			}else{
 				this.getGUI().setFullScreen(true);
 			}
+		}
+		
+		
+		if(arg0.getSource().equals(ready)){
+			for(GUIListener l : this.getGUI().getListeners()){
+				l.ready();
+			}
+			this.ready.setEnabled(false);
 		}
 	}
 	

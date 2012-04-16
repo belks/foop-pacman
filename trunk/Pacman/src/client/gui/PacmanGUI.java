@@ -8,9 +8,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import client.gui.components.MessageBox;
@@ -43,6 +45,24 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 	public PacmanGUI(String[] args){
 		super();
 		System.out.println("Application started.");
+		
+		
+		try {
+			System.out.println("Searching for config file at...");
+			String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+			String decodedPath = URLDecoder.decode(path, "UTF-8")+File.separator+"config.txt";
+			System.out.println(decodedPath);
+			File f = new File(decodedPath);
+			if(f.exists()){
+				System.out.println("Config file found.");
+				this.config.setConfig(new FileInputStream(f));
+			}else{
+				System.out.println("Config file not found. Using default values.");
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 	
 		this.setTitle(this.config.get("client.title"));
 		this.setLayout(new BorderLayout());

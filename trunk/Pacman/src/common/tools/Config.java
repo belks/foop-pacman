@@ -32,6 +32,24 @@ public class Config{
 	
 	
 	
+	public void setConfig(InputStream file){
+		try {	
+			BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+			String buffer = null;
+			
+			while( (buffer = reader.readLine()) != null){
+				if(!buffer.startsWith("#") && !buffer.isEmpty()){
+					String key = buffer.substring(0, buffer.indexOf('=')).trim();
+					String value = buffer.substring(buffer.indexOf('=')+1).trim();
+					config.put(key, value);
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public String get(String key){
 		return config.get(key);
 	}

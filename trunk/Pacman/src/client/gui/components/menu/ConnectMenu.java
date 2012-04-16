@@ -96,6 +96,11 @@ public class ConnectMenu extends View implements ActionListener{
 			for(GUIListener l : this.getGUI().getListeners()){
 				l.createServer(new Integer(this.serverPort.getText()));
 			}
+			
+			this.getGUI().setView(new ActiveGame(this.getGUI()));
+			for(GUIListener l : this.getGUI().getListeners()){
+				l.connect(this.address.getText(), new Integer(this.serverPort.getText()));
+			}
 		}
 		
 	}
