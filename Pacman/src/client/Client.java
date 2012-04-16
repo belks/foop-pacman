@@ -4,6 +4,7 @@ package client;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.Direction;
+import common.gameobjects.IStrategy;
 import client.gui.PacmanGUI;
 import client.gui.GUIListener;
 
@@ -20,7 +21,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 
 	@Override
-	public void changeDirection(Direction newDir) {
+	public void changeDirection(IStrategy newDir) {
 		// TODO
 	}
 
@@ -44,7 +45,9 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	}
 	
 	
-	
+	public void ready(){
+		
+	}
 
 
 	@Override

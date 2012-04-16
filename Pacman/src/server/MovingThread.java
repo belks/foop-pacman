@@ -18,6 +18,7 @@ public class MovingThread extends Thread{
 	
 	@Override
 	public void run() {
+		//TODO moving by pacman
 		try {
 			Thread thisThread = Thread.currentThread();
 			PacmanController pc = PacmanController.getInstance();
