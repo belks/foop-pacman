@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -17,7 +18,7 @@ public class View extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private String title = null;
 	private PacmanGUI client = null;
-	private View currentSubView = null;
+	private JComponent currentSubView = null;
 	
 	public View(String title, PacmanGUI client){
 		super();
@@ -43,7 +44,7 @@ public class View extends JPanel {
 		System.out.println(msg);
 	}
 	
-	public void setSubView(View c){
+	public void setSubView(JComponent c){
 		System.out.println("Changing from "+currentSubView+" to "+c);
 		
 		if(currentSubView!=null){
@@ -54,6 +55,8 @@ public class View extends JPanel {
 		
 		this.validate();
 	}
+	
+	
 	
 	
 	public void setPanelBorder(JPanel p){

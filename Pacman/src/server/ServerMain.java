@@ -4,11 +4,11 @@ import java.io.IOException;
 
 public class ServerMain {
 	public static void main(String[] args) throws IOException {
-		new ServerMain(args);
+		new ServerMain(4444);
 	}
 	
-	public ServerMain(String[] args) throws IOException{
-		Comm_Server test = new Comm_Server(4444);
+	public ServerMain(int port) throws IOException{
+		Comm_Server test = new Comm_Server(port);
 		Thread t = new Thread(test);
 		t.start();
 		

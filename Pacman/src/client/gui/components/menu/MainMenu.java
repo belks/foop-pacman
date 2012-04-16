@@ -31,7 +31,7 @@ public class MainMenu extends View implements ActionListener{
 	public MainMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.mainmenu"), gui);
 		this.setLayout(new BorderLayout());
-		this.add(new JLabel(ImageDealer.getIcon(this.getGUI().getConfig().get("client.mainmenu.image"))), BorderLayout.CENTER);
+		this.setSubView(new JLabel(ImageDealer.getIcon(this.getGUI().getConfig().get("client.mainmenu.image"))));
 		this.add(this.createButtonPanel(), BorderLayout.WEST);
 	}
 
