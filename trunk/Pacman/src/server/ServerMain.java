@@ -4,6 +4,10 @@ import java.io.IOException;
 
 public class ServerMain {
 	public static void main(String[] args) throws IOException {
+		new ServerMain(args);
+	}
+	
+	public ServerMain(String[] args) throws IOException{
 		Comm_Server test = new Comm_Server(4444);
 		Thread t = new Thread(test);
 		t.start();
@@ -16,7 +20,5 @@ public class ServerMain {
 //				e.printStackTrace();
 //			}
 //		}
-
-		
 	}
 }

@@ -1,4 +1,4 @@
-package server;
+package common.gameobjects;
 
 import java.awt.Point;
 

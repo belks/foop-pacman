@@ -2,6 +2,7 @@ package common.gameobjects;
 
 import java.awt.Point;
 
+
 public class Pacman {
 	private int id= 0;
 	private Point position = null;
@@ -9,16 +10,19 @@ public class Pacman {
 	private int totalCoints = 0;
 	private int coints = 0;
 	private Color color = null;
+	private IStrategy direction = null;
 	
 	public Pacman(String name, Color color){
 		this.name = name;
 		this.color = color;
+		this.setDirection(new Stop());
 	}
 	
 	public Pacman(int id, String name, Color color){
 		this.id = id;
 		this.name = name;
 		this.color = color;
+		this.setDirection(new Stop());
 	}
 
 	/** 
@@ -116,5 +120,13 @@ public class Pacman {
 	public void cpCointsToTotalCoints() {
 		totalCoints = totalCoints + coints;
 		coints = 0;
+	}
+
+	public IStrategy getDirection() {
+		return direction;
+	}
+
+	public void setDirection(IStrategy direction) {
+		this.direction = direction;
 	}
 }
