@@ -47,7 +47,7 @@ public class ConnectMenu extends View implements ActionListener{
 		serverPort.setText(this.getGUI().getConfig().get("client.connectmenu.textfield.port"));
 		serverPanel.add(serverPort);
 		startServer = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.startServer"));
-		startServer.setFont(this.getDefaultFont());
+		startServer.setFont(View.getDefaultFont());
 		startServer.addActionListener(this);
 		serverPanel.add(startServer);
 		mainPanel.add(serverPanel);
@@ -70,7 +70,7 @@ public class ConnectMenu extends View implements ActionListener{
 		
 		JComponent[] comps = {serverPort,startServer,address,port,connect}; 
 		for(JComponent c : comps){
-			c.setFont(this.getDefaultFont());
+			c.setFont(View.getDefaultFont());
 		}
 		
 		

@@ -51,7 +51,7 @@ public class MainMenu extends View implements ActionListener{
 		JButton[] buttons = {newGame, options};
 		for(JButton b : buttons){
 			b.addActionListener(this);
-			b.setFont(this.getDefaultFont());
+			b.setFont(View.getDefaultFont());
 			p1.add(b);
 		}
 		buttonPanel.add(p1, BorderLayout.CENTER);
@@ -60,7 +60,7 @@ public class MainMenu extends View implements ActionListener{
 		
 		exit = new JButton(config.get("client.mainmenu.button.exit"));
 		exit.addActionListener(this);
-		exit.setFont(this.getDefaultFont());
+		exit.setFont(View.getDefaultFont());
 		buttonPanel.add(exit, BorderLayout.SOUTH);
 		this.setPanelBorder(buttonPanel);	
 		
