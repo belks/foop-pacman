@@ -50,7 +50,7 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 		try {
 			System.out.println("Searching for config file at...");
 			String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-			String decodedPath = URLDecoder.decode(path, "UTF-8")+File.separator+"config.txt";
+			String decodedPath = URLDecoder.decode(path, "UTF-8")+"config.txt";
 			System.out.println(decodedPath);
 			File f = new File(decodedPath);
 			if(f.exists()){
@@ -64,7 +64,7 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 		}
 		
 	
-		this.setTitle(this.config.get("client.title"));
+		this.setTitle(this.config.get("client.window.title"));
 		this.setLayout(new BorderLayout());
 		
 		try {
@@ -79,10 +79,10 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 		this.setView(new MainMenu(this));
 		
 		
-		if(config.getBoolean("client.fullscreen")){
+		if(config.getBoolean("client.window.fullscreen")){
 			this.setFullScreen(true);
 		}else{
-			this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
+			this.setPreferredSize(new Dimension(config.getInteger("client.window.width"), config.getInteger("client.window.height")));
 		}
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -117,7 +117,7 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 		}else if(b==false && gd.isFullScreenSupported()){
 			System.out.println("Changing to window mode.");
 			this.setUndecorated(false);
-			this.setPreferredSize(new Dimension(config.getInteger("client.width"), config.getInteger("client.height")));
+			this.setPreferredSize(new Dimension(config.getInteger("client.window.width"), config.getInteger("client.window.height")));
 			gd.setFullScreenWindow(null);
 			this.fullScreenMode = false;
 		}	

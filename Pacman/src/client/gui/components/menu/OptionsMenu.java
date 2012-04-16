@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URLDecoder;
+import java.util.TreeSet;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -53,7 +54,7 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 		
 		JButton[] buttons = {toggleFullScreen, saveValues};
 		for(JButton b : buttons){
-			b.setFont(this.getDefaultFont());
+			b.setFont(View.getDefaultFont());
 			b.addActionListener(this);
 			optionsPanel.add(b);
 		}
@@ -69,13 +70,13 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 			p.setOpaque(false);
 			
 			JLabel l = new JLabel(this.getGUI().getConfig().get("client.optionsmenu.label."+keys[i]));
-			l.setFont(this.getDefaultFont());
+			l.setFont(View.getDefaultFont());
 			l.setForeground(Color.WHITE);
 			l.setOpaque(false);
 			
 			JTextField tf = new JTextField(10);
 			tf.setText(KeyEvent.getKeyText(this.getGUI().getConfig().getInteger("client.keys."+keys[i])));
-			tf.setFont(this.getDefaultFont());
+			tf.setFont(View.getDefaultFont());
 			tf.addKeyListener(this);
 			tf.setToolTipText(""+i);
 			
@@ -112,10 +113,11 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 			try {
 				System.out.println("Saving config file at...");
 				String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-				String decodedPath = URLDecoder.decode(path, "UTF-8")+File.separator+"config.txt";
+				String decodedPath = URLDecoder.decode(path, "UTF-8")+"config.txt";
 				System.out.println(decodedPath);
 				BufferedWriter writer = new BufferedWriter(new FileWriter(new File(decodedPath)));
-				for(String key : this.getGUI().getConfig().getKeySet()){
+				
+				for(String key : new TreeSet<String>(this.getGUI().getConfig().getKeySet())){
 					writer.write(key+"="+this.getGUI().getConfig().get(key));
 					writer.newLine();
 				}

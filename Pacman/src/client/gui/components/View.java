@@ -28,9 +28,10 @@ public class View extends JPanel {
 		this.setLayout(new BorderLayout());
 	}
 	
-	public Font getDefaultFont(){
+	public static Font getDefaultFont(){
 		return new Font(Font.SANS_SERIF, Font.BOLD, 20);
 	}
+	
 	
 	public String toString(){
 		return this.title;

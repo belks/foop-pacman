@@ -1,11 +1,15 @@
 package client.gui.components.game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
@@ -28,7 +32,9 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	private JButton abortGame = null;
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
+	private StatsPanel stats = new StatsPanel();
 
+	
 	public ActiveGame(PacmanGUI client){
 		super("ActiveGame", client);	
 		this.setLayout(new BorderLayout());
@@ -40,8 +46,10 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		
 		this.createLevel(randomTestLevel());
 		
+		
 		(new Thread(this)).start();
 	}
+	
 	
 	
 	
@@ -51,9 +59,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		infoArea.setOpaque(false);
 		
 		
-		JPanel north = new JPanel();
-		north.setLayout(new BoxLayout(north, BoxLayout.Y_AXIS));
-		north.setOpaque(false);
+		infoArea.add(stats, BorderLayout.NORTH);
 		
 		
 		//---------------------------------
@@ -67,7 +73,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 				
 		JButton[] buttons = {ready,toggleFullScreen, abortGame};
 		for(JButton b:buttons){
-			b.setFont(this.getDefaultFont());
+			b.setFont(View.getDefaultFont());
 			b.addActionListener(this);
 			south.add(b);
 		}
@@ -90,6 +96,11 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		
 		Level level = new Level(60,30);
 		level.setMap(temp);
+		
+		
+		stats.addPlayer("1", "Player1", 10);
+		stats.addPlayer("2", "Player2", 0);
+		stats.addPlayer("3", "Player3", 100);
 		
 		return level;
 	}
@@ -160,4 +171,74 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		}
 	}
 	
+	
+	
+}	
+	
+
+
+class StatsPanel extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private LinkedHashMap<String, StatsRow> stats = new LinkedHashMap<String, StatsRow>();
+	
+	StatsPanel(){
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setOpaque(false);
+	}
+	
+	public void addPlayer(String id, String name, int initPoints){
+		this.stats.put(id, new StatsRow(name,initPoints));
+		this.add(this.stats.get(id));
+	}
+	
+	public void setPlayerPoints(String id, int points){
+		this.stats.get(id).setPoints(points);
+	}
+	
+	public void setPlayerColor(String id, Color c){
+		this.stats.get(id).setTextColor(c);
+	}
 }
+
+
+
+class StatsRow extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel points = new JLabel("0");
+	private JLabel name = new JLabel("Player");
+	
+	StatsRow(String name, int initPoints){
+		this.setLayout(new GridLayout(1,2));
+		this.setOpaque(false);
+		this.name.setOpaque(false);
+		this.name.setFont(View.getDefaultFont());
+		this.name.setText(name+":");
+		this.name.setHorizontalAlignment(JLabel.CENTER);
+		this.points.setOpaque(false);
+		this.points.setFont(View.getDefaultFont());
+		this.setTextColor(Color.WHITE);
+		this.setPoints(initPoints);
+		this.add(this.name);
+		this.add(this.points);
+	}
+	
+	public void setPoints(int x){
+		this.points.setText(""+x);
+	}
+	
+	public void setTextColor(Color c){
+		this.name.setForeground(c);
+		this.points.setForeground(c);
+	}
+}
+
+
+
+
+
