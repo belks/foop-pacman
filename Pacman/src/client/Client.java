@@ -53,6 +53,10 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		}else{
 			System.out.print("Disconnect not possible - no connection.");
 		}
+		
+		if(this.localServer != null){
+			localServer = null;
+		}
 	}
 	
 	
