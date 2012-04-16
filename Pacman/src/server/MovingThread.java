@@ -6,6 +6,7 @@ import java.util.Map;
 
 import common.gameobjects.Color;
 import common.gameobjects.FieldState;
+import common.gameobjects.IStrategy;
 import common.gameobjects.Pacman;
 
 public class MovingThread extends Thread{

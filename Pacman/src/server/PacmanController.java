@@ -7,9 +7,15 @@ import java.util.Map;
 import java.util.Observable;
 
 import common.gameobjects.Color;
+import common.gameobjects.Down;
 import common.gameobjects.FieldState;
+import common.gameobjects.IStrategy;
+import common.gameobjects.Left;
 import common.gameobjects.Level;
 import common.gameobjects.Pacman;
+import common.gameobjects.Right;
+import common.gameobjects.Stop;
+import common.gameobjects.Up;
 
 public class PacmanController extends Observable implements IController{
 	private List<Pacman> pacmans = null;
