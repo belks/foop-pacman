@@ -4,7 +4,7 @@ import common.gameobjects.Level;
 
 public class CommMsg_Level extends CommMsg {
 
-	public static final String PREFIX = "LEVEL:";
+	static final String PREFIX = "LEVEL:";
 	
 	private Level level;
 	

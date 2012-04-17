@@ -2,7 +2,7 @@ package common.communication;
 
 public class CommMsg_ChangeDirection extends CommMsg {
 
-	public static final String PREFIX = "CHGDIR:";
+	static final String PREFIX = "CHGDIR:";
 
 	private int direction;
 
