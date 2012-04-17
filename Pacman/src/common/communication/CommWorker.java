@@ -67,7 +67,7 @@ public abstract class CommWorker implements Runnable {
 					Logging.logException(e);
 					lastException = e;
 					exceptionCounter++;
-					if (exceptionCounter > 100)
+					if (exceptionCounter > 5)
 						shutdown();
 				}
 			}
@@ -125,7 +125,9 @@ public abstract class CommWorker implements Runnable {
 			CommMsg msg = msgs.get(i);
 			completeMsg.append(msg.getMsg());
 		}
-		println(completeMsg.toString());		
+		String str = completeMsg.toString();
+		println(str);
+		Logging.log(str, Level.FINE);
 	}
 
 	protected void sendMessageAndShutdown(CommMsg msg) {

@@ -109,6 +109,7 @@ public class Comm_Server implements Runnable {
 		shutdown();
 	}
 
+	/*
 	public void sendLevel(common.gameobjects.Level level) {
 		CommMsg_Level msg = new CommMsg_Level(level);
 		for (CommWorker_Server worker : workerList) {
@@ -116,7 +117,7 @@ public class Comm_Server implements Runnable {
 				worker.sendMessage(msg);
 			}
 		}
-	}
+	}*/
 	
 	
 	public void sendGame(common.gameobjects.Game game) {
@@ -128,5 +129,10 @@ public class Comm_Server implements Runnable {
 		}
 		msgs.add(new CommMsg_Fin());
 		
+		for (CommWorker_Server worker : workerList) {
+			if (worker.isConnected()) {
+				worker.sendMessages(msgs);
+			}
+		}
 	}
 }

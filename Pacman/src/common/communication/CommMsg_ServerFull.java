@@ -13,7 +13,7 @@ public class CommMsg_ServerFull extends CommMsg {
 		super();
 	}
 
-	CommMsg_ServerFull(String line) {
+	public CommMsg_ServerFull(String line) {
 		super(line);
 	}
 }
