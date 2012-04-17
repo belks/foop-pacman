@@ -15,7 +15,6 @@ public abstract class CommMsg {
 		allMsgTypes.put(CommMsg_ChangeDirection.PREFIX,
 				CommMsg_ChangeDirection.class);
 		allMsgTypes.put(CommMsg_Fin.PREFIX, CommMsg_Fin.class);
-		allMsgTypes.put(CommMsg_Game.PREFIX, CommMsg_Game.class);
 		allMsgTypes.put(CommMsg_Level.PREFIX, CommMsg_Level.class);
 		allMsgTypes.put(CommMsg_Pacman.PREFIX, CommMsg_Pacman.class);
 		allMsgTypes.put(CommMsg_ServerFull.PREFIX, CommMsg_ServerFull.class);

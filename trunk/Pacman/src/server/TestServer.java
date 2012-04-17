@@ -50,6 +50,7 @@ public class TestServer {
 			Game game = getRandomGame();
 
 			test.sendGame(game);
+			System.out.println(test.getDirection(1));
 
 			try {
 				Thread.sleep(2000);

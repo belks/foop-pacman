@@ -28,8 +28,6 @@ public class CommWorker_Server extends CommWorker {
 		CommMsg msg = CommMsg.fromMessage(line);
 		if (msg != null) {
 			if (msg instanceof CommMsg_ChangeDirection) {
-				
-			} else if (msg instanceof CommMsg_Fin) {
 				fireEvent(msg);
 			}
 		}

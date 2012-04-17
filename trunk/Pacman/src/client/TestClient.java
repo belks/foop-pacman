@@ -61,6 +61,7 @@ public class TestClient extends JFrame implements CommEventListener {
 	@Override
 	public void handleCommEvent(CommEventObject e) {
 		drawLevel();
+		comm.ChangeDirection("UP");
 	}
 
 	private void drawLevel() {
