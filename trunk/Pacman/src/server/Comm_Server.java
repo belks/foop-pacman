@@ -2,9 +2,15 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
+
+import common.communication.CommMsg;
+import common.communication.CommMsg_Fin;
 import common.communication.CommMsg_Level;
+import common.communication.CommMsg_Pacman;
+import common.gameobjects.Pacman;
 import common.tools.Logging;
 
 /**
@@ -17,6 +23,7 @@ import common.tools.Logging;
  * Thread t = new Thread(new CommServer(1234));
  * t.start();
  * </code>
+ * @param <p>
  */
 public class Comm_Server implements Runnable {
 
@@ -103,10 +110,23 @@ public class Comm_Server implements Runnable {
 	}
 
 	public void sendLevel(common.gameobjects.Level level) {
+		CommMsg_Level msg = new CommMsg_Level(level);
 		for (CommWorker_Server worker : workerList) {
 			if (worker.isConnected()) {
-				worker.sendMessage(new CommMsg_Level(level));
+				worker.sendMessage(msg);
 			}
 		}
+	}
+	
+	
+	public void sendGame(common.gameobjects.Game game) {
+		List<CommMsg> msgs = new Vector<CommMsg>();
+		
+		msgs.add(new CommMsg_Level(game.getLevel()));
+		for(Pacman p : game.getPacmans()) {
+			msgs.add(new CommMsg_Pacman(p));
+		}
+		msgs.add(new CommMsg_Fin());
+		
 	}
 }

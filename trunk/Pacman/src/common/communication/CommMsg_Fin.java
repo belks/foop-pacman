@@ -12,7 +12,7 @@ public class CommMsg_Fin extends CommMsg {
 		super();
 	}
 	
-	public CommMsg_Fin(String msg) {
+	CommMsg_Fin(String msg) {
 		super(msg);
 	}
 

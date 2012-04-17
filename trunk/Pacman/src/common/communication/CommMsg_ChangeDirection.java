@@ -26,7 +26,7 @@ public class CommMsg_ChangeDirection extends CommMsg {
 		directionToMessage();
 	}
 
-	public CommMsg_ChangeDirection(String msg) {
+	CommMsg_ChangeDirection(String msg) {
 		super(msg);
 		messageToDirection();
 	}

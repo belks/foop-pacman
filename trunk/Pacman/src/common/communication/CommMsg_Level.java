@@ -17,7 +17,7 @@ public class CommMsg_Level extends CommMsg {
 		levelToMsg();
 	}
 
-	public CommMsg_Level(String msg) {
+	CommMsg_Level(String msg) {
 		super(msg);
 		msgToLevel();
 	}

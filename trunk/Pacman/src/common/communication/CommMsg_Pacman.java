@@ -21,7 +21,7 @@ public class CommMsg_Pacman extends CommMsg {
 		pacmanToMessage();
 	}
 
-	public CommMsg_Pacman(String msg) {
+	CommMsg_Pacman(String msg) {
 		super(msg);
 		messageToPacman();
 	}
