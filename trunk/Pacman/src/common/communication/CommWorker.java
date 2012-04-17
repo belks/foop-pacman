@@ -30,7 +30,7 @@ public abstract class CommWorker implements Runnable {
 	public boolean isConnected() {
 		return !disconnect;
 	}
-	
+
 	public Exception getLastException() {
 		return lastException;
 	}
@@ -116,11 +116,19 @@ public abstract class CommWorker implements Runnable {
 		println(msg.getMsg());
 		Logging.log(msg.getMsg(), Level.FINE);
 	}
-	
-	
-	
-	
-	
+
+	protected void sendMessageAndShutdown(CommMsg msg) {
+		try {
+			if (out == null)
+				out = new PrintWriter(socket.getOutputStream(), true);
+			sendMessage(msg);
+			shutdown();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private List<CommEventListener> _listeners = new ArrayList<CommEventListener>();
 
 	public synchronized void addCommEventListener(CommEventListener listener) {
@@ -136,6 +144,5 @@ public abstract class CommWorker implements Runnable {
 		for (CommEventListener listener : _listeners) {
 			listener.handleCommEvent(event);
 		}
-
 	}
 }

@@ -12,7 +12,9 @@ public abstract class CommMsg {
 
 	static {
 		allMsgTypes = new HashMap<String, Class>();
+		allMsgTypes.put(CommMsg_Game.PREFIX, CommMsg_Game.class);
 		allMsgTypes.put(CommMsg_Level.PREFIX, CommMsg_Level.class);
+		allMsgTypes.put(CommMsg_ServerFull.PREFIX, CommMsg_ServerFull.class);		
 	}
 
 	protected String msg;
@@ -50,5 +52,9 @@ public abstract class CommMsg {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	protected String stringToMsg(String s) {
+		return s.replace(SEPARATOR, '-').replace((char)10, '-').replace((char)13, '-');
 	}
 }

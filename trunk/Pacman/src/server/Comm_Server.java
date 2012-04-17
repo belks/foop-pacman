@@ -10,10 +10,10 @@ import common.tools.Logging;
 /**
  * 
  * @author Chris
- *
- * This class listens to a socket for client connections and creates a 
- * separate worker thread for each connection. Usage: (with 1234 as port)
- * <code>
+ * 
+ *         This class listens to a socket for client connections and creates a
+ *         separate worker thread for each connection. Usage: (with 1234 as
+ *         port) <code>
  * Thread t = new Thread(new CommServer(1234));
  * t.start();
  * </code>
@@ -29,7 +29,7 @@ public class Comm_Server implements Runnable {
 		disconnect = false;
 		workerList = new Vector<CommWorker_Server>();
 	}
-	
+
 	@Override
 	public void run() {
 		int i = 1;
@@ -39,17 +39,26 @@ public class Comm_Server implements Runnable {
 			try {
 				Logging.log("Waiting for Client.", Level.INFO);
 				w = new CommWorker_Server(server.accept(), i++);
-				workerList.add(w);
-				Logging.log("Client connected.", Level.INFO);
-				Thread t = new Thread(w);
-				//t.setDaemon(true); //TODO: SetDaemon als Sicherheits-Netz?
-				t.start();
-				Logging.log("Thread for Client started.", Level.INFO);
+				
+				if (activeClients() < 3) {					
+					workerList.add(w);
+					Logging.log("Client connected.", Level.INFO);
+					Thread t = new Thread(w);
+					// t.setDaemon(true); //TODO: SetDaemon als
+					// Sicherheits-Netz?
+					t.start();
+					Logging.log("Thread for Client started.", Level.INFO);
+				} else {
+					
+				}
 			} catch (IOException e) {
 				if (!disconnect) {
 					Logging.log("ServerSocket accept failed: ", Level.SEVERE);
 					Logging.logException(e);
-					System.exit(-1); //Exit -> Wenn listen auf Port nicht klappt, macht ganzer Server keinen Sinn. Bei multiport müsste man das ändern.
+					System.exit(-1); // Exit -> Wenn listen auf Port nicht
+										// klappt, macht ganzer Server keinen
+										// Sinn. Bei multiport müsste man das
+										// ändern.
 				}
 			}
 		}
@@ -62,7 +71,9 @@ public class Comm_Server implements Runnable {
 
 			synchronized (this) {
 				if (!server.isClosed())
-					server.close(); //close() vor workerList auflösen -> damit workerList.add() in run() nicht mehr ausgeführt wird.
+					server.close(); // close() vor workerList auflösen -> damit
+									// workerList.add() in run() nicht mehr
+									// ausgeführt wird.
 
 				if (workerList != null) {
 					for (CommWorker_Server s : workerList)
@@ -73,7 +84,15 @@ public class Comm_Server implements Runnable {
 		} catch (IOException e) {
 			Logging.logException(e);
 		}
+	}
 
+	private int activeClients() {
+		int c = 0;
+		for (CommWorker_Server w : workerList) {
+			if (w.isConnected())
+				c++;
+		}
+		return c;
 	}
 
 	@Override
@@ -82,9 +101,9 @@ public class Comm_Server implements Runnable {
 		super.finalize();
 		shutdown();
 	}
-	
-	public void sendLevel(common.gameobjects.Level level) {		
-		for(CommWorker_Server worker : workerList){
+
+	public void sendLevel(common.gameobjects.Level level) {
+		for (CommWorker_Server worker : workerList) {
 			if (worker.isConnected()) {
 				worker.sendMessage(new CommMsg_Level(level));
 			}

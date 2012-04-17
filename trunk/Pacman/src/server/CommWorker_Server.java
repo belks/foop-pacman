@@ -1,6 +1,8 @@
 package server;
 
 import java.net.Socket;
+
+import common.communication.CommMsg_ServerFull;
 import common.communication.CommWorker;
 
 public class CommWorker_Server extends CommWorker {
@@ -17,5 +19,8 @@ public class CommWorker_Server extends CommWorker {
 		System.out.println(clientNum + ": " + line);
 	}
 	
-	
+	public void sendServerFull() {
+		CommMsg_ServerFull m = new CommMsg_ServerFull();
+		sendMessageAndShutdown(m);
+	}
 }
