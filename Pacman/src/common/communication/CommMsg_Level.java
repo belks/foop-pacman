@@ -22,7 +22,7 @@ public class CommMsg_Level extends CommMsg {
 		msgToLevel();
 	}
 
-	public String getPrefix() {
+	String getPrefix() {
 		return "LEVEL:";
 	}
 

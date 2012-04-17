@@ -10,8 +10,7 @@ public class CommMsg_ChangeDirection extends CommMsg {
 		return direction;
 	}
 
-	@Override
-	public String getPrefix() {
+	@Override String getPrefix() {
 		return PREFIX;
 	}
 

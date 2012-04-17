@@ -20,7 +20,7 @@ public class CommMsg_Game extends CommMsg {
 		super(msg);
 	}
 
-	public String getPrefix() {
+	String getPrefix() {
 		return PREFIX;
 	}
 
