@@ -7,7 +7,7 @@ import common.gameobjects.Pacman;
 
 public class CommMsg_Pacman extends CommMsg {
 
-	public static final String PREFIX = "PACMAN:";
+	static final String PREFIX = "PACMAN:";
 
 	private Pacman pacman;
 
