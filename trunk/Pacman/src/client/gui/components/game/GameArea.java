@@ -80,12 +80,16 @@ public class GameArea extends JPanel{
 	
 	private Pacman pacmanOnField(int x, int y){
 		Pacman pacman = null;
-		for(Pacman p : pacmans){
-			if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
-				pacman = p;
-				break;
+		
+		if(pacmans != null){
+			for(Pacman p : pacmans){
+				if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
+					pacman = p;
+					break;
+				}
 			}
 		}
+		
 		return pacman;
 	}
 
