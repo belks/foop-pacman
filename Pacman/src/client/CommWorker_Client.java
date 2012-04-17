@@ -36,4 +36,18 @@ public class CommWorker_Client extends CommWorker {
 			}
 		}
 	}
+
+	public void ChangeDirection(String direction) {
+		CommMsg msg = CommMsg_ChangeDirection.UP;
+		if (direction == "RIGHT") {
+			msg = CommMsg_ChangeDirection.RIGHT;
+		} else if (direction == "UP") {
+			msg = CommMsg_ChangeDirection.UP;
+		} else if (direction == "LEFT") {
+			msg = CommMsg_ChangeDirection.LEFT;
+		} else if (direction == "DOWN") {
+			msg = CommMsg_ChangeDirection.DOWN;
+		} 
+		sendMessage(msg);
+	}
 }

@@ -2,11 +2,16 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import common.communication.CommEventListener;
+import common.communication.CommEventObject;
 import common.communication.CommMsg;
+import common.communication.CommMsg_ChangeDirection;
 import common.communication.CommMsg_Fin;
 import common.communication.CommMsg_Level;
 import common.communication.CommMsg_Pacman;
@@ -25,12 +30,14 @@ import common.tools.Logging;
  * </code>
  * @param <p>
  */
-public class Comm_Server implements Runnable {
+public class Comm_Server implements Runnable, CommEventListener {
 
 	private ServerSocket server;
 	private volatile boolean disconnect;
 	private Vector<CommWorker_Server> workerList;
 
+	private Map<Integer, String> directions = new HashMap<Integer, String>();
+	
 	public Comm_Server(int port) throws IOException {
 		server = new ServerSocket(port);
 		disconnect = false;
@@ -50,7 +57,8 @@ public class Comm_Server implements Runnable {
 				if (activeClients() < 3) {					
 					workerList.add(w);
 					Logging.log("Client connected.", Level.INFO);
-					Thread t = new Thread(w);
+					w.addCommEventListener(this);
+					Thread t = new Thread(w);					
 					// t.setDaemon(true); //TODO: SetDaemon als
 					// Sicherheits-Netz?
 					t.start();
@@ -133,6 +141,26 @@ public class Comm_Server implements Runnable {
 			if (worker.isConnected()) {
 				worker.sendMessages(msgs);
 			}
+		}
+	}
+
+	@Override
+	public void handleCommEvent(CommEventObject e) {
+		CommMsg msg = e.getMsg();
+		
+		if (msg instanceof CommMsg_ChangeDirection) {
+			CommWorker_Server source = (CommWorker_Server) e.getSource();
+			int clientNum = source.getClientNum();
+			String dir = ((CommMsg_ChangeDirection)msg).getDirectionString();
+			synchronized (directions) {
+				directions.put(clientNum, dir);				
+			}
+		}		
+	}
+	
+	public String getDirection(int clientNum) {
+		synchronized (directions) {
+			return directions.get(clientNum);
 		}
 	}
 }
