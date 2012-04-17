@@ -18,9 +18,13 @@ public class CommWorker_Server extends CommWorker {
 	protected void processInput(String line) {
 		System.out.println(clientNum + ": " + line);
 	}
-	
+
 	public void sendServerFull() {
 		CommMsg_ServerFull m = new CommMsg_ServerFull();
 		sendMessageAndShutdown(m);
+	}
+
+	public int getClientNum() {
+		return clientNum;
 	}
 }
