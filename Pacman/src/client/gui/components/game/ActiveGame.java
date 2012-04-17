@@ -89,20 +89,20 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	
 	private Level randomTestLevel(){
 		Random r = new Random();
-		byte[][] temp = new byte[60][30];
+		byte[][] temp = new byte[25][25];
 		for (int i = 0; i < temp.length; i++) {
 			for (int j = 0; j < temp[0].length; j++) {
 				temp[i][j] = (byte) r.nextInt(3);
 			}
 		}
 		
-		Level level = new Level(60,30);
+		Level level = new Level(25,25);
 		level.setMap(temp);
 		
 		
-		stats.addPlayer("1", "Player1", 10);
-		stats.addPlayer("2", "Player2", 0);
-		stats.addPlayer("3", "Player3", 100);
+		stats.addPlayer(1, "Player1", 10);
+		stats.addPlayer(2, "Player2", 0);
+		stats.addPlayer(3, "Player3", 100);
 		
 		return level;
 	}
@@ -138,8 +138,12 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		//TESTING
 		LinkedList<Pacman> pl = new LinkedList<Pacman>();
 		pl.add(new Pacman(1,"lol",Color.RED));
-		pl.getFirst().setPosition(new Point(10,10));
-		
+		pl.add(new Pacman(2,"lol2",Color.GREEN));
+		pl.add(new Pacman(3,"lol3",Color.BLUE));
+		pl.get(0).setPosition(new Point(5,10));
+		pl.get(1).setPosition(new Point(10,5));
+		pl.get(2).setPosition(new Point(15,15));
+		int move = 1;
 		
 		
 		while(true){
@@ -147,9 +151,19 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 				Thread.sleep(millis);
 				
 				//TESTING
+				for(Pacman p : pl){
+					if(p.getPosition().x == 20){
+						move = -1;
+						this.stats.setPlayerColor(p.getId(), Color.RED);
+					}
+					
+					if(p.getPosition().x == 1){
+						move = 1;
+						this.stats.setPlayerColor(p.getId(), Color.GREEN);
+					}
+					p.setPosition(new Point(p.getPosition().x+move,p.getPosition().y));
+				}
 				
-				Pacman p = pl.getFirst();
-				p.setPosition(new Point(p.getPosition().x+1,p.getPosition().y));
 				this.gameArea.setPacmans(pl);
 				
 				//
@@ -200,14 +214,14 @@ class StatsPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private LinkedHashMap<String, StatsRow> stats = new LinkedHashMap<String, StatsRow>();
+	private LinkedHashMap<Integer, StatsRow> stats = new LinkedHashMap<Integer, StatsRow>();
 	
 	StatsPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
 	}
 	
-	public void addPlayer(String id, String name, int initPoints){
+	public void addPlayer(int id, String name, int initPoints){
 		this.stats.put(id, new StatsRow(name,initPoints));
 		this.add(this.stats.get(id));
 	}
@@ -216,7 +230,7 @@ class StatsPanel extends JPanel{
 		this.stats.get(id).setPoints(points);
 	}
 	
-	public void setPlayerColor(String id, Color c){
+	public void setPlayerColor(int id, Color c){
 		this.stats.get(id).setTextColor(c);
 	}
 }
