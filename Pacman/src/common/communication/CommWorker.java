@@ -117,6 +117,17 @@ public abstract class CommWorker implements Runnable {
 		Logging.log(msg.getMsg(), Level.FINE);
 	}
 
+	public void sendMessages(List<CommMsg> msgs) {
+		StringBuilder completeMsg = new StringBuilder();
+		for (int i = 0; i < msgs.size(); i++) {			
+			if (i > 0)
+				completeMsg.append("\n");
+			CommMsg msg = msgs.get(i);
+			completeMsg.append(msg.getMsg());
+		}
+		println(completeMsg.toString());		
+	}
+
 	protected void sendMessageAndShutdown(CommMsg msg) {
 		try {
 			if (out == null)
