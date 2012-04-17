@@ -61,7 +61,7 @@ public class TestClient extends JFrame implements CommEventListener {
 	}
 
 	private void drawLevel() {
-		Level l = comm.getLevel();
+		Level l = comm.getGame().getLevel();
 		if (l != null) {
 			StringBuilder b = new StringBuilder();
 			byte[][] m = l.getMap();

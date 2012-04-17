@@ -1,17 +1,15 @@
 package client;
 
 import java.net.Socket;
-import common.communication.CommMsg;
-import common.communication.CommMsg_Level;
-import common.communication.CommWorker;
-import common.gameobjects.Level;
+import common.communication.*;
+import common.gameobjects.Game;
 
 public class CommWorker_Client extends CommWorker {
 
-	private Level level = null;
+	private Game game = new Game(null, null);
 
-	public Level getLevel() {
-		return level;
+	public Game getGame() {
+		return game;
 	}
 
 	public CommWorker_Client(Socket address) {
@@ -24,9 +22,10 @@ public class CommWorker_Client extends CommWorker {
 		CommMsg msg = CommMsg.fromMessage(line);
 		if (msg != null) {
 			if (msg instanceof CommMsg_Level) {
-				level = ((CommMsg_Level) msg).getLevel();
+				game.setLevel(((CommMsg_Level) msg).getLevel());
+			} else if (msg instanceof CommMsg_Fin) {
+				fireEvent(msg);
 			}
-			fireEvent(msg);
 		}
 	}
 }

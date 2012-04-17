@@ -16,7 +16,7 @@ public class CommMsg_Game extends CommMsg {
 		this.game = game;
 	}
 
-	CommMsg_Game(String msg) {
+	public CommMsg_Game(String msg) {
 		super(msg);
 	}
 

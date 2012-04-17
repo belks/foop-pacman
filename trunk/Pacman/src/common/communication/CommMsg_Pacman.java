@@ -11,7 +11,8 @@ public class CommMsg_Pacman extends CommMsg {
 
 	private Pacman pacman;
 
-	@Override String getPrefix() {
+	@Override
+	String getPrefix() {
 		return PREFIX;
 	}
 
@@ -21,7 +22,7 @@ public class CommMsg_Pacman extends CommMsg {
 		pacmanToMessage();
 	}
 
-	CommMsg_Pacman(String msg) {
+	public CommMsg_Pacman(String msg) {
 		super(msg);
 		messageToPacman();
 	}
@@ -30,7 +31,7 @@ public class CommMsg_Pacman extends CommMsg {
 		Point pos = pacman.getPosition();
 
 		StringBuilder b = new StringBuilder();
-		b.append(getPrefix()).append(SEPARATOR); //0
+		b.append(getPrefix()).append(SEPARATOR); // 0
 
 		b.append(stringToMsg(pacman.getName())).append(SEPARATOR); // 1
 		b.append(pacman.getColor().getRGB()).append(SEPARATOR); // 2
@@ -39,6 +40,8 @@ public class CommMsg_Pacman extends CommMsg {
 		b.append(pacman.getCoints()).append(SEPARATOR); // 5
 		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 6
 		b.append(pacman.getId()); // 7
+
+		msg = b.toString();
 		// Direction can be omitted
 	}
 

@@ -28,6 +28,7 @@ public abstract class CommMsg {
 	}
 
 	protected CommMsg() {
+		this.msg = getPrefix() + SEPARATOR;
 	}
 
 	protected CommMsg(String msg) {
@@ -48,7 +49,7 @@ public abstract class CommMsg {
 			// Klasse zum Prefix suchen und mit der Nachricht instanzieren
 			Class cl = allMsgTypes.get(msg.substring(0, separatorIndex));
 			if (cl == null)
-				return null;
+				return null;			
 			Constructor co = cl.getConstructor(new Class[] { String.class });
 			CommMsg m = (CommMsg) co.newInstance(new Object[] { msg });
 			return m;
