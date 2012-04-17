@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import common.gameobjects.Color;
+import java.awt.Color;
 import common.gameobjects.Down;
 import common.gameobjects.FieldState;
 import common.gameobjects.IStrategy;
@@ -45,11 +45,11 @@ public class PacmanController extends Observable implements IController{
 	private synchronized void init() {
 		level = LevelGenerator.GetLevel();
 		
-		Pacman bluePacman = new Pacman(0, "Player1", Color.Blue);
+		Pacman bluePacman = new Pacman(0, "Player1", Color.BLUE);
 		bluePacman.setPosition(new Point(1,1));
-		Pacman redPacman = new Pacman(1, "Player2", Color.Red);
+		Pacman redPacman = new Pacman(1, "Player2", Color.RED);
 		bluePacman.setPosition(new Point(1,18));
-		Pacman whitePacman = new Pacman(2, "Player3", Color.Green);
+		Pacman whitePacman = new Pacman(2, "Player3", Color.GREEN);
 		bluePacman.setPosition(new Point(18,18));
 		
 		pacmans.add(bluePacman);

@@ -3,9 +3,11 @@ package client.gui.components.game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import client.gui.GUIListener;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
-
+import common.gameobjects.Pacman;
 
 
 
@@ -124,7 +126,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 
 
 
-
+	
 
 
 	@Override
@@ -132,9 +134,25 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		int millis = this.getGUI().getConfig().getInteger("client.activegame.repaint.intervall.milliseconds");
 		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
 		
+		
+		//TESTING
+		LinkedList<Pacman> pl = new LinkedList<Pacman>();
+		pl.add(new Pacman(1,"lol",Color.RED));
+		pl.getFirst().setPosition(new Point(10,10));
+		
+		
+		
 		while(true){
 			try {
 				Thread.sleep(millis);
+				
+				//TESTING
+				
+				Pacman p = pl.getFirst();
+				p.setPosition(new Point(p.getPosition().x+1,p.getPosition().y));
+				this.gameArea.setPacmans(pl);
+				
+				//
 				this.gameArea.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();

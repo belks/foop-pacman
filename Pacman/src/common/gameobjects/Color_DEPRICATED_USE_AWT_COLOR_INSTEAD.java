@@ -1,9 +1,10 @@
 package common.gameobjects;
 
 
-public enum Color {
+public enum Color_DEPRICATED_USE_AWT_COLOR_INSTEAD {
 	Blue, Red, Green;
 	
+	/*
 	public static int getValue(Color c){
 		if(c == Color.Blue){
 			return 0;
@@ -28,4 +29,5 @@ public enum Color {
 			return null;
 		}
 	}
+	*/
 }

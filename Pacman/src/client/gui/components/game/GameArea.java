@@ -1,16 +1,18 @@
 package client.gui.components.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-
 import client.gui.images.ImageDealer;
-
 import common.gameobjects.FieldState;
 import common.gameobjects.Level;
+import common.gameobjects.Pacman;
 
 public class GameArea extends JPanel{
 
@@ -19,16 +21,20 @@ public class GameArea extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Level level = null;
+	private List<Pacman> pacmans = null;
 	
 
 	public GameArea() {
 		super();
-		//this.setOpaque(false);
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		this.setOpaque(true);
+		this.setBackground(Color.GRAY);
 	}
 	
 	
-
+	public void setPacmans(List<Pacman> pacmans){
+		this.pacmans = new LinkedList<Pacman>(pacmans);
+	}
 	
 	
 	public void paintComponent(Graphics g){
@@ -43,28 +49,45 @@ public class GameArea extends JPanel{
 						
 			int centerHorizotal = Math.round((this.getWidth()-(sideLenght*cols))/2);
 			int centerVertical = Math.round((this.getHeight()-(sideLenght*rows))/2);
-						
+					
 			
-			int colCount = 0;
+			int x = 0;	//collumns
 			for(byte[] line : map){
 				
-				int rowCount= 0;
+				int y= 0;	//rows
 				for(byte state: line){
-					int startingX = centerHorizotal + colCount*sideLenght;
-					int startingY = centerVertical + rowCount*sideLenght;
+					int startingX = centerHorizotal + x*sideLenght;
+					int startingY = centerVertical + y*sideLenght;
 					
-					Image img = ImageDealer.getImage(FieldState.getStringValue(state));
-					
+					Image img = null;
+					Pacman p = this.pacmanOnField(x, y);
+					if(p==null){
+						img = ImageDealer.getImage(FieldState.getStringValue(state));
+					}else{
+						img = ImageDealer.getImage("pacman");
+					}
 					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
 					
-					rowCount++;
+					y++;
 				}
 				
-				colCount++;
+				x++;
 			}
 		}
 	}
 
+	
+	
+	private Pacman pacmanOnField(int x, int y){
+		Pacman pacman = null;
+		for(Pacman p : pacmans){
+			if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
+				pacman = p;
+				break;
+			}
+		}
+		return pacman;
+	}
 
 
 
@@ -81,6 +104,4 @@ public class GameArea extends JPanel{
 		return level;
 	}
 	
-	
-
 }
