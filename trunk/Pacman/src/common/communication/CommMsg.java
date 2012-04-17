@@ -19,7 +19,7 @@ public abstract class CommMsg {
 
 	protected String msg;
 
-	public String getMsg() {
+	String getMsg() {
 		return msg;
 	}
 
@@ -33,7 +33,7 @@ public abstract class CommMsg {
 		this.msg = msg;
 	}
 
-	public abstract String getPrefix();
+	abstract String getPrefix();
 
 	@SuppressWarnings("unchecked")
 	public static CommMsg fromMessage(String msg) {

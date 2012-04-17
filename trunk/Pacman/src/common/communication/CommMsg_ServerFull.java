@@ -5,8 +5,7 @@ public class CommMsg_ServerFull extends CommMsg {
 
 	public static final String PREFIX = "SERVERFULL:";
 	
-	@Override
-	public String getPrefix() {
+	@Override String getPrefix() {
 		return PREFIX;
 	}
 
