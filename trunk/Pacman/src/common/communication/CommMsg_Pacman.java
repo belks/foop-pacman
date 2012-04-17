@@ -11,6 +11,10 @@ public class CommMsg_Pacman extends CommMsg {
 
 	private Pacman pacman;
 
+	public Pacman getPacman() {
+		return pacman;
+	}
+
 	@Override
 	String getPrefix() {
 		return PREFIX;

@@ -1,9 +1,8 @@
 package server;
 
 import java.net.Socket;
+import common.communication.*;
 
-import common.communication.CommMsg_ServerFull;
-import common.communication.CommWorker;
 
 public class CommWorker_Server extends CommWorker {
 
@@ -14,11 +13,7 @@ public class CommWorker_Server extends CommWorker {
 		this.clientNum = clientNum;
 	}
 
-	@Override
-	protected void processInput(String line) {
-		System.out.println(clientNum + ": " + line);
-	}
-
+	
 	public void sendServerFull() {
 		CommMsg_ServerFull m = new CommMsg_ServerFull();
 		sendMessageAndShutdown(m);
@@ -26,5 +21,17 @@ public class CommWorker_Server extends CommWorker {
 
 	public int getClientNum() {
 		return clientNum;
+	}
+	
+	@Override
+	protected void processInput(String line) {
+		CommMsg msg = CommMsg.fromMessage(line);
+		if (msg != null) {
+			if (msg instanceof CommMsg_ChangeDirection) {
+				
+			} else if (msg instanceof CommMsg_Fin) {
+				fireEvent(msg);
+			}
+		}
 	}
 }

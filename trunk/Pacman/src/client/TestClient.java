@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Point;
 import java.net.Socket;
 
 import javax.swing.JFrame;
@@ -8,7 +9,9 @@ import javax.swing.UIManager;
 
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
+import common.gameobjects.Game;
 import common.gameobjects.Level;
+import common.gameobjects.Pacman;
 
 public class TestClient extends JFrame implements CommEventListener {
 
@@ -61,7 +64,8 @@ public class TestClient extends JFrame implements CommEventListener {
 	}
 
 	private void drawLevel() {
-		Level l = comm.getGame().getLevel();
+		Game g = comm.getGame();
+		Level l = g.getLevel();
 		if (l != null) {
 			StringBuilder b = new StringBuilder();
 			byte[][] m = l.getMap();
@@ -71,6 +75,15 @@ public class TestClient extends JFrame implements CommEventListener {
 				}
 				b.append("\n");
 			}
+			
+			for (Pacman p : g.getPacmans()) {
+				Point pos = p.getPosition();
+				int x = (int)pos.getX();
+				int y = (int)pos.getY();
+				
+				b.setCharAt(x*(m[0].length +"\n".length())+ y, '#');
+			}
+			
 			test.setText(b.toString());
 		}
 		this.pack();
