@@ -31,32 +31,30 @@ public class CommMsg_Pacman extends CommMsg {
 		Point pos = pacman.getPosition();
 
 		StringBuilder b = new StringBuilder();
-		b.append(getPrefix()).append(SEPARATOR);
+		b.append(getPrefix()).append(SEPARATOR); //0
 
-		b.append(stringToMsg(pacman.getName())).append(SEPARATOR); // 0
-		b.append(pacman.getColor().getRGB()).append(SEPARATOR); // 1
-		b.append((int) pos.getX()).append(SEPARATOR); // 2
-		b.append((int) pos.getY()).append(SEPARATOR); // 3
-		b.append(pacman.getCoints()).append(SEPARATOR); // 4
-		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 5
-		b.append(pacman.getId()).append(SEPARATOR); // 6
+		b.append(stringToMsg(pacman.getName())).append(SEPARATOR); // 1
+		b.append(pacman.getColor().getRGB()).append(SEPARATOR); // 2
+		b.append((int) pos.getX()).append(SEPARATOR); // 3
+		b.append((int) pos.getY()).append(SEPARATOR); // 4
+		b.append(pacman.getCoints()).append(SEPARATOR); // 5
+		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 6
+		b.append(pacman.getId()); // 7
 		// Direction can be omitted
 	}
 
 	private void messageToPacman() {
 		String[] split = msg.split(",");
 
-		String name = split[0];
-		Color color = new Color(Integer.parseInt(split[1]));
-		Point pos = new Point(Integer.parseInt(split[2]),
-				Integer.parseInt(split[3]));
+		String name = split[1];
+		Color color = new Color(Integer.parseInt(split[2]));
+		Point pos = new Point(Integer.parseInt(split[3]),
+				Integer.parseInt(split[4]));
 
 		pacman = new Pacman(name, color);
 		pacman.setPosition(pos);
-		pacman.setCoints(Integer.parseInt(split[4]));
-		pacman.setTotalCoints(Integer.parseInt(split[5]));
-		pacman.setId(Integer.parseInt(split[6]));
-		
+		pacman.setCoints(Integer.parseInt(split[5]));
+		pacman.setTotalCoints(Integer.parseInt(split[6]));
+		pacman.setId(Integer.parseInt(split[7]));
 	}
-
 }
