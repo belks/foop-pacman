@@ -3,7 +3,7 @@ package server;
 import java.awt.Point;
 import java.util.List;
 
-import common.gameobjects.Color;
+import java.awt.Color;
 import common.gameobjects.FieldState;
 import common.gameobjects.Pacman;
 

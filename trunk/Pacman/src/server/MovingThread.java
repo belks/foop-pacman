@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 
-import common.gameobjects.Color;
+import java.awt.Color;
 import common.gameobjects.FieldState;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Pacman;
@@ -114,11 +114,11 @@ public class MovingThread extends Thread{
 	}
 	
 	private boolean isEating(Color c1, Color c2){
-		if(Color.Red == c1 && Color.Blue == c2){
+		if(Color.RED == c1 && Color.BLUE == c2){
 			return true;
-		} else if(Color.Blue == c1 && Color.Green == c2){
+		} else if(Color.BLUE == c1 && Color.GREEN == c2){
 			return true;
-		} else if(Color.Green == c1 && Color.Red == c2){
+		} else if(Color.GREEN == c1 && Color.RED == c2){
 			return true;
 		}
 		

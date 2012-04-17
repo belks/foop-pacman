@@ -2,7 +2,7 @@ package server;
 
 import java.util.List;
 
-import common.gameobjects.Color;
+import java.awt.Color;
 import common.gameobjects.Pacman;
 
 public class ColoringThread extends Thread{
@@ -22,12 +22,12 @@ public class ColoringThread extends Thread{
 			pacmans = pc.getPacmanList();
 			
 			for (Pacman p : pacmans) {
-				if(Color.Red == p.getColor()){
-					pc.setPacmanColor(p.getId(), Color.Blue);
-				} else if(Color.Blue == p.getColor()){
-					pc.setPacmanColor(p.getId(), Color.Green);
-				} else if(Color.Green == p.getColor()){
-					pc.setPacmanColor(p.getId(), Color.Red);
+				if(Color.RED == p.getColor()){
+					pc.setPacmanColor(p.getId(), Color.BLUE);
+				} else if(Color.BLUE == p.getColor()){
+					pc.setPacmanColor(p.getId(), Color.GREEN);
+				} else if(Color.GREEN == p.getColor()){
+					pc.setPacmanColor(p.getId(), Color.RED);
 				}
 			}
 			
