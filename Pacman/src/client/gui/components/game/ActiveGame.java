@@ -5,24 +5,23 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
+import common.communication.CommMsg_Fin;
 import common.communication.CommMsg_Level;
+import common.communication.CommMsg_Pacman;
+import common.communication.CommMsg_ServerFull;
 import common.gameobjects.Down;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Left;
-import common.gameobjects.Level;
 import common.gameobjects.Right;
 import common.gameobjects.Up;
 import client.gui.GUIListener;
@@ -56,7 +55,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		this.add(gameArea, BorderLayout.CENTER);
 		
 		
-		this.createLevel(randomTestLevel());
+		//this.createLevel(randomTestLevel());
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(this);
@@ -98,7 +97,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		return infoArea;
 	}
 	
-	
+	/*
 	private Level randomTestLevel(){
 		Random r = new Random();
 		byte[][] temp = new byte[25][25];
@@ -125,14 +124,39 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		System.out.println("Creating level.");
 		this.gameArea.setLevel(level);
 	}
+	*/
 
 
 	@Override
 	public void handleCommEvent(CommEventObject e) {
 		System.out.println(e.getMsg());
+		
 		if(e.getSource() instanceof CommMsg_Level){
 			CommMsg_Level message = (CommMsg_Level) e.getSource();
-			this.createLevel(message.getLevel());
+			this.gameArea.setLevel(message.getLevel());
+		}
+		
+		
+		if(e.getSource() instanceof CommMsg_Pacman){
+			CommMsg_Pacman message = (CommMsg_Pacman) e.getSource();
+			Pacman p  = message.getPacman();
+			this.gameArea.setPacman(p.getId(), p);
+			
+			if( ! this.stats.hasPlayer(p.getId())){
+				this.stats.addPlayer(p.getId(), p.getName(), p.getCoints());
+			}
+			
+			this.stats.setPlayerPoints(p.getId(), p.getCoints());
+			this.stats.setPlayerColor(p.getId(), p.getColor());
+		}
+		
+		
+		if(e.getSource() instanceof CommMsg_Fin){
+			//TODO
+		}
+		
+		if(e.getSource() instanceof CommMsg_ServerFull){
+			//TODO
 		}
 	}
 
@@ -146,7 +170,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		int millis = this.getGUI().getConfig().getInteger("client.activegame.repaint.intervall.milliseconds");
 		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
 		
-		
+		/*
 		//TESTING
 		LinkedList<Pacman> pl = new LinkedList<Pacman>();
 		pl.add(new Pacman(1,"lol",Color.RED));
@@ -156,12 +180,13 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		pl.get(1).setPosition(new Point(10,5));
 		pl.get(2).setPosition(new Point(15,15));
 		int move = 1;
-		
+		*/
 		
 		while(true){
 			try {
 				Thread.sleep(millis);
 				
+				/*
 				//TESTING
 				for(Pacman p : pl){
 					if(p.getPosition().x == 20){
@@ -177,7 +202,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 				}
 				
 				this.gameArea.setPacmans(pl);
-				
+				*/
 				//
 				this.gameArea.repaint();
 			} catch (InterruptedException e) {
@@ -272,12 +297,16 @@ class StatsPanel extends JPanel{
 		this.setOpaque(false);
 	}
 	
+	public boolean hasPlayer(int id){
+		return stats.keySet().contains(id);
+	}
+	
 	public void addPlayer(int id, String name, int initPoints){
 		this.stats.put(id, new StatsRow(name,initPoints));
 		this.add(this.stats.get(id));
 	}
 	
-	public void setPlayerPoints(String id, int points){
+	public void setPlayerPoints(int id, int points){
 		this.stats.get(id).setPoints(points);
 	}
 	
