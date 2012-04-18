@@ -27,7 +27,12 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 	@Override
 	public void changeDirection(IStrategy newDir) {
-		// TODO
+		if(comm != null){
+			System.out.println("Changing direction to "+newDir);
+			comm.ChangeDirection(newDir.toString());
+		}else{
+			System.out.println("Cannot change direction! No connection!");
+		}
 	}
 
 
@@ -70,6 +75,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 				localServer = new ServerMain(port);
 			} catch (IOException e) {
 				e.printStackTrace();
+				System.out.print(e.getMessage());
 			}
 		}else{
 			System.out.print("A server is already running!");

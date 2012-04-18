@@ -20,16 +20,12 @@ import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
-import common.gameobjects.Down;
-import common.gameobjects.Left;
-import common.gameobjects.Right;
-import common.gameobjects.Up;
 import common.tools.Config;
 
 
 
 
-public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventListener{
+public class PacmanGUI extends JFrame implements CommEventListener, KeyEventDispatcher{
 	/**
 	 * 
 	 */
@@ -45,6 +41,9 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 	public PacmanGUI(String[] args){
 		super();
 		System.out.println("Application started.");
+		
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(this);
 		
 		
 		try {
@@ -85,9 +84,6 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 			this.setPreferredSize(new Dimension(config.getInteger("client.window.width"), config.getInteger("client.window.height")));
 		}
 		
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(this);
-
 		
 		this.pack();
 		this.validate();
@@ -173,29 +169,7 @@ public class PacmanGUI extends JFrame implements KeyEventDispatcher, CommEventLi
 				}
 			}
 			
-			if(e.getKeyCode() == config.getInteger("client.keys.up")){
-				for(GUIListener l : this.listeners){
-					l.changeDirection(new Up());
-				}
-			}
 			
-			if(e.getKeyCode() == config.getInteger("client.keys.down")){
-				for(GUIListener l : this.listeners){
-					l.changeDirection(new Down());
-				}
-			}
-			
-			if(e.getKeyCode() == config.getInteger("client.keys.left")){
-				for(GUIListener l : this.listeners){
-					l.changeDirection(new Left());
-				}
-			}
-			
-			if(e.getKeyCode() == config.getInteger("client.keys.right")){
-				for(GUIListener l : this.listeners){
-					l.changeDirection(new Right());
-				}
-			}
 			
         }
 

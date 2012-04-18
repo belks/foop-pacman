@@ -11,4 +11,8 @@ public class Up implements IStrategy {
 	public Point move(Point position) {
 		return new Point(position.x, position.y + 1);
 	}
+	
+	public String toString(){
+		return "UP";
+	}
 }

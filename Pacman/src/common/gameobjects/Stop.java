@@ -8,5 +8,10 @@ public class Stop implements IStrategy{
 	public Point move(Point position) {
 		return position;
 	}
+	
+	
+	public String toString(){
+		return "STOP";
+	}
 
 }
