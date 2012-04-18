@@ -18,7 +18,7 @@ import common.tools.Logging;
  * t.start();
  * </code>
  */
-public abstract class CommWorker implements Runnable {
+public abstract class CommWorker extends Thread {
 
 	private Socket socket;
 	private BufferedReader in;
