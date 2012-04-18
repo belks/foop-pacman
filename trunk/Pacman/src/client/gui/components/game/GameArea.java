@@ -3,9 +3,7 @@ package client.gui.components.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.LinkedList;
-import java.util.List;
-
+import java.util.LinkedHashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
@@ -14,6 +12,8 @@ import common.gameobjects.FieldState;
 import common.gameobjects.Level;
 import common.gameobjects.Pacman;
 
+
+
 public class GameArea extends JPanel{
 
 	/**
@@ -21,7 +21,7 @@ public class GameArea extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Level level = null;
-	private List<Pacman> pacmans = null;
+	private LinkedHashMap<Integer, Pacman> pacmans = new LinkedHashMap<Integer, Pacman>();;
 	
 
 	public GameArea() {
@@ -32,8 +32,8 @@ public class GameArea extends JPanel{
 	}
 	
 	
-	public void setPacmans(List<Pacman> pacmans){
-		this.pacmans = new LinkedList<Pacman>(pacmans);
+	public void setPacman(Integer id, Pacman pacmans){
+		this.pacmans.put(id, pacmans);
 	}
 	
 	
@@ -81,8 +81,9 @@ public class GameArea extends JPanel{
 	private Pacman pacmanOnField(int x, int y){
 		Pacman pacman = null;
 		
-		if(pacmans != null){
-			for(Pacman p : pacmans){
+		if(!pacmans.isEmpty()){
+			for(Integer id : pacmans.keySet()){
+				Pacman p = pacmans.get(id);
 				if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
 					pacman = p;
 					break;

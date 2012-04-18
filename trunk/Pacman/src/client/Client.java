@@ -28,7 +28,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	@Override
 	public void changeDirection(IStrategy newDir) {
 		if(comm != null){
-			System.out.println("Changing direction to "+newDir);
+			System.out.println("Changing direction "+newDir);
 			comm.ChangeDirection(newDir.toString());
 		}else{
 			System.out.println("Cannot change direction! No connection!");
@@ -42,10 +42,13 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 			System.out.println("Trying to connect to "+address+":"+port);
 			comm = new CommWorker_Client(new Socket(address, port));
 			comm.addCommEventListener(this);
+			comm.start();			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
+			System.out.print(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.print(e.getMessage());
 		}
 	}
 
@@ -55,6 +58,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		if(comm != null && comm.isConnected()){
 			System.out.print("Sending disconnect sign.");
 			comm.shutdown();
+			comm = null;			
 		}else{
 			System.out.print("Disconnect not possible - no connection.");
 		}
@@ -91,7 +95,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 	@Override
 	public void handleCommEvent(CommEventObject e) {
-		System.out.println(e.getMsg());
+		System.out.println("Incoming communication event : "+e.getClass().getSimpleName());
 		this.gui.handleCommEvent(e);
 	}
 
