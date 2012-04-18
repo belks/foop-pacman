@@ -10,4 +10,8 @@ public class Down implements IStrategy {
 		return new Point(position.x, position.y - 1);
 	}
 
+	
+	public String toString(){
+		return "DOWN";
+	}
 }

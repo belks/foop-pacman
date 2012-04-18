@@ -3,9 +3,12 @@ package client.gui.components.game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Random;
@@ -16,16 +19,22 @@ import javax.swing.JPanel;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg_Level;
+import common.gameobjects.Down;
+import common.gameobjects.IStrategy;
+import common.gameobjects.Left;
 import common.gameobjects.Level;
+import common.gameobjects.Right;
+import common.gameobjects.Up;
 import client.gui.GUIListener;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.gameobjects.Pacman;
+import common.tools.Config;
 
 
 
-public class ActiveGame extends View implements CommEventListener, Runnable, ActionListener{
+public class ActiveGame extends View implements KeyEventDispatcher, CommEventListener, Runnable, ActionListener{
 	/**
 	 * 
 	 */
@@ -35,6 +44,7 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
 	private StatsPanel stats = new StatsPanel();
+	private int lastKeyCode = -1;
 
 	
 	public ActiveGame(PacmanGUI client){
@@ -48,6 +58,8 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 		
 		this.createLevel(randomTestLevel());
 		
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(this);
 		
 		(new Thread(this)).start();
 	}
@@ -201,6 +213,45 @@ public class ActiveGame extends View implements CommEventListener, Runnable, Act
 			}
 			this.ready.setEnabled(false);
 		}
+	}
+
+
+
+
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		Config config = this.getGUI().getConfig();
+		
+		if (e.getID() == KeyEvent.KEY_PRESSED && this.lastKeyCode!=e.getKeyCode()) {
+			IStrategy move = null;
+			
+			if(e.getKeyCode() == config.getInteger("client.keys.up")){
+				move = new Up();
+				
+			}else if(e.getKeyCode() == config.getInteger("client.keys.down")){
+				move = new Down();
+			
+			}else if(e.getKeyCode() == config.getInteger("client.keys.left")){
+				move = new Left();
+				
+			}else if(e.getKeyCode() == config.getInteger("client.keys.right")){
+				move = new Right();
+				
+			}else{
+				move = null;
+			}
+			
+			
+			if(move != null){
+				this.lastKeyCode = e.getKeyCode();
+				for(GUIListener l : this.getGUI().getListeners()){
+					l.changeDirection(move);
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	

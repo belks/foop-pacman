@@ -11,5 +11,9 @@ public class Right implements IStrategy {
 	public Point move(Point position) {
 		return new Point(position.x + 1, position.y);
 	}
+	
+	public String toString(){
+		return "RIGHT";
+	}
 
 }
