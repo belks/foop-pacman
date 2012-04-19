@@ -3,42 +3,44 @@ package common.gameobjects;
 import java.awt.Color;
 import java.awt.Point;
 
-
 public class Pacman {
-	private int id= 0;
+	private int id = 0;
 	private Point position = null;
 	private String name = null;
 	private int totalCoints = 0;
 	private int coints = 0;
 	private Color color = null;
 	private IStrategy direction = null;
-	
-	public Pacman(String name, Color color){
+
+	public Pacman(String name, Color color) {
 		this.name = name;
 		this.color = color;
 		this.setDirection(new Stop());
 	}
-	
-	public Pacman(int id, String name, Color color){
+
+	public Pacman(int id, String name, Color color) {
 		this.id = id;
 		this.name = name;
 		this.color = color;
 		this.setDirection(new Stop());
 	}
 
-	/** 
+	/**
 	 * Getter of the property <tt>position</tt>
-	 * @return  Returns the position.
-	 * @uml.property  name="position"
+	 * 
+	 * @return Returns the position.
+	 * @uml.property name="position"
 	 */
 	public Point getPosition() {
 		return position;
 	}
 
-	/** 
+	/**
 	 * Setter of the property <tt>position</tt>
-	 * @param position  The position to set.
-	 * @uml.property  name="position"
+	 * 
+	 * @param position
+	 *            The position to set.
+	 * @uml.property name="position"
 	 */
 	public void setPosition(Point position) {
 		this.position = position;
@@ -46,8 +48,9 @@ public class Pacman {
 
 	/**
 	 * Getter of the property <tt>Name</tt>
-	 * @return  Returns the name.
-	 * @uml.property  name="Name"
+	 * 
+	 * @return Returns the name.
+	 * @uml.property name="Name"
 	 */
 	public String getName() {
 		return name;
@@ -55,8 +58,10 @@ public class Pacman {
 
 	/**
 	 * Setter of the property <tt>Name</tt>
-	 * @param Name  The name to set.
-	 * @uml.property  name="Name"
+	 * 
+	 * @param Name
+	 *            The name to set.
+	 * @uml.property name="Name"
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -64,8 +69,9 @@ public class Pacman {
 
 	/**
 	 * Getter of the property <tt>coints</tt>
-	 * @return  Returns the coints.
-	 * @uml.property  name="coints"
+	 * 
+	 * @return Returns the coints.
+	 * @uml.property name="coints"
 	 */
 	public int getCoints() {
 		return coints;
@@ -73,8 +79,10 @@ public class Pacman {
 
 	/**
 	 * Setter of the property <tt>coints</tt>
-	 * @param coints  The coints to set.
-	 * @uml.property  name="coints"
+	 * 
+	 * @param coints
+	 *            The coints to set.
+	 * @uml.property name="coints"
 	 */
 	public void setCoints(int coints) {
 		this.coints = coints;
@@ -82,8 +90,9 @@ public class Pacman {
 
 	/**
 	 * Getter of the property <tt>color</tt>
-	 * @return  Returns the color.
-	 * @uml.property  name="color"
+	 * 
+	 * @return Returns the color.
+	 * @uml.property name="color"
 	 */
 	public Color getColor() {
 		return color;
@@ -91,8 +100,10 @@ public class Pacman {
 
 	/**
 	 * Setter of the property <tt>color</tt>
-	 * @param color  The color to set.
-	 * @uml.property  name="color"
+	 * 
+	 * @param color
+	 *            The color to set.
+	 * @uml.property name="color"
 	 */
 	public void setColor(Color color) {
 		this.color = color;
@@ -106,7 +117,7 @@ public class Pacman {
 		this.id = id;
 	}
 
-	public void addCoints(int coints){
+	public void addCoints(int coints) {
 		this.coints = this.coints + coints;
 	}
 
@@ -117,7 +128,7 @@ public class Pacman {
 	public void setTotalCoints(int totalCoints) {
 		this.totalCoints = totalCoints;
 	}
-	
+
 	public void cpCointsToTotalCoints() {
 		totalCoints = totalCoints + coints;
 		coints = 0;
@@ -125,6 +136,21 @@ public class Pacman {
 
 	public IStrategy getDirection() {
 		return direction;
+	}
+
+	public int getDirectionInt() {
+		if (direction == null) {
+			return -1;
+		} else if (direction instanceof Right) {
+			return 0;
+		} else if (direction instanceof Up) {
+			return 1;
+		} else if (direction instanceof Left) {
+			return 2;
+		} else if (direction instanceof Down) {
+			return 3;
+		} else
+			return -1;
 	}
 
 	public void setDirection(IStrategy direction) {
