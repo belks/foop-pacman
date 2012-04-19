@@ -11,7 +11,9 @@ import common.gameobjects.Game;
 import common.gameobjects.Pacman;
 import common.gameobjects.Level;
 
-public class TestServer {
+public class TestServer implements Runnable{
+	
+	Comm_Server test = null;
 	
 	/**
 	 * @param args
@@ -22,11 +24,16 @@ public class TestServer {
 	
 	
 	public TestServer(int port) throws IOException {
-		Comm_Server test = new Comm_Server(port);
+		test = new Comm_Server(port);
 		Thread t = new Thread(test);
 		t.start();
 
-		while (true) {
+		(new Thread(this)).start();
+	}
+	
+	
+	public void run(){
+		while (test!= null) {
 			Game game = getRandomGame();
 
 			test.sendGame(game);
@@ -38,6 +45,11 @@ public class TestServer {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	public void shutdown(){
+		test = null;
 	}
 	
 
