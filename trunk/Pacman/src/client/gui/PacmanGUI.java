@@ -35,7 +35,7 @@ public class PacmanGUI extends JFrame implements CommEventListener, KeyEventDisp
 	private MessageBox messages = new MessageBox();
 	private boolean fullScreenMode = false;
 	private LinkedList<GUIListener> listeners = new LinkedList<GUIListener>();
-
+	
 
 	
 	public PacmanGUI(String[] args){

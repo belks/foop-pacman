@@ -3,12 +3,14 @@ package client.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-
 import client.gui.PacmanGUI;
+
+
+
 
 public class View extends JPanel {
 
@@ -19,6 +21,7 @@ public class View extends JPanel {
 	private String title = null;
 	private PacmanGUI client = null;
 	private JComponent currentSubView = null;
+	
 	
 	public View(String title, PacmanGUI client){
 		super();
@@ -66,5 +69,8 @@ public class View extends JPanel {
 		p.setBorder(tb);
 	}
 	
-	
+	public void setLabelStyle(JLabel l){
+		l.setFont(View.getDefaultFont());
+		l.setForeground(Color.WHITE);
+	}
 }

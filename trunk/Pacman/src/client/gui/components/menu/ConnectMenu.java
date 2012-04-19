@@ -4,14 +4,23 @@ package client.gui.components.menu;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+
+import common.tools.Config;
+
 import client.gui.GUIListener;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
@@ -34,35 +43,63 @@ public class ConnectMenu extends View implements ActionListener{
 
 	public ConnectMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.connectmenu"), gui);
+		Config conf = this.getGUI().getConfig();
 		this.setLayout(new BorderLayout());
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.setOpaque(false);
+		
+		
+		
+		try {
+			String adr = InetAddress.getLocalHost().toString();
+			JLabel clientIP = new JLabel(conf.get("client.connectmenu.label.clientip")+" "+adr);		
+			this.setLabelStyle(clientIP);
+			mainPanel.add(clientIP);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 		
 		
 		JPanel serverPanel = new JPanel();
 		serverPanel.setOpaque(false);
 		serverPanel.setLayout(new FlowLayout());
-		serverPort.setText(this.getGUI().getConfig().get("client.connectmenu.textfield.port"));
+		
+		JLabel portLabel = new JLabel(conf.get("client.connectmenu.label.port"));
+		this.setLabelStyle(portLabel);
+		serverPanel.add(portLabel);
+		
+		serverPort.setText(conf.get("client.connectmenu.textfield.port"));
 		serverPanel.add(serverPort);
-		startServer = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.startServer"));
+		
+		startServer = new JButton(conf.get("client.connectmenu.button.startServer"));
 		startServer.setFont(View.getDefaultFont());
 		startServer.addActionListener(this);
 		serverPanel.add(startServer);
+		
+		TitledBorder border1 = new TitledBorder(conf.get("client.connectmenu.border.createserver"));
+		border1.setTitleColor(Color.WHITE);
+		serverPanel.setBorder(border1);
 		mainPanel.add(serverPanel);
 		
 		JPanel connectPanel = new JPanel();
 		connectPanel.setOpaque(false);
 		connectPanel.setLayout(new FlowLayout());
 		
-		address.setText(this.getGUI().getConfig().get("client.connectmenu.textfield.address"));
+		address.setText(conf.get("client.connectmenu.textfield.address"));
 		connectPanel.add(address);
-		port.setText(this.getGUI().getConfig().get("client.connectmenu.textfield.port"));
+		
+		port.setText(conf.get("client.connectmenu.textfield.port"));
 		connectPanel.add(port);
-		connect = new JButton(this.getGUI().getConfig().get("client.connectmenu.button.connect"));
+		
+		connect = new JButton(conf.get("client.connectmenu.button.connect"));
 		connect.addActionListener(this);
 		connectPanel.add(connect);
+		
+		TitledBorder border2 = new TitledBorder(conf.get("client.connectmenu.border.connectclient"));
+		border2.setTitleColor(Color.WHITE);
+		connectPanel.setBorder(border2);
 		mainPanel.add(connectPanel);
 		
 		
