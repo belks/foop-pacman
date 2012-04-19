@@ -17,12 +17,12 @@ public class TestServer {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException {
-		new TestServer();
+		new TestServer(4444);
 	}
 	
 	
-	TestServer() throws IOException {
-		Comm_Server test = new Comm_Server(4444);
+	public TestServer(int port) throws IOException {
+		Comm_Server test = new Comm_Server(port);
 		Thread t = new Thread(test);
 		t.start();
 
