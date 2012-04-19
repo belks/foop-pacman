@@ -43,7 +43,7 @@ public class CommMsg_Pacman extends CommMsg {
 		b.append((int) pos.getY()).append(SEPARATOR); // 4
 		b.append(pacman.getCoints()).append(SEPARATOR); // 5
 		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 6
-		b.append(pacman.getId()); // 7
+		b.append(pacman.getId()).append(SEPARATOR); // 7
 		b.append(pacman.getDirectionInt());
 
 		msg = b.toString();
