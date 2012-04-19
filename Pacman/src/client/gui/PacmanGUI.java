@@ -18,7 +18,6 @@ import javax.swing.UIManager;
 import client.gui.components.MessageBox;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
-import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.Game;
 import common.tools.Config;
@@ -107,6 +106,7 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 			this.setPreferredSize(new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight()));
 			gd.setFullScreenWindow(this);
 			this.fullScreenMode = true;
+			
 			
 		}else if(b==true && !gd.isFullScreenSupported()){
 			System.out.println("Fullscreen is not supported by this system!");
