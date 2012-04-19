@@ -10,17 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import common.communication.CommEventListener;
 import common.communication.CommEventObject;
-import common.communication.CommMsg_Fin;
-import common.communication.CommMsg_Level;
-import common.communication.CommMsg_Pacman;
-import common.communication.CommMsg_ServerFull;
 import common.gameobjects.Down;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Left;
