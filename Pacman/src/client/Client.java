@@ -4,6 +4,7 @@ package client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import server.ServerMain;
 import server.TestServer;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
@@ -17,8 +18,8 @@ import client.gui.GUIListener;
 public class Client extends Thread implements GUIListener, CommEventListener{
 	private PacmanGUI gui = null;	
 	private CommWorker_Client comm = null;
-	//private ServerMain localServer = null;
-	private TestServer testServer = null;
+	private ServerMain localServer = null;
+	//private TestServer testServer = null;
 	
 	public Client(String[] args){
 		gui = new PacmanGUI(args);
@@ -64,15 +65,18 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 			System.out.print("Disconnect not possible - no connection.");
 		}
 		
-		/*
+		
 		if(this.localServer != null){
 			localServer = null;
 		}
-		*/
+		
+		
+		/*
 		if(this.testServer != null){
 			testServer.shutdown();
 			testServer = null;
 		}
+		*/
 	}
 	
 	
@@ -80,7 +84,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	
 	@Override
 	public void createServer(int port) {
-		/*
+		
 		if(localServer == null){
 			try {
 				System.out.print("Starting a server at port "+port);
@@ -92,8 +96,8 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		}else{
 			System.out.print("A server is already running!");
 		}
-		*/
 		
+		/*
 		if(testServer == null){
 			try {
 				System.out.print("Starting a server at port "+port);
@@ -105,6 +109,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		}else{
 			System.out.print("A server is already running!");
 		}
+		*/
 	}
 	
 	
