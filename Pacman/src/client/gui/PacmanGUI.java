@@ -20,12 +20,13 @@ import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
+import common.gameobjects.Game;
 import common.tools.Config;
 
 
 
 
-public class PacmanGUI extends JFrame implements CommEventListener, KeyEventDispatcher{
+public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyEventDispatcher{
 	/**
 	 * 
 	 */
@@ -197,11 +198,12 @@ public class PacmanGUI extends JFrame implements CommEventListener, KeyEventDisp
 	}
 
 
+
 	@Override
-	public void handleCommEvent(CommEventObject e) {
-		if(this.currentView instanceof CommEventListener){
-			CommEventListener l = (CommEventListener) this.currentView;
-			l.handleCommEvent(e);
+	public void handleCommEvent(CommEventObject e, Game g) {
+		if(this.currentView instanceof ExtendedCommEventListener){
+			ExtendedCommEventListener l = (ExtendedCommEventListener) this.currentView;
+			l.handleCommEvent(e,g);
 		}else{
 			System.out.println("Unhandled communication event: "+e.getMsg());
 		}

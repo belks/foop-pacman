@@ -4,7 +4,6 @@ package client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import server.ServerMain;
 import server.TestServer;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
@@ -71,6 +70,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		}
 		*/
 		if(this.testServer != null){
+			testServer.shutdown();
 			testServer = null;
 		}
 	}
@@ -116,8 +116,9 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 	@Override
 	public void handleCommEvent(CommEventObject e) {
-		System.out.println("Incoming communication event : "+e.getClass().getSimpleName());
-		this.gui.handleCommEvent(e);
+		//System.out.println("Incoming communication event : "+e.getClass().getSimpleName());
+		//System.out.println(g.getLevel().getMapSize());
+		this.gui.handleCommEvent(e,comm.getGame());
 	}
 
 

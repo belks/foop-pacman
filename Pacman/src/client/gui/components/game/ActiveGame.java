@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,16 +26,18 @@ import common.gameobjects.IStrategy;
 import common.gameobjects.Left;
 import common.gameobjects.Right;
 import common.gameobjects.Up;
+import client.gui.ExtendedCommEventListener;
 import client.gui.GUIListener;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 import common.gameobjects.Pacman;
 import common.tools.Config;
+import common.gameobjects.Game;
 
 
 
-public class ActiveGame extends View implements KeyEventDispatcher, CommEventListener, Runnable, ActionListener{
+public class ActiveGame extends View implements KeyEventDispatcher, ExtendedCommEventListener, Runnable, ActionListener{
 	/**
 	 * 
 	 */
@@ -128,17 +132,20 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 
 
 	@Override
-	public void handleCommEvent(CommEventObject e) {
-		System.out.println(e.getMsg());
+	public void handleCommEvent(CommEventObject e, Game g) {
+		System.out.println(this+" recieved comm event "+e.getClass().getSimpleName());
 		
-		if(e.getSource() instanceof CommMsg_Level){
-			CommMsg_Level message = (CommMsg_Level) e.getSource();
+		/*
+		if(e.getMsg() instanceof CommMsg_Level){
+			System.out.println("Got new level from server.");
+			CommMsg_Level message = (CommMsg_Level) e.getMsg();
 			this.gameArea.setLevel(message.getLevel());
 		}
 		
 		
-		if(e.getSource() instanceof CommMsg_Pacman){
-			CommMsg_Pacman message = (CommMsg_Pacman) e.getSource();
+		if(e.getMsg() instanceof CommMsg_Pacman){
+			System.out.println("Got pacman update from server");
+			CommMsg_Pacman message = (CommMsg_Pacman) e.getMsg();
 			Pacman p  = message.getPacman();
 			this.gameArea.setPacman(p.getId(), p);
 			
@@ -151,12 +158,35 @@ public class ActiveGame extends View implements KeyEventDispatcher, CommEventLis
 		}
 		
 		
-		if(e.getSource() instanceof CommMsg_Fin){
-			//TODO
+		if(e.getMsg() instanceof CommMsg_Fin){
+			System.out.println("Got fin message from server");
+			CommMsg_Fin msg = (CommMsg_Fin) e.getMsg();
+		
 		}
 		
-		if(e.getSource() instanceof CommMsg_ServerFull){
-			//TODO
+		
+		if(e.getMsg() instanceof CommMsg_ServerFull){
+			System.out.println("Got server full message from server");
+			
+		}
+		*/
+		
+		if(g != null){
+			System.out.println("Got pacman update from server");
+			this.gameArea.setLevel(g.getLevel());
+			List<Pacman> pacmans  = g.getPacmans();
+			
+			for(Pacman p : pacmans){
+				this.gameArea.setPacman(p.getId(), p);
+				
+				if( ! this.stats.hasPlayer(p.getId())){
+					this.stats.addPlayer(p.getId(), p.getName(), p.getCoints());
+				}
+				
+				this.stats.setPlayerPoints(p.getId(), p.getCoints());
+				this.stats.setPlayerColor(p.getId(), p.getColor());
+			}
+			
 		}
 	}
 
