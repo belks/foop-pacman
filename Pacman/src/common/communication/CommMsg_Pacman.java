@@ -3,7 +3,7 @@ package common.communication;
 import java.awt.Color;
 import java.awt.Point;
 
-import common.gameobjects.Pacman;
+import common.gameobjects.*;
 
 public class CommMsg_Pacman extends CommMsg {
 
@@ -44,9 +44,9 @@ public class CommMsg_Pacman extends CommMsg {
 		b.append(pacman.getCoints()).append(SEPARATOR); // 5
 		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 6
 		b.append(pacman.getId()); // 7
+		b.append(pacman.getDirectionInt());
 
 		msg = b.toString();
-		// Direction can be omitted
 	}
 
 	private void messageToPacman() {
@@ -62,5 +62,25 @@ public class CommMsg_Pacman extends CommMsg {
 		pacman.setCoints(Integer.parseInt(split[5]));
 		pacman.setTotalCoints(Integer.parseInt(split[6]));
 		pacman.setId(Integer.parseInt(split[7]));
+
+		IStrategy direction;
+		switch (Integer.parseInt(split[8])) {
+		case 0:
+			direction = new Right();
+			break;
+		case 1:
+			direction = new Up();
+			break;
+		case 2:
+			direction = new Left();
+			break;
+		case 3:
+			direction = new Down();
+			break;
+		default:
+			direction = new Up();
+		}
+		pacman.setDirection(direction);
+
 	}
 }
