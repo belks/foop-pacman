@@ -145,7 +145,9 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	}
 	
 	
-	
+	public void showMessageBox(boolean b){
+		messages.setVisible(b);;
+	}
 
 
 	@Override

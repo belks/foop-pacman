@@ -39,18 +39,21 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 
 	@Override
-	public void connect(String address, int port) {
+	public boolean connect(String address, int port) {
 		try {
 			System.out.println("Trying to connect to "+address+":"+port);
 			comm = new CommWorker_Client(new Socket(address, port));
 			comm.addCommEventListener(this);
-			comm.start();			
+			comm.start();	
+			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.out.print(e.getMessage());
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.print(e.getMessage());
+			return false;
 		}
 	}
 
@@ -83,18 +86,21 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	
 	
 	@Override
-	public void createServer(int port) {
+	public boolean createServer(int port) {
 		
 		if(localServer == null){
 			try {
 				System.out.print("Starting a server at port "+port);
 				localServer = new ServerMain(port);
+				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.print(e.getMessage());
+				return false;
 			}
 		}else{
 			System.out.print("A server is already running!");
+			return false;
 		}
 		
 		/*
