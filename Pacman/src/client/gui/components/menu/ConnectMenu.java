@@ -122,24 +122,39 @@ public class ConnectMenu extends View implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource().equals(connect)){
-			this.getGUI().setView(new ActiveGame(this.getGUI()));
-			for(GUIListener l : this.getGUI().getListeners()){
-				l.connect(this.address.getText(), new Integer(this.port.getText()));
-			}
+	
+		if(arg0.getSource().equals(connect)){			
+			this.connect(this.address.getText(), new Integer(this.port.getText()));		
 		}
-		
+				
 		if(arg0.getSource().equals(startServer)){
-			for(GUIListener l : this.getGUI().getListeners()){
-				l.createServer(new Integer(this.serverPort.getText()));
-			}
-			
-			this.getGUI().setView(new ActiveGame(this.getGUI()));
-			for(GUIListener l : this.getGUI().getListeners()){
-				l.connect(this.address.getText(), new Integer(this.serverPort.getText()));
-			}
+			this.createServer(new Integer(this.serverPort.getText()));
+			this.connect(this.address.getText(), new Integer(this.serverPort.getText()));
 		}
 		
+	}
+	
+	
+	
+	private void connect(String address, int port){
+		this.getGUI().setView(new ActiveGame(this.getGUI()));
+		
+		for(GUIListener l : this.getGUI().getListeners()){
+			boolean ok = l.connect(address,port);
+			if(!ok){
+				this.getGUI().showMessageBox(true);
+			}
+		}		
+	}
+	
+	
+	private void createServer(int port){
+		for(GUIListener l : this.getGUI().getListeners()){
+			boolean ok = l.createServer(port);
+			if(!ok){
+				this.getGUI().showMessageBox(true);
+			}
+		}
 	}
 
 
