@@ -43,17 +43,17 @@ public class PacmanController implements IController{
 		Pacman bluePacman = new Pacman(1, "Player1", Color.BLUE);
 		bluePacman.setPosition(new Point(1,1));
 		Pacman redPacman = new Pacman(2, "Player2", Color.RED);
-		bluePacman.setPosition(new Point(1,18));
-		Pacman whitePacman = new Pacman(3, "Player3", Color.GREEN);
-		bluePacman.setPosition(new Point(18,18));
+		redPacman.setPosition(new Point(1,18));
+		Pacman greenPacman = new Pacman(3, "Player3", Color.GREEN);
+		greenPacman.setPosition(new Point(18,18));
 		
 		pacmans.add(bluePacman);
 		pacmans.add(redPacman);
-		pacmans.add(whitePacman);
+		pacmans.add(greenPacman);
 		
 		level.setFiel(bluePacman.getPosition(), FieldState.Pacman);
 		level.setFiel(redPacman.getPosition(), FieldState.Pacman);
-		level.setFiel(whitePacman.getPosition(), FieldState.Pacman);
+		level.setFiel(greenPacman.getPosition(), FieldState.Pacman);
 		
 		movingThread = new MovingThread();
 		
