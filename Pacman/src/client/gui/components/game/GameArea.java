@@ -3,7 +3,8 @@ package client.gui.components.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
@@ -11,6 +12,7 @@ import client.gui.images.ImageDealer;
 import common.gameobjects.FieldState;
 import common.gameobjects.Level;
 import common.gameobjects.Pacman;
+import common.tools.Config;
 
 
 
@@ -21,19 +23,27 @@ public class GameArea extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Level level = null;
-	private LinkedHashMap<Integer, Pacman> pacmans = new LinkedHashMap<Integer, Pacman>();;
-	
+	private LinkedList<Pacman> pacmans = new LinkedList<Pacman>();
+	private Config config = null;
 
-	public GameArea() {
+	public GameArea(Config c) {
 		super();
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		this.setOpaque(true);
 		this.setBackground(Color.GRAY);
+		this.config = c;
 	}
 	
 	
-	public void setPacman(Integer id, Pacman pacmans){
-		this.pacmans.put(id, pacmans);
+	public void setPacman(Pacman p){
+		this.pacmans.add(p);
+	}
+	
+	
+	public void setPacmans(List<Pacman> pacs){
+		for(Pacman p : pacs){
+			this.setPacman(p);
+		}
 	}
 	
 	
@@ -61,11 +71,21 @@ public class GameArea extends JPanel{
 					
 					Image img = null;
 					Pacman p = this.pacmanOnField(x, y);
+					
 					if(p==null){
-						img = ImageDealer.getImage(FieldState.getStringValue(state));
+						//draw normal field
+						String imageName = this.config.get("client.activegame.image."
+								+FieldState.getStringValue(state).toLowerCase());
+						
+						img = ImageDealer.getImage(imageName);
+						
 					}else{
-						img = ImageDealer.getImage("pacman");
+						//draw pacman
+						String imageName = this.config.get("client.activegame.image.pacman."
+								+p.getColor().toString().toLowerCase()+"."+p.getDirection().toString().toLowerCase());
+						img = ImageDealer.getImage(imageName);
 					}
+					
 					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
 					
 					y++;
@@ -82,8 +102,7 @@ public class GameArea extends JPanel{
 		Pacman pacman = null;
 		
 		if(!pacmans.isEmpty()){
-			for(Integer id : pacmans.keySet()){
-				Pacman p = pacmans.get(id);
+			for(Pacman p : pacmans){
 				if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
 					pacman = p;
 					break;

@@ -11,8 +11,7 @@ public class ImageDealer {
 	
 	
 	private static ImageIcon createImageIcon(String name) {
-			URL imgURL = ImageDealer.class.getResource(name.toLowerCase()+".png");
-			
+			URL imgURL = ImageDealer.class.getResource(name);
 			
 			if (imgURL != null) {
 				ImageIcon icon = new ImageIcon(imgURL);
@@ -31,6 +30,9 @@ public class ImageDealer {
 				return null;
 			}
 	}
+	
+	
+	
 	
 	
 	public static ImageIcon getIcon(String name){
