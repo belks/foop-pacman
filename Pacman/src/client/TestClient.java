@@ -26,7 +26,7 @@ public class TestClient extends JFrame implements CommEventListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TestClient myTest = new TestClient();
+		new TestClient();
 	}
 
 	public TestClient() {
