@@ -198,7 +198,8 @@ public class PacmanController implements IController{
 
 	@Override
 	public void connect() {
-		comServer.sendLevel(level);
+		// TODO send the right informations
+		comServer.sendGame(null);
 	}
 
 	public synchronized Comm_Server getComServer() {

@@ -16,8 +16,8 @@ public class ServerMain {
 		t.start();
 	}
 	public ServerMain(int port) throws IOException{
-		Comm_Server test = new Comm_Server(port);
-		Thread t = new Thread(test);
+		Comm_Server comServer = new Comm_Server(port);
+		Thread t = new Thread(comServer);
 		PacmanController pc = PacmanController.getInstance();
 		pc.setComServer(comServer);
 		
