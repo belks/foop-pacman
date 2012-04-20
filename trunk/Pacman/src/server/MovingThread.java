@@ -2,7 +2,6 @@ package server;
 
 import java.awt.Point;
 import java.util.List;
-import java.util.Map;
 
 import java.awt.Color;
 import common.gameobjects.FieldState;
@@ -18,12 +17,10 @@ public class MovingThread extends Thread{
 	
 	@Override
 	public void run() {
-		//TODO moving by pacman
 		try {
 			Thread thisThread = Thread.currentThread();
 			PacmanController pc = PacmanController.getInstance();
 			List<Pacman> pacmans = null;
-			Map<Integer, IStrategy> movings = null;
 			FieldState fs = null;
 			
 			ColoringThread ct = new ColoringThread();
@@ -31,14 +28,13 @@ public class MovingThread extends Thread{
 			
 			while(_thisTread == thisThread){
 				pacmans = pc.getPacmanList();
-				movings = pc.getMovings();
 				
 				for (Pacman pac : pacmans) {
 					if(pac.getPosition().equals(new Point(0,0))){
 						continue;
 					}
 					
-					IStrategy moveStrategy = movings.get(pac.getId());
+					IStrategy moveStrategy = pac.getDirection();
 					Point position = moveStrategy.move(pac.getPosition());
 					
 					fs = pc.getFieldState(position);
@@ -54,12 +50,12 @@ public class MovingThread extends Thread{
 						pc.setFieldState(position, FieldState.Pacman);
 						pc.decrementLevelCoints();
 					} else if(FieldState.Wall == fs){
-						pc.changePacmanDirection(pac, "STOP");
+						pc.changePacmanDirection(pac.getId(), "STOP");
 					} else if(FieldState.Pacman == fs){
 						List<Pacman> pList = pc.getPacmanList();
 						for (Pacman p : pList) {
 							if(position.equals(p.getPosition())){
-								IStrategy ms = movings.get(p.getId());
+								IStrategy ms = p.getDirection();
 								Point pos = ms.move(p.getPosition());
 								
 								if(pos.equals(pac.getPosition()) || pos.equals(position)){
@@ -71,13 +67,13 @@ public class MovingThread extends Thread{
 										
 										pc.setPacmanPosition(p.getId(), new Point(0, 0));
 										pc.setPacmanCoints(p.getId(), 0);
-										pc.changePacmanDirection(p, "STOP");
+										pc.changePacmanDirection(p.getId(), "STOP");
 									} else {
 										pc.setFieldState(pac.getPosition(), FieldState.Free);
 										pc.setPacmanPosition(pac.getId(), new Point(0,0));
 										pc.addPacmanCoints(p.getId(), pac.getCoints());
 										pc.setPacmanCoints(pac.getId(), 0);
-										pc.changePacmanDirection(pac, "STOP");
+										pc.changePacmanDirection(pac.getId(), "STOP");
 									}
 								}
 							}
@@ -96,12 +92,12 @@ public class MovingThread extends Thread{
 					pc.decrementRoundCount();
 					pc.setRoundEnd(true);
 					
-					pc.notifyAll();
+					//TODO send change information
 					
 					break;
 				}
 				
-				pc.notifyAll();
+				//TODO send change information
 				sleep(100);
 			}
 		} catch (InterruptedException e) {
@@ -113,12 +109,12 @@ public class MovingThread extends Thread{
 		_thisTread = null;
 	}
 	
-	private boolean isEating(Color c1, Color c2){
-		if(Color.RED == c1 && Color.BLUE == c2){
+	private boolean isEating(Color color, Color color2){
+		if(Color.RED == color && Color.BLUE == color2){
 			return true;
-		} else if(Color.BLUE == c1 && Color.GREEN == c2){
+		} else if(Color.BLUE == color && Color.GREEN == color2){
 			return true;
-		} else if(Color.GREEN == c1 && Color.RED == c2){
+		} else if(Color.GREEN == color && Color.RED == color2){
 			return true;
 		}
 		
