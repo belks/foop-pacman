@@ -60,6 +60,7 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 		}
 		
 		
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		buttonPanel.setOpaque(false);
@@ -79,6 +80,7 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 			tf.setFont(View.getDefaultFont());
 			tf.addKeyListener(this);
 			tf.setToolTipText(""+i);
+			tf.setHorizontalAlignment(JTextField.CENTER);
 			
 			p.add(l);
 			p.add(tf);

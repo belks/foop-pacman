@@ -72,7 +72,7 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 			e.printStackTrace();
 		}
 		
-		this.getContentPane().setBackground(Color.BLACK);
+		this.getContentPane().setBackground(Color.GRAY);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(messages, BorderLayout.NORTH);
 		this.setView(new MainMenu(this));

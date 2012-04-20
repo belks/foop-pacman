@@ -39,12 +39,12 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 
 	@Override
-	public boolean connect(String address, int port) {
+	public boolean connect(String address, int port, String playerName) {
 		try {
 			System.out.println("Trying to connect to "+address+":"+port);
 			comm = new CommWorker_Client(new Socket(address, port));
 			comm.addCommEventListener(this);
-			comm.start();	
+			comm.start();
 			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

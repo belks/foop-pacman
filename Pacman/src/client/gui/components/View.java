@@ -7,6 +7,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import common.tools.Config;
+
 import client.gui.PacmanGUI;
 
 
@@ -35,6 +38,9 @@ public class View extends JPanel {
 		return new Font(Font.SANS_SERIF, Font.BOLD, 20);
 	}
 	
+	public Config getConfig(){
+		return this.getGUI().getConfig();
+	}
 	
 	public String toString(){
 		return this.title;

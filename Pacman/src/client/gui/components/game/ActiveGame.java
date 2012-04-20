@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -47,6 +48,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	private StatsPanel stats = new StatsPanel();
 	private int lastKeyCode = -1;
 	private boolean threadRunning = true;
+	private JLabel currentRound = new JLabel();
 	
 
 	/**
@@ -66,6 +68,13 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(this);
+        
+        LinkedList<Pacman> pacs = new LinkedList<Pacman>();
+        pacs.add(new Pacman(1,"Player 1",Color.RED));
+        pacs.add(new Pacman(2,"Player 2",Color.BLUE));
+        pacs.add(new Pacman(3,"Player 3",Color.GREEN));
+        stats.updatePacmans(pacs);
+        
 		
 		(new Thread(this)).start();
 	}
@@ -90,7 +99,12 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		infoArea.setOpaque(false);
 		
 		
-		infoArea.add(stats, BorderLayout.NORTH);
+		this.setLabelStyle(currentRound);
+		currentRound.setText(this.getGUI().getConfig().get("client.activegame.label.currentRound")+" 0/0");
+		infoArea.add(currentRound, BorderLayout.NORTH);
+		
+		
+		infoArea.add(stats, BorderLayout.CENTER);
 		
 		
 		//---------------------------------
@@ -183,15 +197,17 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		
 		if(g != null){
 			System.out.println("Got pacman update from server");
+			
+			this.currentRound.setText(this.getGUI().getConfig().get("client.activegame.label.currentRound")
+					+" "+g.getCurrentRound()+"/"+g.getTotalRounds());
+			
 			this.gameArea.setLevel(g.getLevel());
 			List<Pacman> pacmans  = g.getPacmans();
-			
-			
+						
 			this.gameArea.setPacmans(pacmans);
-			this.stats.updatePacmans(pacmans);
-			
-			
+			this.stats.updatePacmans(pacmans);			
 		}
+		
 	}
 
 
@@ -320,6 +336,7 @@ class StatsPanel extends JPanel{
 	StatsPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
+		
 	}
 	
 	public void updatePacmans(List<Pacman> pacs){
@@ -344,9 +361,6 @@ class StatsPanel extends JPanel{
  *
  */
 class StatsRow extends JPanel{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel points = new JLabel("0");
 	private JLabel name = new JLabel("Player");

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 import client.gui.images.ImageDealer;
 import common.gameobjects.FieldState;
 import common.gameobjects.Level;
@@ -28,7 +27,7 @@ public class GameArea extends JPanel{
 
 	public GameArea(Config c) {
 		super();
-		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		this.setBorder(BorderFactory.createEtchedBorder());
 		this.setOpaque(true);
 		this.setBackground(Color.GRAY);
 		this.config = c;
