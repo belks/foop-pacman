@@ -6,6 +6,7 @@ import java.util.List;
 import java.awt.Color;
 import common.gameobjects.Down;
 import common.gameobjects.FieldState;
+import common.gameobjects.Game;
 import common.gameobjects.Left;
 import common.gameobjects.Level;
 import common.gameobjects.Pacman;
@@ -14,18 +15,12 @@ import common.gameobjects.Stop;
 import common.gameobjects.Up;
 
 public class PacmanController implements IController{
-	private List<Pacman> pacmans = null;
-	private Level level = null;
+	private Game game = null;
 	private static PacmanController instance = null;
 	private MovingThread movingThread = null;
-	private int roundCount = 0;
-	private boolean isRoundEnd = false;
-	private boolean isGameEnd = false;
 	private Comm_Server comServer = null;
 	
 	private PacmanController(){
-		pacmans = new ArrayList<Pacman>();
-		
 		init();
 	}
 	
@@ -38,7 +33,8 @@ public class PacmanController implements IController{
 	}
 
 	private synchronized void init() {
-		level = LevelGenerator.GetLevel();
+		Level level = LevelGenerator.GetLevel();
+		List<Pacman> pacmans = new ArrayList<Pacman>();
 		
 		Pacman bluePacman = new Pacman(1, "Player1", Color.BLUE);
 		bluePacman.setPosition(new Point(1,1));
@@ -55,20 +51,21 @@ public class PacmanController implements IController{
 		level.setFiel(redPacman.getPosition(), FieldState.Pacman);
 		level.setFiel(greenPacman.getPosition(), FieldState.Pacman);
 		
-		movingThread = new MovingThread();
+		game = new Game(level, pacmans, 3);
 		
-		isGameEnd = false;
-		isRoundEnd = false;
-		roundCount = 3;
+		movingThread = new MovingThread();
 	}
 
 	@Override
 	public synchronized void startGame() {	
 			if(null != movingThread && !movingThread.isAlive()){
-				isRoundEnd = false;
-				movingThread.start();
-			}
-			
+				game.incrementRoundCount();
+				if(game.getTotalRounds() >= game.getCurrentRound()){
+					movingThread.start();
+				} else{
+					// TODO send finisch command
+				}
+			}		
 	}
 	
 	@Override
@@ -84,16 +81,14 @@ public class PacmanController implements IController{
 	public synchronized void stopGame() {
 		if(null != movingThread){
 			movingThread.close();
-			isGameEnd = true;
-			isRoundEnd = true;
 		}
 	}
 	
 	@Override
-	public synchronized void changePacmanDirection(int pacmanId, String direction) {
-
+	public synchronized void changePacmanDirection(int id, String direction) {
+		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
-			if(pacmanId == pac.getId()){
+			if(id == pac.getId()){
 				if("UP".equals(direction.toUpperCase())){
 					pac.setDirection(new Up());
 				} else if("DOWN".equals(direction.toUpperCase())){
@@ -105,6 +100,8 @@ public class PacmanController implements IController{
 				} else if("STOP".equals(direction.toUpperCase())){
 					pac.setDirection(new Stop());
 				}
+				
+				game.setPacmans(pacmans);
 				break;
 			}
 		}
@@ -112,96 +109,105 @@ public class PacmanController implements IController{
 	
 	@Override
 	public synchronized List<Pacman> getPacmanList(){
-		return pacmans;
+		return game.getPacmans();
+	}
+	
+	public synchronized void setPacmanList(List<Pacman> pacmans){
+		game.setPacmans(pacmans);
 	}
 	
 	@Override
 	public synchronized void setPacmanPosition(int id, Point position){
+		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setPosition(position);
 			}
 		}
+		
+		game.setPacmans(pacmans);
 	}
 	
 	@Override
 	public synchronized void addPacmanCoints(int id, int coints){
+		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.addCoints(coints);
 			}
 		}
+		
+		game.setPacmans(pacmans);
 	}
 	
 	@Override
 	public synchronized void setPacmanCoints(int id, int coints){
+		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setCoints(coints);
 			}
 		}
+		
+		game.setPacmans(pacmans);
 	}
 	
 	@Override
 	public synchronized FieldState getFieldState(Point field){
-		return level.getField(field);
+		return game.getLevel().getField(field);
 	}
 	
 	@Override
 	public synchronized void setFieldState(Point field, FieldState fieldState){
-		level.setFiel(field, fieldState);
+		game.getLevel().setFiel(field, fieldState);
 	}
 	
-	public synchronized void decrementLevelCoints(){
-		level.decrementCoints();
-	}
-	
-	public synchronized int getLevelCoints(){
-		return level.getCoints();
+	@Override
+	public synchronized void setPacmanName(int id, String name) {
+		List<Pacman> pacmans = game.getPacmans();
+		for (Pacman pac : pacmans) {
+			if(id == pac.getId()){
+				pac.setName(name);
+			}
+		}
+		
+		game.setPacmans(pacmans);
 	}
 	
 	@Override
 	public synchronized void setPacmanColor(int id, Color color){
+		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setColor(color);
 			}
 		}
+		
+		game.setPacmans(pacmans);
 	}
 	
-	public synchronized void setRoundCount(int rc){
-		this.roundCount = rc;
-	}
-	
-	public synchronized void decrementRoundCount(){
-		this.roundCount--;
-		if(0 >= roundCount){
-			isGameEnd = true;
-		}
-	}
-
-	public synchronized boolean isRoundEnd() {
-		return isRoundEnd;
-	}
-
-	public synchronized void setRoundEnd(boolean isRoundEnd) {
-		this.isRoundEnd = isRoundEnd;
-	}
-
-	public synchronized boolean isGameEnd() {
-		return isGameEnd;
-	}
-
-	public synchronized void setGameEnd(boolean isGameEnd) {
-		this.isGameEnd = isGameEnd;
-	}
-
 	@Override
 	public void connect() {
-		// TODO send the right informations
-		comServer.sendGame(null);
+		comServer.sendGame(game);
 	}
-
+	
+	@Override
+	public void sendChanges() {
+		comServer.sendGame(game);
+	}
+	
+	public synchronized void decrementLevelCoints(){
+		game.getLevel().decrementCoints();
+	}
+	
+	public synchronized int getLevelCoints(){
+		return game.getLevel().getCoints();
+	}
+	
+	public synchronized void incrementRoundCount(){
+		game.incrementRoundCount();
+	}
+	
 	public synchronized Comm_Server getComServer() {
 		return comServer;
 	}
