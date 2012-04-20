@@ -13,6 +13,7 @@ import common.gameobjects.Pacman;
 import common.gameobjects.Right;
 import common.gameobjects.Stop;
 import common.gameobjects.Up;
+import common.tools.Logging;
 
 public class PacmanController implements IController{
 	private Game game = null;
@@ -21,6 +22,8 @@ public class PacmanController implements IController{
 	private Comm_Server comServer = null;
 	
 	private PacmanController(){
+		Logging.log("Init PacmanController.", java.util.logging.Level.INFO);
+		
 		init();
 	}
 	
@@ -70,6 +73,7 @@ public class PacmanController implements IController{
 	
 	@Override
 	public synchronized void resetGame(){
+		Logging.log("Reset the game state.", java.util.logging.Level.INFO);
 		if(null != movingThread){
 			movingThread.close();
 		}
@@ -86,6 +90,8 @@ public class PacmanController implements IController{
 	
 	@Override
 	public synchronized void changePacmanDirection(int id, String direction) {
+		Logging.log(String.format("Change direction of pacman %1$d", id), java.util.logging.Level.INFO);
+		
 		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
@@ -188,6 +194,7 @@ public class PacmanController implements IController{
 	
 	@Override
 	public void connect() {
+		Logging.log("New client connected.", java.util.logging.Level.INFO);
 		comServer.sendGame(game);
 	}
 	

@@ -7,6 +7,7 @@ import java.awt.Color;
 import common.gameobjects.FieldState;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Pacman;
+import common.tools.Logging;
 
 public class MovingThread extends Thread{
 	private volatile Thread _thisTread = null;
@@ -59,6 +60,8 @@ public class MovingThread extends Thread{
 								Point pos = ms.move(p.getPosition());
 								
 								if(pos.equals(pac.getPosition()) || pos.equals(position)){
+									Logging.log("pacman collision.", java.util.logging.Level.INFO);
+									
 									if(isEating(pac.getColor(), p.getColor())){
 										pc.setFieldState(pac.getPosition(), FieldState.Free);
 										pc.setPacmanPosition(pac.getId(), position);
