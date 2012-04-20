@@ -28,7 +28,7 @@ import client.gui.components.game.ActiveGame;
 
 
 /**
- * Menu that offers buttons for server creation and connection
+ * Menu that offers buttons and input fields for server creation and connection
  */
 public class ConnectMenu extends View implements ActionListener{
 
