@@ -122,7 +122,6 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	@Override
 	public void handleCommEvent(CommEventObject e) {
 		//System.out.println("Incoming communication event : "+e.getClass().getSimpleName());
-		//System.out.println(g.getLevel().getMapSize());
 		this.gui.handleCommEvent(e,comm.getGame());
 	}
 
