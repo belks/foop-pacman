@@ -138,11 +138,6 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	}
 	
 	
-	
-	public void createLevel(Level level){
-		System.out.println("Creating level.");
-		this.gameArea.setLevel(level);
-	}
 	*/
 
 
@@ -295,12 +290,21 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	 * Stops repainting. 
 	 * @param threadRunning
 	 */
-	public void stopRepaintThread() {
-		this.threadRunning = false;
+	public void setRepaintThread(boolean running) {
+		if(running==true){
+			this.threadRunning = true;
+			(new Thread(this)).start();
+		}else{
+			this.threadRunning = false;
+		}		
 	}
 
 
 }	
+
+
+
+//-----------INTERNAL CLASSES--------------------------
 	
 
 /**
