@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import server.ServerMain;
-import server.TestServer;
+//import server.TestServer;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.gameobjects.IStrategy;

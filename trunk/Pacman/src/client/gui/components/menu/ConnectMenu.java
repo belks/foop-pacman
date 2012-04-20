@@ -27,12 +27,12 @@ import client.gui.components.View;
 import client.gui.components.game.ActiveGame;
 
 
-
+/**
+ * Menu that offers buttons for server creation and connection
+ */
 public class ConnectMenu extends View implements ActionListener{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JButton connect = null;
 	private JButton startServer = null;

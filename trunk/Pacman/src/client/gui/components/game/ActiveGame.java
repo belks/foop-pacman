@@ -30,24 +30,33 @@ import common.tools.Config;
 import common.gameobjects.Game;
 
 
-
+/**
+ * This is the game area which consists of the game field and a status/control panel.
+ * @author Stefan
+ *
+ */
 public class ActiveGame extends View implements KeyEventDispatcher, ExtendedCommEventListener, Runnable, ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private GameArea gameArea = new GameArea();
+	private GameArea gameArea = null;
 	private JButton abortGame = null;
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
 	private StatsPanel stats = new StatsPanel();
 	private int lastKeyCode = -1;
-
+	private boolean threadRunning = true;
 	
-	public ActiveGame(PacmanGUI client){
-		super("ActiveGame", client);	
+
+	/**
+	 * Constructor
+	 * @param client
+	 */
+	public ActiveGame(PacmanGUI gui){
+		super("ActiveGame", gui);	
 		this.setLayout(new BorderLayout());
-		
+		this.gameArea = new GameArea(gui.getConfig());
 		
 		this.add(createInfoArea(), BorderLayout.WEST);
 		this.add(gameArea, BorderLayout.CENTER);
@@ -62,9 +71,20 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	}
 	
 	
+	/**
+	 * Makes this client the host of the server -> enables additional controls for the user
+	 * @param b
+	 */
+	public void setAsServerHost(boolean b){
+		ready.setVisible(b);
+	}
 	
 	
 	
+	/**
+	 * Builds the left panel whith status display and buttons
+	 * @return
+	 */
 	private JPanel createInfoArea(){
 		JPanel infoArea = new JPanel(new BorderLayout());
 		infoArea.setOpaque(false);
@@ -89,6 +109,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			south.add(b);
 		}
 		
+		ready.setVisible(false);
 		
 		infoArea.add(south, BorderLayout.SOUTH);
 		
@@ -170,16 +191,10 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			this.gameArea.setLevel(g.getLevel());
 			List<Pacman> pacmans  = g.getPacmans();
 			
-			for(Pacman p : pacmans){
-				this.gameArea.setPacman(p.getId(), p);
-				
-				if( ! this.stats.hasPlayer(p.getId())){
-					this.stats.addPlayer(p.getId(), p.getName(), p.getCoints());
-				}
-				
-				this.stats.setPlayerPoints(p.getId(), p.getCoints());
-				this.stats.setPlayerColor(p.getId(), p.getColor());
-			}
+			
+			this.gameArea.setPacmans(pacmans);
+			this.stats.updatePacmans(pacmans);
+			
 			
 		}
 	}
@@ -188,46 +203,18 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 
 	
 
-
+	/**
+	 * Used for periodically repainting the game area. Thread is started automatically.
+	 */
 	@Override
 	public void run() {
 		int millis = this.getGUI().getConfig().getInteger("client.activegame.repaint.intervall.milliseconds");
 		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
 		
-		/*
-		//TESTING
-		LinkedList<Pacman> pl = new LinkedList<Pacman>();
-		pl.add(new Pacman(1,"lol",Color.RED));
-		pl.add(new Pacman(2,"lol2",Color.GREEN));
-		pl.add(new Pacman(3,"lol3",Color.BLUE));
-		pl.get(0).setPosition(new Point(5,10));
-		pl.get(1).setPosition(new Point(10,5));
-		pl.get(2).setPosition(new Point(15,15));
-		int move = 1;
-		*/
 		
-		while(true){
+		while(this.threadRunning){
 			try {
-				Thread.sleep(millis);
-				
-				/*
-				//TESTING
-				for(Pacman p : pl){
-					if(p.getPosition().x == 20){
-						move = -1;
-						this.stats.setPlayerColor(p.getId(), Color.RED);
-					}
-					
-					if(p.getPosition().x == 1){
-						move = 1;
-						this.stats.setPlayerColor(p.getId(), Color.GREEN);
-					}
-					p.setPosition(new Point(p.getPosition().x+move,p.getPosition().y));
-				}
-				
-				this.gameArea.setPacmans(pl);
-				*/
-				//
+				Thread.sleep(millis);			
 				this.gameArea.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -302,17 +289,27 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		
 		return false;
 	}
-	
-	
-	
+
+
+	/**
+	 * Stops repainting. 
+	 * @param threadRunning
+	 */
+	public void stopRepaintThread() {
+		this.threadRunning = false;
+	}
+
+
 }	
 	
 
-
+/**
+ * Displays the players names, colors and points at the left side of the game.
+ * Uses StatsRow for this.
+ * @author Stefan
+ *
+ */
 class StatsPanel extends JPanel{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private LinkedHashMap<Integer, StatsRow> stats = new LinkedHashMap<Integer, StatsRow>();
 	
@@ -321,26 +318,27 @@ class StatsPanel extends JPanel{
 		this.setOpaque(false);
 	}
 	
-	public boolean hasPlayer(int id){
-		return stats.keySet().contains(id);
-	}
-	
-	public void addPlayer(int id, String name, int initPoints){
-		this.stats.put(id, new StatsRow(name,initPoints));
-		this.add(this.stats.get(id));
-	}
-	
-	public void setPlayerPoints(int id, int points){
-		this.stats.get(id).setPoints(points);
-	}
-	
-	public void setPlayerColor(int id, Color c){
-		this.stats.get(id).setTextColor(c);
+	public void updatePacmans(List<Pacman> pacs){
+		for(Pacman p : pacs){
+						
+			if( ! stats.keySet().contains(p.getId())){
+				StatsRow row = new StatsRow(p.getName(),p.getCoints());
+				this.stats.put(p.getId(), row);
+				this.add(row);	
+			}
+			
+			StatsRow row = this.stats.get(p.getId());
+			row.setValues(p.getCoints(),p.getColor());
+		}
 	}
 }
 
 
-
+/**
+ * Used by StatsPanel. One row displays the stats of a single player.
+ * @author Stefan
+ *
+ */
 class StatsRow extends JPanel{
 	/**
 	 * 
@@ -358,17 +356,17 @@ class StatsRow extends JPanel{
 		this.name.setHorizontalAlignment(JLabel.CENTER);
 		this.points.setOpaque(false);
 		this.points.setFont(View.getDefaultFont());
-		this.setTextColor(Color.WHITE);
-		this.setPoints(initPoints);
+		this.setValues(initPoints,Color.WHITE);
 		this.add(this.name);
 		this.add(this.points);
 	}
 	
-	public void setPoints(int x){
-		this.points.setText(""+x);
-	}
-	
-	public void setTextColor(Color c){
+	/**
+	 * Changes the players points and color.
+	 * @param x
+	 */
+	public void setValues(int points, Color c){
+		this.points.setText(""+points);
 		this.name.setForeground(c);
 		this.points.setForeground(c);
 	}
