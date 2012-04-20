@@ -1,15 +1,11 @@
 package server;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
 
 import java.awt.Color;
 import common.gameobjects.Down;
 import common.gameobjects.FieldState;
-import common.gameobjects.IStrategy;
 import common.gameobjects.Left;
 import common.gameobjects.Level;
 import common.gameobjects.Pacman;
@@ -17,19 +13,18 @@ import common.gameobjects.Right;
 import common.gameobjects.Stop;
 import common.gameobjects.Up;
 
-public class PacmanController extends Observable implements IController{
+public class PacmanController implements IController{
 	private List<Pacman> pacmans = null;
-	private Map<Integer, IStrategy> movings = null;
 	private Level level = null;
 	private static PacmanController instance = null;
 	private MovingThread movingThread = null;
 	private int roundCount = 0;
 	private boolean isRoundEnd = false;
 	private boolean isGameEnd = false;
+	private Comm_Server comServer = null;
 	
 	private PacmanController(){
 		pacmans = new ArrayList<Pacman>();
-		movings = new HashMap<Integer, IStrategy>();
 		
 		init();
 	}
@@ -45,20 +40,16 @@ public class PacmanController extends Observable implements IController{
 	private synchronized void init() {
 		level = LevelGenerator.GetLevel();
 		
-		Pacman bluePacman = new Pacman(0, "Player1", Color.BLUE);
+		Pacman bluePacman = new Pacman(1, "Player1", Color.BLUE);
 		bluePacman.setPosition(new Point(1,1));
-		Pacman redPacman = new Pacman(1, "Player2", Color.RED);
+		Pacman redPacman = new Pacman(2, "Player2", Color.RED);
 		bluePacman.setPosition(new Point(1,18));
-		Pacman whitePacman = new Pacman(2, "Player3", Color.GREEN);
+		Pacman whitePacman = new Pacman(3, "Player3", Color.GREEN);
 		bluePacman.setPosition(new Point(18,18));
 		
 		pacmans.add(bluePacman);
 		pacmans.add(redPacman);
 		pacmans.add(whitePacman);
-		
-		movings.put(bluePacman.getId(), new Stop());
-		movings.put(redPacman.getId(), new Stop());
-		movings.put(whitePacman.getId(), new Stop());
 		
 		level.setFiel(bluePacman.getPosition(), FieldState.Pacman);
 		level.setFiel(redPacman.getPosition(), FieldState.Pacman);
@@ -73,18 +64,11 @@ public class PacmanController extends Observable implements IController{
 
 	@Override
 	public synchronized void startGame() {	
-//		while(!isGameEnd){
 			if(null != movingThread && !movingThread.isAlive()){
 				isRoundEnd = false;
 				movingThread.start();
 			}
 			
-//			try {
-//				movingThread.join();
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 	
 	@Override
@@ -106,25 +90,24 @@ public class PacmanController extends Observable implements IController{
 	}
 	
 	@Override
-	public synchronized void changePacmanDirection(Pacman pacman, String direction) {
-		if(!movings.containsKey(pacman.getId()))
-			return;
-		
-		if("UP".equals(direction.toUpperCase())){
-			movings.put(pacman.getId(), new Up());
-		} else if("DOWN".equals(direction.toUpperCase())){
-			movings.put(pacman.getId(), new Down());
-		} else if("LEFT".equals(direction.toUpperCase())){
-			movings.put(pacman.getId(), new Left());
-		} else if("RIGHT".equals(direction.toUpperCase())){
-			movings.put(pacman.getId(), new Right());
-		} else if("STOP".equals(direction.toUpperCase())){
-			movings.put(pacman.getId(), new Stop());
+	public synchronized void changePacmanDirection(int pacmanId, String direction) {
+
+		for (Pacman pac : pacmans) {
+			if(pacmanId == pac.getId()){
+				if("UP".equals(direction.toUpperCase())){
+					pac.setDirection(new Up());
+				} else if("DOWN".equals(direction.toUpperCase())){
+					pac.setDirection(new Down());
+				} else if("LEFT".equals(direction.toUpperCase())){
+					pac.setDirection(new Left());
+				} else if("RIGHT".equals(direction.toUpperCase())){
+					pac.setDirection(new Right());
+				} else if("STOP".equals(direction.toUpperCase())){
+					pac.setDirection(new Stop());
+				}
+				break;
+			}
 		}
-	}
-	
-	public synchronized Map<Integer, IStrategy> getMovings(){
-		return movings;
 	}
 	
 	@Override
@@ -197,7 +180,7 @@ public class PacmanController extends Observable implements IController{
 		}
 	}
 
-	public boolean isRoundEnd() {
+	public synchronized boolean isRoundEnd() {
 		return isRoundEnd;
 	}
 
@@ -211,5 +194,18 @@ public class PacmanController extends Observable implements IController{
 
 	public synchronized void setGameEnd(boolean isGameEnd) {
 		this.isGameEnd = isGameEnd;
+	}
+
+	@Override
+	public void connect() {
+		comServer.sendLevel(level);
+	}
+
+	public synchronized Comm_Server getComServer() {
+		return comServer;
+	}
+
+	public synchronized void setComServer(Comm_Server comServer) {
+		this.comServer = comServer;
 	}
 }
