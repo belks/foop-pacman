@@ -22,7 +22,7 @@ public class MovingThread extends Thread{
 			PacmanController pc = PacmanController.getInstance();
 			List<Pacman> pacmans = null;
 			FieldState fs = null;
-			
+			int pacmanCount = 3;
 			ColoringThread ct = new ColoringThread();
 			ct.start();
 			
@@ -75,6 +75,8 @@ public class MovingThread extends Thread{
 										pc.setPacmanCoints(pac.getId(), 0);
 										pc.changePacmanDirection(pac.getId(), "STOP");
 									}
+									
+									pacmanCount--;
 								}
 							}
 						}
@@ -82,22 +84,21 @@ public class MovingThread extends Thread{
 				}
 				
 				
-				if(0 == pc.getLevelCoints()){
+				if(0 == pc.getLevelCoints() || 1 == pacmanCount){
 					ct.close();
 					pacmans = pc.getPacmanList();
 					for (Pacman pac : pacmans) {
 						pac.cpCointsToTotalCoints();
 					}
 					
-					pc.decrementRoundCount();
-					pc.setRoundEnd(true);
-					
-					//TODO send change information
+					pc.setPacmanList(pacmans);					
+					pc.incrementRoundCount();
+					pc.sendChanges();
 					
 					break;
 				}
 				
-				//TODO send change information
+				pc.sendChanges();
 				sleep(100);
 			}
 		} catch (InterruptedException e) {
