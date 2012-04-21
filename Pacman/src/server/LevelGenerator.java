@@ -1,5 +1,6 @@
 package server;
 
+import common.gameobjects.FieldState;
 import common.gameobjects.Level;
 
 
@@ -15,11 +16,11 @@ public class LevelGenerator {
 		for (int i = 0; i < temp.length; i++) {
 			for (int j = 0; j < temp[0].length; j++) {
 				if(0 == i || 19 == i){
-					temp[i][j] = (byte)0;
+					temp[i][j] = FieldState.getByteValue(FieldState.Wall);
 				} else if( 0 == j || 19 == j){
-					temp[i][j] = (byte)0;
+					temp[i][j] = FieldState.getByteValue(FieldState.Wall);;
 				} else{
-					temp[i][j] = (byte)2;
+					temp[i][j] = FieldState.getByteValue(FieldState.Coin);;
 				}
 			}
 		}
