@@ -68,34 +68,32 @@ public class GameArea extends JPanel{
 					int startingX = centerHorizotal + x*sideLenght;
 					int startingY = centerVertical + y*sideLenght;
 					
-					Image img = null;
-					Pacman p = this.pacmanOnField(x, y);
+										
+					//draw normal field
+					String stateStr = FieldState.getStringValue(state).toLowerCase();
 					
-					if(p==null){
-						//draw normal field
-						String stateStr = FieldState.getStringValue(state).toLowerCase();
-						
-						if(! stateStr.equalsIgnoreCase("unknown")){
-							String imageName = this.config.get("client.activegame.image."+stateStr);
-							img = ImageDealer.getImage(imageName);
-						}
+					
+					String imageName = this.config.get("client.activegame.image."+stateStr);
+					Image img = ImageDealer.getImage(imageName);
+					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
+					
 						
 						
-					}else{
+					Pacman p = this.pacmanOnField(x, y);	
+					if(p!=null){
 						//draw pacman
 						String color = p.colorToString().toLowerCase();
 						String dir = p.getDirection().toString().toLowerCase();
 						
 						if(!color.equalsIgnoreCase("unknown") && !dir.equalsIgnoreCase("unknown")){
-							String imageName = this.config.get("client.activegame.image.pacman."
-									+color+"."+dir);
-							
-							img = ImageDealer.getImage(imageName);
+							String imagePacman = this.config.get("client.activegame.image.pacman."+color+"."+dir);
+							Image imgPac = ImageDealer.getImage(imagePacman);
+							g.drawImage(imgPac, startingX, startingY, sideLenght, sideLenght, null);
 						}
 						
 					}
 					
-					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
+					
 					
 					y++;
 				}
