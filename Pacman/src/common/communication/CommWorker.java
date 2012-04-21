@@ -38,6 +38,15 @@ public abstract class CommWorker extends Thread {
 	public CommWorker(Socket socket) {
 		this.disconnect = false;
 		this.socket = socket;
+		try {
+			in = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+			out = new PrintWriter(socket.getOutputStream(), true);
+		} catch (IOException e) {
+			Logging.logException(e);
+			lastException = e;
+			shutdown();
+		}
 	}
 
 	/**
@@ -48,19 +57,10 @@ public abstract class CommWorker extends Thread {
 	@Override
 	public void run() {
 		String line;
-		try {
-			in = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(), true);
-		} catch (IOException e) {
-			Logging.logException(e);
-			lastException = e;
-			shutdown();
-		}
 
 		while (!disconnect) {
 			try {
-				line = in.readLine();
+				line = in.readLine(); // Blocks
 				if (line != null)
 					processInput(line);
 			} catch (IOException e) {
@@ -136,30 +136,30 @@ public abstract class CommWorker extends Thread {
 	}
 
 	protected void sendMessageAndShutdown(CommMsg msg) {
-		try {
-			if (out == null)
-				out = new PrintWriter(socket.getOutputStream(), true);
-			sendMessage(msg);
-			shutdown();
-		} catch (IOException e) {
-			//Exception hier is egal, Client darf sowieso net connecten.
-		}
+		sendMessage(msg);
+		shutdown();
 	}
 
 	private List<CommEventListener> _listeners = new ArrayList<CommEventListener>();
 
-	public synchronized void addCommEventListener(CommEventListener listener) {
-		_listeners.add(listener);
+	public void addCommEventListener(CommEventListener listener) {
+		synchronized (_listeners) {
+			_listeners.add(listener);
+		}
 	}
 
-	public synchronized void removeCommEventListener(CommEventListener listener) {
-		_listeners.remove(listener);
+	public void removeCommEventListener(CommEventListener listener) {
+		synchronized (_listeners) {
+			_listeners.remove(listener);
+		}
 	}
 
-	protected synchronized void fireEvent(CommMsg msg) {
-		CommEventObject event = new CommEventObject(this, msg);
-		for (CommEventListener listener : _listeners) {
-			listener.handleCommEvent(event);
+	protected void fireEvent(CommMsg msg) {
+		synchronized (_listeners) {
+			CommEventObject event = new CommEventObject(this, msg);
+			for (CommEventListener listener : _listeners) {
+				listener.handleCommEvent(event);
+			}
 		}
 	}
 }
