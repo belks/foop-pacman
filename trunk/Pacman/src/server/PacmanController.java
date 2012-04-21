@@ -192,6 +192,17 @@ public class PacmanController implements IController{
 		game.setPacmans(pacmans);
 	}
 	
+	public synchronized void setPacmanConnected(int id, boolean connected) {
+		List<Pacman> pacmans = game.getPacmans();
+		for (Pacman pac : pacmans) {
+			if(id == pac.getId()){
+				pac.setConnected(connected);
+			}
+		}
+		
+		game.setPacmans(pacmans);
+	}
+	
 	@Override
 	public void connect() {
 		Logging.log("New client connected.", java.util.logging.Level.INFO);
