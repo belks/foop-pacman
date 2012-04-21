@@ -37,8 +37,7 @@ public class TestServer implements Runnable{
 			Game game = getRandomGame();
 
 			test.sendGame(game);
-			System.out.println(test.getDirection(1));
-
+			
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {

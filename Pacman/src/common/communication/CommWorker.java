@@ -19,7 +19,7 @@ import common.tools.Logging;
  * </code>
  */
 public abstract class CommWorker extends Thread {
-
+	
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -60,7 +60,7 @@ public abstract class CommWorker extends Thread {
 		while (!disconnect) {
 			try {
 				line = in.readLine();
-				processInput(line);
+				if (line != null) processInput(line);
 			} catch (IOException e) {
 				if (!disconnect) {
 					Logging.log("CommWorker: ", Level.FINEST);
@@ -83,7 +83,9 @@ public abstract class CommWorker extends Thread {
 	 * Sends a message
 	 */
 	protected void println(String line) {
-		out.println(line);
+		synchronized (out) {
+			out.println(line);	
+		}		
 	}
 
 	/**

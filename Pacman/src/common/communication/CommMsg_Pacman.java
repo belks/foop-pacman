@@ -50,7 +50,7 @@ public class CommMsg_Pacman extends CommMsg {
 	}
 
 	private void messageToPacman() {
-		String[] split = msg.split(",");
+		String[] split = msg.split(String.valueOf(SEPARATOR));
 
 		String name = split[1];
 		Color color = new Color(Integer.parseInt(split[2]));

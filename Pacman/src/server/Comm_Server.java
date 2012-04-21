@@ -2,16 +2,14 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.HashMap;
+import java.net.Socket;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg;
-import common.communication.CommMsg_ChangeDirection;
 import common.communication.CommMsg_Fin;
 import common.communication.CommMsg_Level;
 import common.communication.CommMsg_Pacman;
@@ -34,37 +32,43 @@ public class Comm_Server implements Runnable, CommEventListener {
 
 	private ServerSocket server;
 	private volatile boolean disconnect;
-	private Vector<CommWorker_Server> workerList;
+	private CommWorker_Server[] workerList;
 
-	private Map<Integer, String> directions = new HashMap<Integer, String>();
-	
 	public Comm_Server(int port) throws IOException {
 		server = new ServerSocket(port);
 		disconnect = false;
-		workerList = new Vector<CommWorker_Server>();
+		workerList = new CommWorker_Server[3];
 	}
 
 	@Override
 	public void run() {
-		int i = 1;
 		while (!disconnect) {
-			CommWorker_Server w;
-
 			try {
 				Logging.log("Waiting for Client.", Level.INFO);
-				w = new CommWorker_Server(server.accept(), i++);
-				
-				if (activeClients() < 3) {					
-					workerList.add(w);
-					Logging.log("Client connected.", Level.INFO);
-					w.addCommEventListener(this);
-					Thread t = new Thread(w);					
-					// t.setDaemon(true); //TODO: SetDaemon als
-					// Sicherheits-Netz?
-					t.start();
-					Logging.log("Thread for Client started.", Level.INFO);
-				} else {
-					
+				Socket s = server.accept();
+
+				synchronized (this) {
+					int i = 0;
+
+					// Freie Connection suchen; i ist dann auch die Pacman-ID
+
+					while (i < workerList.length && workerList[i] != null
+							&& workerList[i].isConnected())
+						i++;
+
+					CommWorker_Server w = new CommWorker_Server(s, i);
+					if (i < workerList.length) {
+						workerList[i] = w;
+						Logging.log("Client connected.", Level.INFO);
+						w.addCommEventListener(this);
+						Thread t = new Thread(w);
+						// t.setDaemon(true); //TODO: SetDaemon als
+						// Sicherheits-Netz?
+						t.start();
+						Logging.log("Thread for Client started.", Level.INFO);
+					} else {
+
+					}
 				}
 			} catch (IOException e) {
 				if (!disconnect) {
@@ -101,15 +105,6 @@ public class Comm_Server implements Runnable, CommEventListener {
 		}
 	}
 
-	private int activeClients() {
-		int c = 0;
-		for (CommWorker_Server w : workerList) {
-			if (w.isConnected())
-				c++;
-		}
-		return c;
-	}
-
 	@Override
 	protected void finalize() throws Throwable {
 		// TODO Auto-generated method stub
@@ -118,25 +113,20 @@ public class Comm_Server implements Runnable, CommEventListener {
 	}
 
 	/*
-	public void sendLevel(common.gameobjects.Level level) {
-		CommMsg_Level msg = new CommMsg_Level(level);
-		for (CommWorker_Server worker : workerList) {
-			if (worker.isConnected()) {
-				worker.sendMessage(msg);
-			}
-		}
-	}*/
-	
-	
+	 * public void sendLevel(common.gameobjects.Level level) { CommMsg_Level msg
+	 * = new CommMsg_Level(level); for (CommWorker_Server worker : workerList) {
+	 * if (worker.isConnected()) { worker.sendMessage(msg); } } }
+	 */
+
 	public void sendGame(common.gameobjects.Game game) {
 		List<CommMsg> msgs = new Vector<CommMsg>();
-		
+
 		msgs.add(new CommMsg_Level(game.getLevel()));
-		for(Pacman p : game.getPacmans()) {
+		for (Pacman p : game.getPacmans()) {
 			msgs.add(new CommMsg_Pacman(p));
 		}
 		msgs.add(new CommMsg_Fin());
-		
+
 		for (CommWorker_Server worker : workerList) {
 			if (worker.isConnected()) {
 				worker.sendMessages(msgs);
@@ -146,21 +136,7 @@ public class Comm_Server implements Runnable, CommEventListener {
 
 	@Override
 	public void handleCommEvent(CommEventObject e) {
-		CommMsg msg = e.getMsg();
-		
-		if (msg instanceof CommMsg_ChangeDirection) {
-			CommWorker_Server source = (CommWorker_Server) e.getSource();
-			int clientNum = source.getClientNum();
-			String dir = ((CommMsg_ChangeDirection)msg).getDirectionString();
-			synchronized (directions) {
-				directions.put(clientNum, dir);				
-			}
-		}		
+		//CommMsg msg = e.getMsg();
 	}
-	
-	public String getDirection(int clientNum) {
-		synchronized (directions) {
-			return directions.get(clientNum);
-		}
-	}
+
 }

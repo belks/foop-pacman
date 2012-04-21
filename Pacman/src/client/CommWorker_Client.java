@@ -11,7 +11,7 @@ public class CommWorker_Client extends CommWorker {
 
 	private Game game = new Game(null, new Vector<Pacman>());
 	private Game newGameState;
-
+	
 	public Game getGame() {
 		return game;
 	}
@@ -48,6 +48,11 @@ public class CommWorker_Client extends CommWorker {
 		} else if (direction == "DOWN") {
 			msg = CommMsg_ChangeDirection.DOWN;
 		} 
+		sendMessage(msg);
+	}	
+	
+	public void ChangeName(String name) {
+		CommMsg msg = CommMsg_ChangeName.GetMessage(name);
 		sendMessage(msg);
 	}
 }
