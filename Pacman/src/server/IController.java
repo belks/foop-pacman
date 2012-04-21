@@ -25,6 +25,11 @@ public interface IController{
 	public void stopGame();
 	
 	/**
+	 * stops the game, close the server socket 
+	 */
+	public void serverShutdown();
+	
+	/**
 	 * get a list of pacmans
 	 * @return a list of pacmans
 	 */
