@@ -62,4 +62,12 @@ public abstract class CommMsg {
 		return s.replace(SEPARATOR, '-').replace((char) 10, '-')
 				.replace((char) 13, '-');
 	}
+	
+	protected String booleanToMsg(boolean bool) {
+		return bool ? "1" : "0";
+	}
+	
+	protected boolean msgToBoolean(String msgPart) {
+		return (msgPart == "1"); 
+	}
 }

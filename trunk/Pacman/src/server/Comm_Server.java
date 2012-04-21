@@ -57,18 +57,21 @@ public class Comm_Server implements Runnable, CommEventListener {
 						i++;
 
 					CommWorker_Server w = new CommWorker_Server(s, i);
+					Thread t = new Thread(w);
 					if (i < workerList.length) {
 						workerList[i] = w;
 						Logging.log("Client connected.", Level.INFO);
-						w.addCommEventListener(this);
-						Thread t = new Thread(w);
+						w.addCommEventListener(this);						
 						// t.setDaemon(true); //TODO: SetDaemon als
 						// Sicherheits-Netz?
 						t.start();
 						Logging.log("Thread for Client started.", Level.INFO);
-						PacmanController.getInstance().connect();
-					} else {
-
+						PacmanController c = PacmanController.getInstance();
+						c.setPacmanConnected(w.getPacmanId(), true);
+						c.connect();
+					} else {						
+						t.start();
+						w.sendServerFull();
 					}
 				}
 			} catch (IOException e) {

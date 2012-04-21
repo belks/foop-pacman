@@ -9,8 +9,7 @@ public class CommWorker_Server extends CommWorker {
 
 	public CommWorker_Server(Socket address, int clientNum) {
 		super(address);
-		this.clientNum = clientNum;
-		PacmanController.getInstance().setPacmanConnected(getPacmanId(), false);
+		this.clientNum = clientNum;		
 	}
 
 	public void sendServerFull() {
@@ -22,7 +21,7 @@ public class CommWorker_Server extends CommWorker {
 		return clientNum;
 	}
 
-	private int getPacmanId() {
+	public int getPacmanId() {
 		return clientNum + 1;
 	}
 

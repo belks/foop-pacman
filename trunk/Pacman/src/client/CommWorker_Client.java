@@ -55,4 +55,8 @@ public class CommWorker_Client extends CommWorker {
 		CommMsg msg = CommMsg_ChangeName.GetMessage(name);
 		sendMessage(msg);
 	}
+	
+	public void ChangeReady(boolean ready) {
+		
+	}
 }

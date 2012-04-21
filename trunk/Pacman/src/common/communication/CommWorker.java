@@ -19,7 +19,7 @@ import common.tools.Logging;
  * </code>
  */
 public abstract class CommWorker extends Thread {
-	
+
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -42,7 +42,8 @@ public abstract class CommWorker extends Thread {
 
 	/**
 	 * Tries to read lines from the socket in a loop. in.readline() blocks,
-	 * until a message is received or closing the socket throws exception.
+	 * until a message is received or an exception occurs (closing the socket
+	 * also throws one)
 	 */
 	@Override
 	public void run() {
@@ -60,7 +61,8 @@ public abstract class CommWorker extends Thread {
 		while (!disconnect) {
 			try {
 				line = in.readLine();
-				if (line != null) processInput(line);
+				if (line != null)
+					processInput(line);
 			} catch (IOException e) {
 				if (!disconnect) {
 					Logging.log("CommWorker: ", Level.FINEST);
@@ -72,6 +74,7 @@ public abstract class CommWorker extends Thread {
 				}
 			}
 		}
+		shutdown();
 	}
 
 	/**
@@ -84,8 +87,8 @@ public abstract class CommWorker extends Thread {
 	 */
 	protected void println(String line) {
 		synchronized (out) {
-			out.println(line);	
-		}		
+			out.println(line);
+		}
 	}
 
 	/**
@@ -121,7 +124,7 @@ public abstract class CommWorker extends Thread {
 
 	public void sendMessages(List<CommMsg> msgs) {
 		StringBuilder completeMsg = new StringBuilder();
-		for (int i = 0; i < msgs.size(); i++) {			
+		for (int i = 0; i < msgs.size(); i++) {
 			if (i > 0)
 				completeMsg.append("\n");
 			CommMsg msg = msgs.get(i);
@@ -139,8 +142,7 @@ public abstract class CommWorker extends Thread {
 			sendMessage(msg);
 			shutdown();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//Exception hier is egal, Client darf sowieso net connecten.
 		}
 	}
 
