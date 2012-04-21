@@ -47,7 +47,13 @@ public class ImageDealer {
 	
 	
 	public static Image getImage(String name){
-		return getIcon(name).getImage();
+		try{
+			return getIcon(name).getImage();
+		}catch(Exception e){
+			System.err.println(name);
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
