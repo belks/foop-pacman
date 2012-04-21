@@ -5,11 +5,12 @@ import common.communication.*;
 
 public class CommWorker_Server extends CommWorker {
 
-	private final int clientNum; //Fängt bei 0 an
+	private final int clientNum; // Fängt bei 0 an
 
 	public CommWorker_Server(Socket address, int clientNum) {
 		super(address);
 		this.clientNum = clientNum;
+		PacmanController.getInstance().setPacmanConnected(getPacmanId(), false);
 	}
 
 	public void sendServerFull() {
@@ -21,13 +22,17 @@ public class CommWorker_Server extends CommWorker {
 		return clientNum;
 	}
 
+	private int getPacmanId() {
+		return clientNum + 1;
+	}
+
 	@Override
 	protected void processInput(String line) {
 		CommMsg msg = CommMsg.fromMessage(line);
 		if (msg != null) {
 			PacmanController c = PacmanController.getInstance();
-			int pacmanID = clientNum+1;
-			if (msg instanceof CommMsg_ChangeDirection) {				
+			int pacmanID = getPacmanId();
+			if (msg instanceof CommMsg_ChangeDirection) {
 				String direction = ((CommMsg_ChangeDirection) msg)
 						.getDirectionString();
 				c.changePacmanDirection(pacmanID, direction);
@@ -36,5 +41,11 @@ public class CommWorker_Server extends CommWorker {
 				c.setPacmanName(pacmanID, name);
 			}
 		}
+	}
+
+	@Override
+	public void shutdown() {
+		super.shutdown();
+		PacmanController.getInstance().setPacmanConnected(getPacmanId(), false);
 	}
 }

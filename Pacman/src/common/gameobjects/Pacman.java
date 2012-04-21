@@ -11,18 +11,18 @@ public class Pacman {
 	private int coints = 0;
 	private Color color = null;
 	private IStrategy direction = null;
+	private boolean connected;
 
 	public Pacman(String name, Color color) {
 		this.name = name;
 		this.color = color;
 		this.setDirection(new Stop());
+		this.connected = false;
 	}
 
 	public Pacman(int id, String name, Color color) {
-		this.id = id;
-		this.name = name;
-		this.color = color;
-		this.setDirection(new Stop());
+		this(name, color);
+		this.id = id;		
 	}
 
 	/**
@@ -155,5 +155,13 @@ public class Pacman {
 
 	public void setDirection(IStrategy direction) {
 		this.direction = direction;
+	}
+
+	public boolean getConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 }

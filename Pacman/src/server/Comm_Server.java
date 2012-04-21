@@ -66,6 +66,7 @@ public class Comm_Server implements Runnable, CommEventListener {
 						// Sicherheits-Netz?
 						t.start();
 						Logging.log("Thread for Client started.", Level.INFO);
+						PacmanController.getInstance().connect();
 					} else {
 
 					}

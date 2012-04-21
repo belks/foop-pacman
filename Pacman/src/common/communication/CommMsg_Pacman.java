@@ -44,7 +44,10 @@ public class CommMsg_Pacman extends CommMsg {
 		b.append(pacman.getCoints()).append(SEPARATOR); // 5
 		b.append(pacman.getTotalCoints()).append(SEPARATOR); // 6
 		b.append(pacman.getId()).append(SEPARATOR); // 7
-		b.append(pacman.getDirectionInt());
+		b.append(pacman.getDirectionInt()).append(SEPARATOR); // 8
+
+		int connected = pacman.getConnected() ? 1 : 0;
+		b.append(connected); // 9
 
 		msg = b.toString();
 	}
@@ -82,5 +85,7 @@ public class CommMsg_Pacman extends CommMsg {
 		}
 		pacman.setDirection(direction);
 
+		int connected = Integer.parseInt(split[9]);
+		pacman.setConnected(connected == 1);
 	}
 }
