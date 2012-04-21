@@ -92,23 +92,25 @@ public class PacmanController implements IController{
 	public synchronized void changePacmanDirection(int id, String direction) {
 		Logging.log(String.format("Change direction of pacman %1$d", id), java.util.logging.Level.INFO);
 		
-		List<Pacman> pacmans = game.getPacmans();
-		for (Pacman pac : pacmans) {
-			if(id == pac.getId()){
-				if("UP".equals(direction.toUpperCase())){
-					pac.setDirection(new Up());
-				} else if("DOWN".equals(direction.toUpperCase())){
-					pac.setDirection(new Down());
-				} else if("LEFT".equals(direction.toUpperCase())){
-					pac.setDirection(new Left());
-				} else if("RIGHT".equals(direction.toUpperCase())){
-					pac.setDirection(new Right());
-				} else if("STOP".equals(direction.toUpperCase())){
-					pac.setDirection(new Stop());
+		if(null != movingThread && movingThread.isAlive()){
+			List<Pacman> pacmans = game.getPacmans();
+			for (Pacman pac : pacmans) {
+				if(id == pac.getId()){
+					if("UP".equals(direction.toUpperCase())){
+						pac.setDirection(new Up());
+					} else if("DOWN".equals(direction.toUpperCase())){
+						pac.setDirection(new Down());
+					} else if("LEFT".equals(direction.toUpperCase())){
+						pac.setDirection(new Left());
+					} else if("RIGHT".equals(direction.toUpperCase())){
+						pac.setDirection(new Right());
+					} else if("STOP".equals(direction.toUpperCase())){
+						pac.setDirection(new Stop());
+					}
+					
+					game.setPacmans(pacmans);
+					break;
 				}
-				
-				game.setPacmans(pacmans);
-				break;
 			}
 		}
 	}

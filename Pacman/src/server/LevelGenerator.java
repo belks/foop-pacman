@@ -27,7 +27,7 @@ public class LevelGenerator {
 		
 		Level level = new Level(temp.length, temp[0].length);
 		level.setMap(temp);
-		level.setCoints(324);
+		level.setCoints((Integer)18 * 18 - 3);
 		return level;
 	}
 }
