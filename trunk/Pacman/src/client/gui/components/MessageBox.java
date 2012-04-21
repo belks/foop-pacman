@@ -9,20 +9,22 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
+
+/**
+ * Displays System.out during game
+ */
 public class MessageBox extends JPanel{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JTextArea text = new JTextArea("");
 	private PrintStream aPrintStream  = new PrintStream(new FilteredStream(new ByteArrayOutputStream()));
+	
 	
 	public MessageBox(){
 		super(new BorderLayout());
