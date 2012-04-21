@@ -88,7 +88,7 @@ public class GameArea extends JPanel{
 						if(!color.equalsIgnoreCase("unknown") && !dir.equalsIgnoreCase("unknown")){
 							String imagePacman = this.config.get("client.activegame.image.pacman."+color+"."+dir);
 							Image imgPac = ImageDealer.getImage(imagePacman);
-							g.drawImage(imgPac, startingX, startingY, sideLenght-3, sideLenght-3, null);
+							g.drawImage(imgPac, startingX, startingY, sideLenght-2, sideLenght-2, null);
 						}
 						
 					}
