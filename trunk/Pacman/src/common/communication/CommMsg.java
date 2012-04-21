@@ -14,6 +14,10 @@ public abstract class CommMsg {
 		allMsgTypes = new HashMap<String, Class>();
 		allMsgTypes.put(CommMsg_ChangeDirection.PREFIX,
 				CommMsg_ChangeDirection.class);
+		allMsgTypes.put(CommMsg_ChangeName.PREFIX,
+				CommMsg_ChangeName.class);
+		allMsgTypes.put(CommMsg_ChangeReady.PREFIX,
+				CommMsg_ChangeReady.class);
 		allMsgTypes.put(CommMsg_Fin.PREFIX, CommMsg_Fin.class);
 		allMsgTypes.put(CommMsg_Level.PREFIX, CommMsg_Level.class);
 		allMsgTypes.put(CommMsg_Pacman.PREFIX, CommMsg_Pacman.class);

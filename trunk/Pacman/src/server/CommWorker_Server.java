@@ -9,7 +9,7 @@ public class CommWorker_Server extends CommWorker {
 
 	public CommWorker_Server(Socket address, int clientNum) {
 		super(address);
-		this.clientNum = clientNum;		
+		this.clientNum = clientNum;
 	}
 
 	public void sendServerFull() {
@@ -38,6 +38,9 @@ public class CommWorker_Server extends CommWorker {
 			} else if (msg instanceof CommMsg_ChangeName) {
 				String name = ((CommMsg_ChangeName) msg).getName();
 				c.setPacmanName(pacmanID, name);
+			} else if (msg instanceof CommMsg_ChangeReady) {
+				boolean ready = ((CommMsg_ChangeReady) msg).getReady();
+				c.pacmanReadyChanged(pacmanID, ready);
 			}
 		}
 	}

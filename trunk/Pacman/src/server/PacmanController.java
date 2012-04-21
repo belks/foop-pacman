@@ -233,4 +233,8 @@ public class PacmanController implements IController{
 	public synchronized void setComServer(Comm_Server comServer) {
 		this.comServer = comServer;
 	}
+	
+	public synchronized void pacmanReadyChanged(int id, boolean ready) {
+		//TODO: Hier Spiel starten oder whatever
+	}
 }

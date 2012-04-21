@@ -10,6 +10,10 @@ public class CommMsg_ChangeReady extends CommMsg {
 		return PREFIX;
 	}
 
+	public boolean getReady() {
+		return ready;
+	}
+
 	public CommMsg_ChangeReady(String msg) {
 		super(msg);
 		messageToReady();
