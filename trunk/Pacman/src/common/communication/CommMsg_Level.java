@@ -47,7 +47,7 @@ public class CommMsg_Level extends CommMsg {
 	}
 
 	private void msgToLevel() {
-		String[] split = msg.split(",");
+		String[] split = msg.split(String.valueOf(SEPARATOR));		
 
 		// split[0] = "LEVEL:,"
 		int length = Integer.parseInt(split[1]);

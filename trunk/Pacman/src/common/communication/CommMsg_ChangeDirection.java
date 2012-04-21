@@ -59,7 +59,7 @@ public class CommMsg_ChangeDirection extends CommMsg {
 
 	private void messageToDirection() {
 		System.out.println(msg);
-		String[] split = msg.split(",");
+		String[] split = msg.split(String.valueOf(SEPARATOR));
 		direction = Integer.parseInt(split[1]);
 	}
 
