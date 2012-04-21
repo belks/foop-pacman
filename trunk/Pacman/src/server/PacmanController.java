@@ -89,6 +89,23 @@ public class PacmanController implements IController{
 	}
 	
 	@Override
+	public synchronized void serverShutdown() {
+		Logging.log("shutdown the server.", java.util.logging.Level.INFO);
+		
+		stopGame();
+		
+		try {
+			comServer.shutdown();
+		} catch (Exception e) {
+			Logging.log("Error while close the socket", java.util.logging.Level.INFO);
+		}
+		
+		comServer = null;
+		movingThread = null;
+		game = null;
+	}
+	
+	@Override
 	public synchronized void changePacmanDirection(int id, String direction) {
 		Logging.log(String.format("Change direction of pacman %1$d", id), java.util.logging.Level.INFO);
 		
@@ -130,6 +147,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setPosition(position);
+				break;
 			}
 		}
 		
@@ -142,6 +160,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.addCoints(coints);
+				break;
 			}
 		}
 		
@@ -154,6 +173,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setCoints(coints);
+				break;
 			}
 		}
 		
@@ -176,6 +196,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setName(name);
+				break;
 			}
 		}
 		
@@ -188,6 +209,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setColor(color);
+				break;
 			}
 		}
 		
@@ -199,6 +221,7 @@ public class PacmanController implements IController{
 		for (Pacman pac : pacmans) {
 			if(id == pac.getId()){
 				pac.setConnected(connected);
+				break;
 			}
 		}
 		
