@@ -45,6 +45,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 			comm = new CommWorker_Client(new Socket(address, port));
 			comm.addCommEventListener(this);
 			comm.start();
+			comm.ChangeName(playerName);
 			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -121,7 +122,9 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	
 	public void ready(){
 		System.out.print("Sending ready sign.");
-		// TODO
+		if(comm!=null){
+			comm.ChangeReady(true);
+		}
 	}
 
 

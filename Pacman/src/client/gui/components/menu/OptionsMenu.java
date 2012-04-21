@@ -29,7 +29,7 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String[] keys = {"up", "down", "left", "right"};
+	private final String[] keys = {"up", "down", "left", "right","log","togglefullscreen"};
 	private JButton toggleFullScreen = null;
 	private JButton saveValues = null;
 	
@@ -65,21 +65,21 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		buttonPanel.setOpaque(false);
 		
-		for(int i = 0; i<4; i++){
+		for(String key: keys){
 			JPanel p = new JPanel();
 			p.setLayout(new FlowLayout());
 			p.setOpaque(false);
 			
-			JLabel l = new JLabel(this.getGUI().getConfig().get("client.optionsmenu.label."+keys[i]));
+			JLabel l = new JLabel(this.getGUI().getConfig().get("client.optionsmenu.label."+key));
 			l.setFont(View.getDefaultFont());
 			l.setForeground(Color.WHITE);
 			l.setOpaque(false);
 			
 			JTextField tf = new JTextField(10);
-			tf.setText(KeyEvent.getKeyText(this.getGUI().getConfig().getInteger("client.keys."+keys[i])));
+			tf.setText(KeyEvent.getKeyText(this.getGUI().getConfig().getInteger("client.keys."+key)));
 			tf.setFont(View.getDefaultFont());
 			tf.addKeyListener(this);
-			tf.setToolTipText(""+i);
+			tf.setToolTipText(key);
 			tf.setHorizontalAlignment(JTextField.CENTER);
 			
 			p.add(l);
@@ -135,21 +135,21 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getSource() instanceof JTextField){
 			JTextField tf = (JTextField) arg0.getSource();
-			int index = new Integer(tf.getToolTipText());
+			String key = tf.getToolTipText();
 			int keyCode = arg0.getKeyCode();
 			
 			boolean unAssigned = true;
-			for(String key : keys){
-				int oldKey = new Integer(this.getGUI().getConfig().get("client.keys."+key));
+			for(String existingKey : keys){
+				int oldKey = new Integer(this.getGUI().getConfig().get("client.keys."+existingKey));
 				if(keyCode == oldKey){
 					unAssigned = false;
 				}
 			}
 			
 			if(unAssigned){
-				this.getGUI().getConfig().put("client.keys."+keys[index], ""+keyCode);
+				this.getGUI().getConfig().put("client.keys."+key, ""+keyCode);
 				tf.setText(KeyEvent.getKeyText(keyCode));
-				System.out.print("Key for "+keys[index]+" changed to "+KeyEvent.getKeyText(keyCode)+" - "+keyCode);
+				System.out.print("Key for "+key+" changed to "+KeyEvent.getKeyText(keyCode)+" - "+keyCode);
 			}
 			
 			arg0.consume();

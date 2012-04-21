@@ -164,4 +164,16 @@ public class Pacman {
 	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
+	
+	public String colorToString(){
+		if(this.color.equals(Color.RED)){
+			return "RED";
+		}else if(this.color.equals(Color.BLUE)){
+			return "BLUE";
+		}else if(this.color.equals(Color.GREEN)){
+			return "GREEN";
+		}else{
+			return "UNKNOWN";
+		}
+	}
 }

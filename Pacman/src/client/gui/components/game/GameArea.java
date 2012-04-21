@@ -73,16 +73,26 @@ public class GameArea extends JPanel{
 					
 					if(p==null){
 						//draw normal field
-						String imageName = this.config.get("client.activegame.image."
-								+FieldState.getStringValue(state).toLowerCase());
+						String stateStr = FieldState.getStringValue(state).toLowerCase();
 						
-						img = ImageDealer.getImage(imageName);
+						if(! stateStr.equalsIgnoreCase("unknown")){
+							String imageName = this.config.get("client.activegame.image."+stateStr);
+							img = ImageDealer.getImage(imageName);
+						}
+						
 						
 					}else{
 						//draw pacman
-						String imageName = this.config.get("client.activegame.image.pacman."
-								+p.getColor().toString().toLowerCase()+"."+p.getDirection().toString().toLowerCase());
-						img = ImageDealer.getImage(imageName);
+						String color = p.colorToString().toLowerCase();
+						String dir = p.getDirection().toString().toLowerCase();
+						
+						if(!color.equalsIgnoreCase("unknown") && !dir.equalsIgnoreCase("unknown")){
+							String imageName = this.config.get("client.activegame.image.pacman."
+									+color+"."+dir);
+							
+							img = ImageDealer.getImage(imageName);
+						}
+						
 					}
 					
 					g.drawImage(img, startingX, startingY, sideLenght, sideLenght, null);
