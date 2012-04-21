@@ -71,6 +71,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		
 		
 		if(this.localServer != null){
+			localServer.shutdown();
 			localServer = null;
 		}
 		
