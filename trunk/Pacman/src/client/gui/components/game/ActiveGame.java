@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -45,7 +44,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	private JButton abortGame = null;
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
-	private StatsPanel stats = new StatsPanel();
+	private StatsPanel currentRoundStats = new StatsPanel();
 	private int lastKeyCode = -1;
 	private boolean threadRunning = true;
 	private JLabel currentRound = new JLabel();
@@ -63,19 +62,9 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		this.add(createInfoArea(), BorderLayout.WEST);
 		this.add(gameArea, BorderLayout.CENTER);
 		
-		
-		//this.createLevel(randomTestLevel());
-		
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(this);
         
-        LinkedList<Pacman> pacs = new LinkedList<Pacman>();
-        pacs.add(new Pacman(1,"Player 1",Color.RED));
-        pacs.add(new Pacman(2,"Player 2",Color.BLUE));
-        pacs.add(new Pacman(3,"Player 3",Color.GREEN));
-        stats.updatePacmans(pacs);
-        
-		
 		(new Thread(this)).start();
 	}
 	
@@ -104,7 +93,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		infoArea.add(currentRound, BorderLayout.NORTH);
 		
 		
-		infoArea.add(stats, BorderLayout.CENTER);
+		infoArea.add(currentRoundStats, BorderLayout.CENTER);
 		
 		
 		//---------------------------------
@@ -205,7 +194,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			List<Pacman> pacmans  = g.getPacmans();
 						
 			this.gameArea.setPacmans(pacmans);
-			this.stats.updatePacmans(pacmans);			
+			this.currentRoundStats.updatePacmans(pacmans);			
 		}
 		
 	}
@@ -336,7 +325,6 @@ class StatsPanel extends JPanel{
 	StatsPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
-		
 	}
 	
 	public void updatePacmans(List<Pacman> pacs){
@@ -345,11 +333,12 @@ class StatsPanel extends JPanel{
 			if( ! stats.keySet().contains(p.getId())){
 				StatsRow row = new StatsRow(p.getName(),p.getCoints());
 				this.stats.put(p.getId(), row);
-				this.add(row);	
+				this.add(row);
+				this.validate();
 			}
 			
 			StatsRow row = this.stats.get(p.getId());
-			row.setValues(p.getCoints(),p.getColor());
+			row.setValues(p);
 		}
 	}
 }
@@ -368,13 +357,18 @@ class StatsRow extends JPanel{
 	StatsRow(String name, int initPoints){
 		this.setLayout(new GridLayout(1,2));
 		this.setOpaque(false);
+		
 		this.name.setOpaque(false);
 		this.name.setFont(View.getDefaultFont());
 		this.name.setText(name+":");
 		this.name.setHorizontalAlignment(JLabel.CENTER);
+		this.name.setForeground(Color.WHITE);
+		
 		this.points.setOpaque(false);
 		this.points.setFont(View.getDefaultFont());
-		this.setValues(initPoints,Color.WHITE);
+		this.points.setText("0/0");
+		this.points.setForeground(Color.WHITE);
+		
 		this.add(this.name);
 		this.add(this.points);
 	}
@@ -383,11 +377,12 @@ class StatsRow extends JPanel{
 	 * Changes the players points and color.
 	 * @param x
 	 */
-	public void setValues(int points, Color c){
-		this.points.setText(""+points);
-		this.name.setForeground(c);
-		this.points.setForeground(c);
+	public void setValues(Pacman p){
+		this.points.setText(p.getCoints()+"/"+p.getTotalCoints());
+		this.name.setForeground(p.getColor());
+		this.points.setForeground(p.getColor());
 	}
+	
 }
 
 
