@@ -100,7 +100,8 @@ public class Comm_Server implements Runnable, CommEventListener {
 
 				if (workerList != null) {
 					for (CommWorker_Server s : workerList)
-						s.shutdown();
+						if (s != null)
+							s.shutdown();
 					workerList = null;
 				}
 			}
