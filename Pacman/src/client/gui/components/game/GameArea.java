@@ -22,7 +22,7 @@ public class GameArea extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Level level = null;
-	private LinkedList<Pacman> pacmans = new LinkedList<Pacman>();
+	private List<Pacman> pacmans = new LinkedList<Pacman>();
 	private Config config = null;
 
 	public GameArea(Config c) {
@@ -34,20 +34,16 @@ public class GameArea extends JPanel{
 	}
 	
 	
-	public void setPacman(Pacman p){
-		this.pacmans.add(p);
-	}
 	
 	
 	public void setPacmans(List<Pacman> pacs){
-		for(Pacman p : pacs){
-			this.setPacman(p);
-		}
+		this.pacmans = pacs;
 	}
 	
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		List<Pacman> pacsCopy = new LinkedList<Pacman>(pacmans);
 		
 		if(level != null){
 			int cols = level.getMapSize().width;
@@ -79,7 +75,7 @@ public class GameArea extends JPanel{
 					
 						
 						
-					Pacman p = this.pacmanOnField(x, y);	
+					Pacman p = this.pacmanOnField(x, y, pacsCopy);	
 					if(p!=null){
 						//draw pacman
 						String color = p.colorToString().toLowerCase();
@@ -105,11 +101,11 @@ public class GameArea extends JPanel{
 
 	
 	
-	private Pacman pacmanOnField(int x, int y){
+	private Pacman pacmanOnField(int x, int y, List<Pacman> pacs){
 		Pacman pacman = null;
 		
-		if(!pacmans.isEmpty()){
-			for(Pacman p : pacmans){
+		if(!pacs.isEmpty()){
+			for(Pacman p : pacs){
 				if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
 					pacman = p;
 					break;
