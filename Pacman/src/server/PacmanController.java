@@ -21,6 +21,7 @@ public class PacmanController implements IController {
 	private static PacmanController instance = null;
 	private MovingThread movingThread = null;
 	private Comm_Server comServer = null;
+	private boolean isStarted = false;
 
 	private PacmanController() {
 		Logging.log("Init PacmanController.", java.util.logging.Level.INFO);
@@ -36,16 +37,18 @@ public class PacmanController implements IController {
 		return instance;
 	}
 	
-	//<Chris>ResetInstance für wiederholtes Starten von neuen Games
-	public synchronized static void resetInstance() {
-		PacmanController pc = getInstance();
-		if (pc.movingThread == null) {
-			pc = new PacmanController();			
-		}
-	}
-	//</Chris>
+//	//<Chris>ResetInstance für wiederholtes Starten von neuen Games
+//	public synchronized static void resetInstance() {
+//		PacmanController pc = getInstance();
+//		if (pc.movingThread == null) {
+//			pc = new PacmanController();			
+//		}
+//	}
+//	//</Chris>
 
 	private synchronized void init() {
+		isStarted = false;
+		
 		Level level = LevelGenerator.GetLevel();
 		List<Pacman> pacmans = new ArrayList<Pacman>();
 
@@ -72,6 +75,7 @@ public class PacmanController implements IController {
 	@Override
 	public synchronized void startGame() {
 		if (null != movingThread && !movingThread.isAlive()) {
+			isStarted = true;
 			game.incrementRoundCount();
 			if (game.getTotalRounds() >= game.getCurrentRound()) {
 				movingThread.start();
@@ -107,21 +111,17 @@ public class PacmanController implements IController {
 		try {
 			comServer.shutdown();
 		} catch (Exception e) {
-			Logging.log("Error while close the socket",
-					java.util.logging.Level.INFO);
+			Logging.log("Error while close the socket", java.util.logging.Level.INFO);
 		}
 
 		comServer = null;
 		movingThread = null;
-		//<Chris> game nicht auf NULL setzen, damit Server-Shutdown sauber durchläuft
-		//game = null;
-		//</Chris>
+		game = null;
 	}
 
 	@Override
 	public synchronized void changePacmanDirection(int id, String direction) {
-		Logging.log(String.format("Change direction of pacman %1$d", id),
-				java.util.logging.Level.INFO);
+		Logging.log(String.format("Change direction of pacman %1$d", id), java.util.logging.Level.INFO);
 
 		if (null != movingThread && movingThread.isAlive()) {
 			List<Pacman> pacmans = game.getPacmans();
@@ -229,6 +229,12 @@ public class PacmanController implements IController {
 
 		game.setPacmans(pacmans);
 	}
+	
+	@Override
+	public void initGame() {
+		init();
+		
+	}
 
 	public synchronized void setPacmanConnected(int id, boolean connected) {
 		List<Pacman> pacmans = game.getPacmans();
@@ -245,7 +251,9 @@ public class PacmanController implements IController {
 	@Override
 	public void connect() {
 		Logging.log("New client connected.", java.util.logging.Level.INFO);
-		comServer.sendGame(game);
+		if(!isStarted){
+			comServer.sendGame(game);
+		}
 	}
 
 	@Override
