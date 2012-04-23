@@ -309,6 +309,10 @@ public class PacmanController implements IController {
 
 	@Override
 	public synchronized void disconnectClient(int id) {
+		if (null == game){
+			return;
+		}
+		
 		List<Pacman> pacmans = game.getPacmans();
 		for (Pacman pac : pacmans) {
 			if (id == pac.getId()) {
