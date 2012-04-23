@@ -15,9 +15,11 @@ public class ServerMain {
 	public ServerMain(int port) throws IOException{
 		Comm_Server comServer = new Comm_Server(port);
 		Thread t = new Thread(comServer);
-		PacmanController pc = PacmanController.getInstance();
-		pc.setComServer(comServer);
-		
+		//<Chris>Instance resetten, falls altes Objekt besteht.
+		PacmanController.resetInstance(); 
+		//</Chris>
+		PacmanController pc = PacmanController.getInstance();		
+		pc.setComServer(comServer);		
 		t.start();
 	}
 	
