@@ -105,7 +105,7 @@ public interface IController{
 	/**
 	 * use to sign that a new client have been connected. 
 	 * send the game object to the new client.
-	 * @return - the id of the pacman 
+	 * @return - the id of the pacman, returns -1 if no connection is possible
 	 */
 	public int connectClient();
 	
