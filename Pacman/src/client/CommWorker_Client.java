@@ -57,6 +57,7 @@ public class CommWorker_Client extends CommWorker {
 	}
 	
 	public void ChangeReady(boolean ready) {
-		
+		CommMsg msg = new CommMsg_ChangeReady(true);
+		sendMessage(msg);		
 	}
 }
