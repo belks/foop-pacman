@@ -35,6 +35,15 @@ public class PacmanController implements IController {
 
 		return instance;
 	}
+	
+	//<Chris>ResetInstance für wiederholtes Starten von neuen Games
+	public synchronized static void resetInstance() {
+		PacmanController pc = getInstance();
+		if (pc.movingThread == null) {
+			pc = new PacmanController();			
+		}
+	}
+	//</Chris>
 
 	private synchronized void init() {
 		Level level = LevelGenerator.GetLevel();
@@ -104,12 +113,9 @@ public class PacmanController implements IController {
 
 		comServer = null;
 		movingThread = null;
-		// <Chris>
-		// setPacmanConnected wirft Fehler beim Servershutdown, weil
-		// dann das game-Objekt weg war
-		//
-		// game = null;
-		// </Chris>
+		//<Chris> game nicht auf NULL setzen, damit Server-Shutdown sauber durchläuft
+		//game = null;
+		//</Chris>
 	}
 
 	@Override
