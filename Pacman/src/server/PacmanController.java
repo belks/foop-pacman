@@ -18,7 +18,7 @@ import common.tools.Logging;
 
 public class PacmanController implements IController {
 	private Game game = null;
-	private static PacmanController instance = null;
+	private static volatile PacmanController instance = null;
 	private MovingThread movingThread = null;
 	private Comm_Server comServer = null;
 	private boolean isStarted = false;
@@ -29,9 +29,13 @@ public class PacmanController implements IController {
 		init();
 	}
 
-	public synchronized static PacmanController getInstance() {
+	public static PacmanController getInstance() {
 		if (null == instance) {
-			instance = new PacmanController();
+			synchronized (PacmanController.class) {
+				if(null == instance){
+					instance = new PacmanController();
+				}
+			}
 		}
 
 		return instance;
@@ -117,6 +121,7 @@ public class PacmanController implements IController {
 		comServer = null;
 		movingThread = null;
 		game = null;
+		instance = null;
 	}
 
 	@Override
@@ -284,5 +289,35 @@ public class PacmanController implements IController {
 	public synchronized void pacmanReadyChanged(int id, boolean ready) {
 		// TODO: Hier Spiel starten oder whatever
 		startGame();
+	}
+
+	@Override
+	public synchronized int connectClient() {
+		List<Pacman> pacmans = game.getPacmans();
+		for (Pacman pac : pacmans) {
+			if (!pac.getConnected()) {
+				pac.setConnected(true);
+				game.setPacmans(pacmans);
+				
+				comServer.sendGame(game);
+				return pac.getId();
+			}
+		}
+		
+		return -1;
+	}
+
+	@Override
+	public synchronized void disconnectClient(int id) {
+		List<Pacman> pacmans = game.getPacmans();
+		for (Pacman pac : pacmans) {
+			if (id == pac.getId()) {
+				pac.setConnected(false);
+				break;
+			}
+		}
+		
+		comServer.sendGame(game);
+		game.setPacmans(pacmans);
 	}
 }

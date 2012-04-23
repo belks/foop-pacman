@@ -103,6 +103,18 @@ public interface IController{
 	public void connect();
 	
 	/**
+	 * use to sign that a new client have been connected. 
+	 * send the game object to the new client.
+	 * @return - the id of the pacman 
+	 */
+	public int connectClient();
+	
+	/**
+	 * use to disconnect a client
+	 * @param id - the id of the pacman
+	 */
+	public void disconnectClient(int id);
+	/**
 	 * send the changes to all clients
 	 */
 	public void sendChanges();
