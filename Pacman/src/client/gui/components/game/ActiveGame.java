@@ -121,82 +121,18 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		return infoArea;
 	}
 	
-	/*
-	private Level randomTestLevel(){
-		Random r = new Random();
-		byte[][] temp = new byte[25][25];
-		for (int i = 0; i < temp.length; i++) {
-			for (int j = 0; j < temp[0].length; j++) {
-				temp[i][j] = (byte) r.nextInt(3);
-			}
-		}
-		
-		Level level = new Level(25,25);
-		level.setMap(temp);
-		
-		
-		stats.addPlayer(1, "Player1", 10);
-		stats.addPlayer(2, "Player2", 0);
-		stats.addPlayer(3, "Player3", 100);
-		
-		return level;
-	}
 	
-	
-	*/
 
 
 	@Override
-	public void handleCommEvent(CommEventObject e, Game g) {
-		//System.out.println(this+" recieved comm event "+e.getClass().getSimpleName());
-		
-		/*
-		if(e.getMsg() instanceof CommMsg_Level){
-			System.out.println("Got new level from server.");
-			CommMsg_Level message = (CommMsg_Level) e.getMsg();
-			this.gameArea.setLevel(message.getLevel());
-		}
-		
-		
-		if(e.getMsg() instanceof CommMsg_Pacman){
-			System.out.println("Got pacman update from server");
-			CommMsg_Pacman message = (CommMsg_Pacman) e.getMsg();
-			Pacman p  = message.getPacman();
-			this.gameArea.setPacman(p.getId(), p);
-			
-			if( ! this.stats.hasPlayer(p.getId())){
-				this.stats.addPlayer(p.getId(), p.getName(), p.getCoints());
-			}
-			
-			this.stats.setPlayerPoints(p.getId(), p.getCoints());
-			this.stats.setPlayerColor(p.getId(), p.getColor());
-		}
-		
-		
-		if(e.getMsg() instanceof CommMsg_Fin){
-			System.out.println("Got fin message from server");
-			CommMsg_Fin msg = (CommMsg_Fin) e.getMsg();
-		
-		}
-		
-		
-		if(e.getMsg() instanceof CommMsg_ServerFull){
-			System.out.println("Got server full message from server");
-			
-		}
-		*/
-		
+	public void handleCommEvent(CommEventObject e, Game g) {	
 		if(g != null){
 			System.out.println("Got pacman update from server");
-			
-			this.currentRound.setText(this.getGUI().getConfig().get("client.activegame.label.currentRound")
+			this.currentRound.setText(" "+this.getConfig().get("client.activegame.label.currentRound")
 					+" "+g.getCurrentRound()+"/"+g.getTotalRounds());
-			
-			this.gameArea.setLevel(g.getLevel());
-			List<Pacman> pacmans  = g.getPacmans();
-						
-			this.gameArea.setPacmans(pacmans);
-			this.currentRoundStats.updatePacmans(pacmans);			
+			this.gameArea.setLevel(g.getLevel());						
+			this.gameArea.setPacmans(g.getPacmans());
+			this.currentRoundStats.updatePacmans(g.getPacmans());			
 		}
 		
 	}
@@ -359,6 +295,8 @@ class StatsRow extends JPanel{
 	private JLabel totalPoints = new JLabel("0");
 	private JLabel name = new JLabel("");
 	private JLabel canEat = new JLabel();
+	private JLabel noConn = new JLabel();
+
 	
 	StatsRow(Pacman p, Config conf){
 		this.setLayout(new GridLayout(0,2));
@@ -367,8 +305,10 @@ class StatsRow extends JPanel{
 		this.name.setText(p.getName()+":");
 		this.setStyle(name);
 		
-		JLabel dummy = new JLabel();
-		this.setStyle(dummy);
+		if(! p.getConnected()){
+			noConn.setText(conf.get("client.activegame.statspanel.title.notconnected"));
+		}
+		this.setStyle(noConn);
 		
 		
 		JLabel roundPointsText = new JLabel(conf.get("client.activegame.statspanel.title.roundscore"));
@@ -389,7 +329,7 @@ class StatsRow extends JPanel{
 		canEat.setOpaque(true);
 		
 		this.add(name);
-		this.add(dummy);
+		this.add(noConn);
 		this.add(roundPointsText);
 		this.add(roundPoints);
 		this.add(totalPointsText);
@@ -417,6 +357,13 @@ class StatsRow extends JPanel{
 			canEat.setBackground(Color.RED);
 		}else{
 			canEat.setBackground(Color.GREEN);
+		}
+		
+		
+		if(p.getConnected()){
+			noConn.setVisible(false);
+		}else{
+			noConn.setVisible(true);
 		}
 	}
 	
