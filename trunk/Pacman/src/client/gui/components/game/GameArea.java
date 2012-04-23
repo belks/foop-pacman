@@ -106,9 +106,15 @@ public class GameArea extends JPanel{
 		
 		if(!pacs.isEmpty()){
 			for(Pacman p : pacs){
-				if( (p.getPosition().x == x) && (p.getPosition().y == y) ){
-					pacman = p;
-					break;
+				if( (p.getPosition().x == x) && (p.getPosition().y == y)){
+					
+					if((p.getPosition().x == 0) && (p.getPosition().y == 0)){
+						
+					}else{
+						pacman = p;
+						break;
+					}
+					
 				}
 			}
 		}
