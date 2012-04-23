@@ -146,7 +146,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 
 	@Override
 	public void handleCommEvent(CommEventObject e, Game g) {
-		System.out.println(this+" recieved comm event "+e.getClass().getSimpleName());
+		//System.out.println(this+" recieved comm event "+e.getClass().getSimpleName());
 		
 		/*
 		if(e.getMsg() instanceof CommMsg_Level){
@@ -378,6 +378,7 @@ class StatsRow extends JPanel{
 	 * @param x
 	 */
 	public void setValues(Pacman p){
+		this.name.setText(p.getName());
 		this.points.setText(p.getCoints()+"/"+p.getTotalCoints());
 		this.name.setForeground(p.getColor());
 		this.points.setForeground(p.getColor());
