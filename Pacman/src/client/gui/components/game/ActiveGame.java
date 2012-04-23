@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -44,7 +45,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	private JButton abortGame = null;
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
-	private StatsPanel currentRoundStats = new StatsPanel();
+	private StatsPanel currentRoundStats = null;
 	private int lastKeyCode = -1;
 	private boolean threadRunning = true;
 	private JLabel currentRound = new JLabel();
@@ -58,6 +59,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		super("ActiveGame", gui);	
 		this.setLayout(new BorderLayout());
 		this.gameArea = new GameArea(gui.getConfig());
+		this.currentRoundStats = new StatsPanel(gui.getConfig());
 		
 		this.add(createInfoArea(), BorderLayout.WEST);
 		this.add(gameArea, BorderLayout.CENTER);
@@ -321,8 +323,10 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 class StatsPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private LinkedHashMap<Integer, StatsRow> stats = new LinkedHashMap<Integer, StatsRow>();
+	private Config conf = null;
 	
-	StatsPanel(){
+	StatsPanel(Config conf){
+		this.conf = conf;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
 	}
@@ -331,7 +335,7 @@ class StatsPanel extends JPanel{
 		for(Pacman p : pacs){
 						
 			if( ! stats.keySet().contains(p.getId())){
-				StatsRow row = new StatsRow(p.getName(),p.getCoints());
+				StatsRow row = new StatsRow(p,conf);
 				this.stats.put(p.getId(), row);
 				this.add(row);
 				this.validate();
@@ -351,26 +355,49 @@ class StatsPanel extends JPanel{
  */
 class StatsRow extends JPanel{
 	private static final long serialVersionUID = 1L;
-	private JLabel points = new JLabel("0");
-	private JLabel name = new JLabel("Player");
+	private JLabel roundPoints = new JLabel("0");
+	private JLabel totalPoints = new JLabel("0");
+	private JLabel name = new JLabel("");
+	private JLabel canEat = new JLabel();
 	
-	StatsRow(String name, int initPoints){
-		this.setLayout(new GridLayout(1,2));
+	StatsRow(Pacman p, Config conf){
+		this.setLayout(new GridLayout(0,2));
 		this.setOpaque(false);
+				
+		this.name.setText(p.getName()+":");
+		this.setStyle(name);
 		
-		this.name.setOpaque(false);
-		this.name.setFont(View.getDefaultFont());
-		this.name.setText(name+":");
-		this.name.setHorizontalAlignment(JLabel.CENTER);
-		this.name.setForeground(Color.WHITE);
+		JLabel dummy = new JLabel();
+		this.setStyle(dummy);
 		
-		this.points.setOpaque(false);
-		this.points.setFont(View.getDefaultFont());
-		this.points.setText("0/0");
-		this.points.setForeground(Color.WHITE);
 		
-		this.add(this.name);
-		this.add(this.points);
+		JLabel roundPointsText = new JLabel(conf.get("client.activegame.statspanel.title.roundscore"));
+		this.setStyle(roundPointsText);
+		this.setStyle(roundPoints);
+		roundPoints.setText(""+p.getCoints());
+		
+		
+		JLabel totalPointsText = new JLabel(conf.get("client.activegame.statspanel.title.totalscore"));
+		this.setStyle(totalPointsText);
+		this.setStyle(totalPoints);
+		totalPoints.setText(""+p.getTotalCoints());
+		
+		
+		JLabel canEatText = new JLabel(conf.get("client.activegame.statspanel.title.canEat"));
+		this.setStyle(canEatText);
+		this.setStyle(canEat);
+		canEat.setOpaque(true);
+		
+		this.add(name);
+		this.add(dummy);
+		this.add(roundPointsText);
+		this.add(roundPoints);
+		this.add(totalPointsText);
+		this.add(totalPoints);
+		this.add(canEatText);
+		this.add(canEat);
+		
+		this.setBorder(BorderFactory.createEtchedBorder());
 	}
 	
 	/**
@@ -379,9 +406,25 @@ class StatsRow extends JPanel{
 	 */
 	public void setValues(Pacman p){
 		this.name.setText(p.getName());
-		this.points.setText(p.getCoints()+"/"+p.getTotalCoints());
 		this.name.setForeground(p.getColor());
-		this.points.setForeground(p.getColor());
+		this.roundPoints.setText(""+p.getCoints());
+		this.totalPoints.setText(""+p.getTotalCoints());
+		
+				
+		if(p.getColor().equals(Color.RED)){
+			canEat.setBackground(Color.BLUE);
+		}else if(p.getColor().equals(Color.GREEN)){
+			canEat.setBackground(Color.RED);
+		}else{
+			canEat.setBackground(Color.GREEN);
+		}
+	}
+	
+	private void setStyle(JLabel l){
+		l.setHorizontalAlignment(JLabel.CENTER);
+		l.setForeground(Color.WHITE);
+		l.setFont(View.getDefaultFont());
+		l.setOpaque(false);
 	}
 	
 }
