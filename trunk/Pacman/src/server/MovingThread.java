@@ -2,12 +2,12 @@ package server;
 
 import java.awt.Point;
 import java.util.List;
-import java.util.Random;
 
 import java.awt.Color;
 import common.gameobjects.FieldState;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Pacman;
+import common.gameobjects.Stop;
 import common.tools.Logging;
 
 public class MovingThread extends Thread {
@@ -36,12 +36,6 @@ public class MovingThread extends Thread {
 						continue;
 					}
 
-					// <Chris>
-					Random rand = new Random();
-					pac.setPosition(new Point(rand.nextInt(10) + 5, rand
-							.nextInt(10) + 5));
-					// </Chris>
-
 					IStrategy moveStrategy = pac.getDirection();
 					Point position = moveStrategy.move(pac.getPosition());
 
@@ -61,41 +55,33 @@ public class MovingThread extends Thread {
 						pc.changePacmanDirection(pac.getId(), "STOP");
 					} else if (FieldState.Pacman == fs) {
 						List<Pacman> pList = pc.getPacmanList();
+						if(pac.getDirection() instanceof Stop){
+							continue;
+						}
+						
 						for (Pacman p : pList) {
 							if (position.equals(p.getPosition())) {
 								IStrategy ms = p.getDirection();
 								Point pos = ms.move(p.getPosition());
 
-								if (pos.equals(pac.getPosition())
-										|| pos.equals(position)) {
-									Logging.log("pacman collision.",
-											java.util.logging.Level.INFO);
+								if (pos.equals(pac.getPosition()) || pos.equals(position)) {
+									Logging.log("pacman collision.", java.util.logging.Level.INFO);
 
 									if (isEating(pac.getColor(), p.getColor())) {
-										pc.setFieldState(pac.getPosition(),
-												FieldState.Free);
-										pc.setPacmanPosition(pac.getId(),
-												position);
-										pc.addPacmanCoints(pac.getId(),
-												p.getCoints());
-										pc.setFieldState(position,
-												FieldState.Pacman);
+										pc.setFieldState(pac.getPosition(), FieldState.Free);
+										pc.setPacmanPosition(pac.getId(), position);
+										pc.addPacmanCoints(pac.getId(), p.getCoints());
+										pc.setFieldState(position, FieldState.Pacman);
 
-										pc.setPacmanPosition(p.getId(),
-												new Point(0, 0));
+										pc.setPacmanPosition(p.getId(), new Point(0, 0));
 										pc.setPacmanCoints(p.getId(), 0);
-										pc.changePacmanDirection(p.getId(),
-												"STOP");
+										pc.changePacmanDirection(p.getId(), "STOP");
 									} else {
-										pc.setFieldState(pac.getPosition(),
-												FieldState.Free);
-										pc.setPacmanPosition(pac.getId(),
-												new Point(0, 0));
-										pc.addPacmanCoints(p.getId(),
-												pac.getCoints());
+										pc.setFieldState(pac.getPosition(), FieldState.Free);
+										pc.setPacmanPosition(pac.getId(), new Point(0, 0));
+										pc.addPacmanCoints(p.getId(), pac.getCoints());
 										pc.setPacmanCoints(pac.getId(), 0);
-										pc.changePacmanDirection(pac.getId(),
-												"STOP");
+										pc.changePacmanDirection(pac.getId(), "STOP");
 									}
 
 									pacmanCount--;

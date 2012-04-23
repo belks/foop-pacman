@@ -36,6 +36,11 @@ public interface IController{
 	public List<Pacman> getPacmanList();
 	
 	/**
+	 * initialice a new Game
+	 */
+	public void initGame();
+	
+	/**
 	 * change the direction for a given pacman id
 	 * @param id - the id of the pacman
 	 * @param direction - the new direction of the pacman
