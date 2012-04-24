@@ -72,6 +72,7 @@ public abstract class CommMsg {
 	}
 	
 	protected boolean msgToBoolean(String msgPart) {
-		return (msgPart == "1"); 
+		boolean bool = "1".equals(msgPart);
+		return (bool);
 	}
 }

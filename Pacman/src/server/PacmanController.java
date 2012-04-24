@@ -241,20 +241,11 @@ public class PacmanController implements IController {
 		
 	}
 
-	public synchronized void setPacmanConnected(int id, boolean connected) {
-		List<Pacman> pacmans = game.getPacmans();
-		for (Pacman pac : pacmans) {
-			if (id == pac.getId()) {
-				pac.setConnected(connected);
-				break;
-			}
-		}
-
-		game.setPacmans(pacmans);
-	}
+	
 
 	@Override
 	public void connect() {
+		//<Chris> Die Methode wird nach connectClient aufgerufen.
 		Logging.log("New client connected.", java.util.logging.Level.INFO);
 		if(!isStarted){
 			comServer.sendGame(game);
@@ -286,10 +277,26 @@ public class PacmanController implements IController {
 		this.comServer = comServer;
 	}
 
+	
+	/* <Chris>
 	public synchronized void pacmanReadyChanged(int id, boolean ready) {
 		// TODO: Hier Spiel starten oder whatever
 		startGame();
 	}
+	
+	public synchronized void setPacmanConnected(int id, boolean connected) {
+		List<Pacman> pacmans = game.getPacmans();
+		for (Pacman pac : pacmans) {
+			if (id == pac.getId()) {
+				pac.setConnected(connected);
+				break;
+			}
+		}
+
+		game.setPacmans(pacmans);
+	}
+	</Chris>
+	*/
 
 	@Override
 	public synchronized int connectClient() {
@@ -299,7 +306,10 @@ public class PacmanController implements IController {
 				pac.setConnected(true);
 				game.setPacmans(pacmans);
 				
-				comServer.sendGame(game);
+				//<Chris> 
+				// sendGame erst nach der Zuweisung der pacmanID 
+				// -> connect() wird später aufgerufen
+				//comServer.sendGame(game); 
 				return pac.getId();
 			}
 		}
@@ -321,7 +331,9 @@ public class PacmanController implements IController {
 			}
 		}
 		
-		comServer.sendGame(game);
+		//<Chris> Auskommentiert -> sendgame später (oder evtl garnimmer, falls alle clients disconnected
+		//comServer.sendGame(game);
+		//</Chris>
 		game.setPacmans(pacmans);
 	}
 }
