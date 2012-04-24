@@ -331,9 +331,7 @@ public class PacmanController implements IController {
 			}
 		}
 		
-		//<Chris> Auskommentiert -> sendgame später (oder evtl garnimmer, falls alle clients disconnected
-		//comServer.sendGame(game);
-		//</Chris>
+		comServer.sendGame(game);		
 		game.setPacmans(pacmans);
 	}
 }
