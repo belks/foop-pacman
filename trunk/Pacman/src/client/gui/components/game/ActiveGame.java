@@ -16,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import common.communication.CommEventObject;
+import common.communication.CommMsg_Endround;
+import common.communication.CommMsg_ServerFull;
 import common.gameobjects.Down;
 import common.gameobjects.IStrategy;
 import common.gameobjects.Left;
@@ -126,15 +128,22 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 
 	@Override
 	public void handleCommEvent(CommEventObject e, Game g) {	
-		if(g != null){
-			System.out.println("Got pacman update from server");
-			this.currentRound.setText(" "+this.getConfig().get("client.activegame.label.currentRound")
-					+" "+g.getCurrentRound()+"/"+g.getTotalRounds());
-			this.gameArea.setLevel(g.getLevel());						
-			this.gameArea.setPacmans(g.getPacmans());
-			this.currentRoundStats.updatePacmans(g.getPacmans());			
-		}
 		
+		if(e.getMsg() instanceof CommMsg_ServerFull){
+			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.serverfull"));
+		}else if(e.getMsg() instanceof CommMsg_Endround){
+			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.endround"));
+		}else{
+			if(g != null){
+				this.gameArea.setGameMessage(null);
+				System.out.println("Got pacman update from server");
+				this.currentRound.setText(" "+this.getConfig().get("client.activegame.label.currentRound")
+						+" "+g.getCurrentRound()+"/"+g.getTotalRounds());
+				this.gameArea.setLevel(g.getLevel());						
+				this.gameArea.setPacmans(g.getPacmans());
+				this.currentRoundStats.updatePacmans(g.getPacmans());			
+			}
+		}
 	}
 
 
@@ -202,6 +211,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			
 			if(e.getKeyCode() == config.getInteger("client.keys.up")){
 				move = new Up();
+				
 				
 			}else if(e.getKeyCode() == config.getInteger("client.keys.down")){
 				move = new Down();
