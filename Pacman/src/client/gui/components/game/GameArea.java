@@ -6,7 +6,10 @@ import java.awt.Image;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import client.gui.components.View;
 import client.gui.images.ImageDealer;
 import common.gameobjects.FieldState;
 import common.gameobjects.Level;
@@ -24,6 +27,7 @@ public class GameArea extends JPanel{
 	private Level level = null;
 	private List<Pacman> pacmans = new LinkedList<Pacman>();
 	private Config config = null;
+	private JLabel gameMessage = new JLabel();
 
 	public GameArea(Config c) {
 		super();
@@ -31,6 +35,11 @@ public class GameArea extends JPanel{
 		this.setOpaque(true);
 		this.setBackground(Color.GRAY);
 		this.config = c;
+		this.gameMessage.setHorizontalAlignment(JLabel.CENTER);
+		this.gameMessage.setFont(View.getDefaultFont());
+		this.gameMessage.setForeground(Color.WHITE);
+		this.gameMessage.setOpaque(false);
+		this.add(gameMessage);
 	}
 	
 	
@@ -43,6 +52,29 @@ public class GameArea extends JPanel{
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		this.paintGameField(g);
+	}
+
+	
+	/**
+	 * 
+	 * @param msg
+	 */
+	public void setGameMessage(String msg){
+		if(msg == null){
+			this.gameMessage.setVisible(false);
+		}else{
+			this.gameMessage.setText(msg);
+			this.gameMessage.setVisible(true);
+		}
+	}
+	
+
+
+
+
+
+	private void paintGameField(Graphics g){
 		List<Pacman> pacsCopy = new LinkedList<Pacman>(pacmans);
 		
 		if(level != null){
@@ -98,7 +130,6 @@ public class GameArea extends JPanel{
 			}
 		}
 	}
-
 	
 	
 	private Pacman pacmanOnField(int x, int y, List<Pacman> pacs){
