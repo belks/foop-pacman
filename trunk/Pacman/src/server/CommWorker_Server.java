@@ -37,6 +37,8 @@ public class CommWorker_Server extends CommWorker {
 				// c.pacmanReadyChanged(pacmanID, ready);
 				if (ready)
 					c.startGame();
+			} else if (msg instanceof CommMsg_Disconnect) {
+				shutdown();
 			}
 		}
 	}

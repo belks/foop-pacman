@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import common.communication.CommEventListener;
 import common.communication.CommEventObject;
 import common.communication.CommMsg;
+import common.communication.CommMsg_Endround;
 import common.communication.CommMsg_Fin;
 import common.communication.CommMsg_Level;
 import common.communication.CommMsg_Pacman;
@@ -145,9 +146,19 @@ public class Comm_Server implements Runnable, CommEventListener {
 		}
 	}
 
+	public void sendEndRound() {
+		CommMsg msg = new CommMsg_Endround();
+		synchronized (this) {
+			for (CommWorker_Server worker : workerList) {
+				if (worker != null && worker.isConnected()) {
+					worker.sendMessage(msg);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void handleCommEvent(CommEventObject e) {
 		// CommMsg msg = e.getMsg();
 	}
-
 }
