@@ -18,6 +18,8 @@ public abstract class CommMsg {
 				CommMsg_ChangeName.class);
 		allMsgTypes.put(CommMsg_ChangeReady.PREFIX,
 				CommMsg_ChangeReady.class);
+		allMsgTypes.put(CommMsg_Disconnect.PREFIX, CommMsg_Disconnect.class);
+		allMsgTypes.put(CommMsg_Endround.PREFIX, CommMsg_Endround.class);
 		allMsgTypes.put(CommMsg_Fin.PREFIX, CommMsg_Fin.class);
 		allMsgTypes.put(CommMsg_Level.PREFIX, CommMsg_Level.class);
 		allMsgTypes.put(CommMsg_Pacman.PREFIX, CommMsg_Pacman.class);

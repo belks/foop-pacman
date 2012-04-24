@@ -11,7 +11,7 @@ public class CommWorker_Client extends CommWorker {
 
 	private Game game = new Game(null, new Vector<Pacman>());
 	private Game newGameState;
-	
+
 	public Game getGame() {
 		return game;
 	}
@@ -33,6 +33,8 @@ public class CommWorker_Client extends CommWorker {
 			} else if (msg instanceof CommMsg_Fin) {
 				game = newGameState;
 				fireEvent(msg);
+			} else {
+				fireEvent(msg);
 			}
 		}
 	}
@@ -47,17 +49,27 @@ public class CommWorker_Client extends CommWorker {
 			msg = CommMsg_ChangeDirection.LEFT;
 		} else if (direction == "DOWN") {
 			msg = CommMsg_ChangeDirection.DOWN;
-		} 
+		}
 		sendMessage(msg);
-	}	
-	
+	}
+
 	public void ChangeName(String name) {
 		CommMsg msg = CommMsg_ChangeName.GetMessage(name);
 		sendMessage(msg);
 	}
-	
+
 	public void ChangeReady(boolean ready) {
 		CommMsg msg = new CommMsg_ChangeReady(true);
-		sendMessage(msg);		
+		sendMessage(msg);
+	}
+
+	@Override
+	public void shutdown() {
+		synchronized (this) {
+			if (isConnected())
+				sendMessage(new CommMsg_Disconnect());
+
+			super.shutdown();
+		}
 	}
 }
