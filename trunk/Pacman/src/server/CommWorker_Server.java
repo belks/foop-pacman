@@ -5,11 +5,11 @@ import common.communication.*;
 
 public class CommWorker_Server extends CommWorker {
 
-	private final int clientNum; // Fängt bei 0 an
+	public final int pacmanID; // Fängt bei 0 an
 
 	public CommWorker_Server(Socket address, int clientNum) {
 		super(address);
-		this.clientNum = clientNum;
+		this.pacmanID = clientNum;
 	}
 
 	public void sendServerFull() {
@@ -17,20 +17,14 @@ public class CommWorker_Server extends CommWorker {
 		sendMessageAndShutdown(m);
 	}
 
-	public int getClientNum() {
-		return clientNum;
-	}
-
-	public int getPacmanId() {
-		return clientNum + 1;
-	}
+	// public int getClientNum() { return pacmanID; }
 
 	@Override
 	protected void processInput(String line) {
 		CommMsg msg = CommMsg.fromMessage(line);
 		if (msg != null) {
 			PacmanController c = PacmanController.getInstance();
-			int pacmanID = getPacmanId();
+
 			if (msg instanceof CommMsg_ChangeDirection) {
 				String direction = ((CommMsg_ChangeDirection) msg)
 						.getDirectionString();
@@ -40,7 +34,9 @@ public class CommWorker_Server extends CommWorker {
 				c.setPacmanName(pacmanID, name);
 			} else if (msg instanceof CommMsg_ChangeReady) {
 				boolean ready = ((CommMsg_ChangeReady) msg).getReady();
-				c.pacmanReadyChanged(pacmanID, ready);
+				// c.pacmanReadyChanged(pacmanID, ready);
+				if (ready)
+					c.startGame();
 			}
 		}
 	}
@@ -48,6 +44,6 @@ public class CommWorker_Server extends CommWorker {
 	@Override
 	public void shutdown() {
 		super.shutdown();
-		PacmanController.getInstance().setPacmanConnected(getPacmanId(), false);
+		PacmanController.getInstance().disconnectClient(pacmanID);
 	}
 }

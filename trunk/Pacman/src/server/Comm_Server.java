@@ -55,10 +55,12 @@ public class Comm_Server implements Runnable, CommEventListener {
 					while (i < workerList.length && workerList[i] != null
 							&& workerList[i].isConnected())
 						i++;
-
-					CommWorker_Server w = new CommWorker_Server(s, i);
-					Thread t = new Thread(w);
+					
 					if (i < workerList.length) {
+						PacmanController c = PacmanController.getInstance();
+						int pacmanID = c.connectClient();
+						CommWorker_Server w = new CommWorker_Server(s, pacmanID);
+						Thread t = new Thread(w);
 						workerList[i] = w;
 						Logging.log("Client connected.", Level.INFO);
 						w.addCommEventListener(this);
@@ -66,10 +68,12 @@ public class Comm_Server implements Runnable, CommEventListener {
 						// Sicherheits-Netz?
 						t.start();
 						Logging.log("Thread for Client started.", Level.INFO);
-						PacmanController c = PacmanController.getInstance();
-						c.setPacmanConnected(w.getPacmanId(), true);
+						
+						//c.setPacmanConnected(w.pacmanID, true);
 						c.connect();
 					} else {
+						CommWorker_Server w = new CommWorker_Server(s, -1);
+						Thread t = new Thread(w);
 						t.start();
 						w.sendServerFull();
 					}
