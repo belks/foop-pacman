@@ -19,17 +19,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+
+import common.tools.Config;
+
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 
 
-public class OptionsMenu extends View implements ActionListener, KeyListener {
+public class OptionsMenu extends View implements ActionListener {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String[] keys = {"up", "down", "left", "right","log","togglefullscreen"};
 	private JButton toggleFullScreen = null;
 	private JButton saveValues = null;
 	
@@ -52,45 +54,22 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 		saveValues = new JButton(this.getGUI().getConfig().get("client.optionsmenu.label.save"));
 		
 		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		JButton[] buttons = {toggleFullScreen, saveValues};
 		for(JButton b : buttons){
 			b.setFont(View.getDefaultFont());
 			b.addActionListener(this);
-			optionsPanel.add(b);
+			buttonPanel.add(b);
 		}
-		
-		
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-		buttonPanel.setOpaque(false);
-		
-		for(String key: keys){
-			JPanel p = new JPanel();
-			p.setLayout(new FlowLayout());
-			p.setOpaque(false);
-			
-			JLabel l = new JLabel(this.getGUI().getConfig().get("client.optionsmenu.label."+key));
-			l.setFont(View.getDefaultFont());
-			l.setForeground(Color.WHITE);
-			l.setOpaque(false);
-			
-			JTextField tf = new JTextField(10);
-			tf.setText(KeyEvent.getKeyText(this.getGUI().getConfig().getInteger("client.keys."+key)));
-			tf.setFont(View.getDefaultFont());
-			tf.addKeyListener(this);
-			tf.setToolTipText(key);
-			tf.setHorizontalAlignment(JTextField.CENTER);
-			
-			p.add(l);
-			p.add(tf);
-			
-			buttonPanel.add(p);
-		}
-		TitledBorder tb = new TitledBorder(this.getGUI().getConfig().get("client.optionsmenu.label.keyAssignment"));
-		tb.setTitleColor(Color.WHITE);
-		buttonPanel.setBorder(tb);
 		optionsPanel.add(buttonPanel);
+		
+		
+		int maxPlayers = this.getConfig().getInteger("client.playable.players");
+		for(int i=1; i<=maxPlayers; i++){
+			optionsPanel.add(new PlayerKeyConfigPanel(i, this.getConfig()));
+		}
 		
 		
 		return optionsPanel;
@@ -131,42 +110,90 @@ public class OptionsMenu extends View implements ActionListener, KeyListener {
 		}
 	}
 
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		if(arg0.getSource() instanceof JTextField){
-			JTextField tf = (JTextField) arg0.getSource();
-			String key = tf.getToolTipText();
-			int keyCode = arg0.getKeyCode();
+	
+	
+	
+	
+	
+	
+	class PlayerKeyConfigPanel extends JPanel implements KeyListener{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private final String[] keys = {"up", "down", "left", "right","log","togglefullscreen"};
+		private Config config = null;
+		private int player = 0;
+		
+		PlayerKeyConfigPanel(int playerNumber, Config config){
+			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+			this.setOpaque(false);
+			this.config = config;
+			this.player = playerNumber;
 			
-			boolean unAssigned = true;
-			for(String existingKey : keys){
-				int oldKey = new Integer(this.getGUI().getConfig().get("client.keys."+existingKey));
-				if(keyCode == oldKey){
-					unAssigned = false;
+			for(String key: keys){
+				JPanel p = new JPanel();
+				p.setLayout(new FlowLayout());
+				p.setOpaque(false);
+				
+				JLabel l = new JLabel(config.get("client.optionsmenu.label."+key));
+				l.setFont(View.getDefaultFont());
+				l.setForeground(Color.WHITE);
+				l.setOpaque(false);
+				
+				JTextField tf = new JTextField(10);
+				tf.setText(KeyEvent.getKeyText(config.getInteger("client.keys.p"+player+"."+key)));
+				tf.setFont(View.getDefaultFont());
+				tf.addKeyListener(this);
+				tf.setToolTipText(key);
+				tf.setHorizontalAlignment(JTextField.CENTER);
+				
+				p.add(l);
+				p.add(tf);
+				
+				this.add(p);
+			}
+			TitledBorder tb = new TitledBorder(config.get("client.optionsmenu.label.keyAssignment")+" "+playerNumber);
+			tb.setTitleColor(Color.WHITE);
+			this.setBorder(tb);
+		}
+		
+		
+		
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getSource() instanceof JTextField){
+				JTextField tf = (JTextField) arg0.getSource();
+				String key = tf.getToolTipText();
+				int keyCode = arg0.getKeyCode();
+				
+				boolean unAssigned = true;
+				for(String existingKey : keys){
+					int oldKey = new Integer(config.get("client.keys.p"+player+"."+existingKey));
+					if(keyCode == oldKey){
+						unAssigned = false;
+					}
 				}
+				
+				if(unAssigned){
+					config.put("client.keys.p"+player+"."+key, ""+keyCode);
+					tf.setText(KeyEvent.getKeyText(keyCode));
+					System.out.print("Key for "+key+" changed to "+KeyEvent.getKeyText(keyCode)+" - "+keyCode);
+				}
+				
+				arg0.consume();
 			}
-			
-			if(unAssigned){
-				this.getGUI().getConfig().put("client.keys."+key, ""+keyCode);
-				tf.setText(KeyEvent.getKeyText(keyCode));
-				System.out.print("Key for "+key+" changed to "+KeyEvent.getKeyText(keyCode)+" - "+keyCode);
-			}
-			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0){
+			arg0.consume();
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {	
 			arg0.consume();
 		}
 	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0){
-		arg0.consume();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {	
-		arg0.consume();
-	}
-	
-	
-	
 
 }

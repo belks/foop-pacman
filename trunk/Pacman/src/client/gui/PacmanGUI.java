@@ -154,23 +154,30 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		if (e.getID() == KeyEvent.KEY_PRESSED) {
 								
-			if(e.getKeyCode() == config.getInteger("client.keys.log")){
-				//key F1 pressed - open/close MessageBox(log)
-				if(messages.isVisible()){
-					messages.setVisible(false);
-				}else{
-					messages.setVisible(true);
-				}			
-			}
-			
-			
-			if(e.getKeyCode() == config.getInteger("client.keys.togglefullscreen")){
-				if(this.isFullScreen()){
-					this.setFullScreen(false);
-				}else{
-					this.setFullScreen(true);
+			int maxPlayers = this.getConfig().getInteger("client.playable.players");
+			for(int i=1; i<=maxPlayers; i++){
+				if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".log")){
+					//key F1 pressed - open/close MessageBox(log)
+					if(messages.isVisible()){
+						messages.setVisible(false);
+					}else{
+						messages.setVisible(true);
+					}
+					break;
+				}
+				
+				
+				if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".togglefullscreen")){
+					if(this.isFullScreen()){
+						this.setFullScreen(false);
+					}else{
+						this.setFullScreen(true);
+					}
+					break;
 				}
 			}
+			
+			
 			
 			
 			

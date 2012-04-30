@@ -4,6 +4,9 @@ package client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import server.ServerMain;
 //import server.TestServer;
 import common.communication.CommEventListener;
@@ -17,7 +20,7 @@ import client.gui.GUIListener;
 
 public class Client extends Thread implements GUIListener, CommEventListener{
 	private PacmanGUI gui = null;	
-	private CommWorker_Client comm = null;
+	private Map<String, CommWorker_Client> comms = new LinkedHashMap<String, CommWorker_Client>();
 	private ServerMain localServer = null;
 	//private TestServer testServer = null;
 	
@@ -28,12 +31,12 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 
 	@Override
-	public void changeDirection(IStrategy newDir) {
-		if(comm != null){
+	public void changeDirection(String player, IStrategy newDir) {
+		if(! comms.isEmpty()){
 			System.out.println("Changing direction "+newDir);
-			comm.ChangeDirection(newDir.toString());
+			comms.get(player).ChangeDirection(newDir.toString());
 		}else{
-			System.out.println("Cannot change direction! No connection!");
+			System.out.println("Cannot change direction! No connection/player!");
 		}
 	}
 
@@ -42,10 +45,11 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	public boolean connect(String address, int port, String playerName) {
 		try {
 			System.out.println("Trying to connect to "+address+":"+port);
-			comm = new CommWorker_Client(new Socket(address, port));
+			CommWorker_Client comm = new CommWorker_Client(new Socket(address, port));
 			comm.addCommEventListener(this);
 			comm.start();
 			comm.ChangeName(playerName);
+			this.comms.put(playerName, comm);
 			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -61,13 +65,17 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 
 	@Override
 	public void disconnect() {
-		if(comm != null && comm.isConnected()){
-			System.out.print("Sending disconnect sign.");
-			comm.shutdown();
-			comm = null;			
-		}else{
-			System.out.print("Disconnect not possible - no connection.");
+		for(String player : comms.keySet()){
+			CommWorker_Client comm = comms.get(player);
+			if(comm != null && comm.isConnected()){
+				System.out.print("Sending disconnect sign.");
+				comm.shutdown();
+				comm = null;			
+			}else{
+				System.out.print("Disconnect not possible - no connection.");
+			}
 		}
+		
 		
 		
 		if(this.localServer != null){
@@ -123,16 +131,18 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 	
 	public void ready(){
 		System.out.print("Sending ready sign.");
-		if(comm!=null){
-			comm.ChangeReady(true);
-		}
+		for(String player : comms.keySet()){
+			CommWorker_Client comm = comms.get(player);
+			if(comm!=null){
+				comm.ChangeReady(true);
+			}
+		}		
 	}
 
 
 	@Override
 	public void handleCommEvent(CommEventObject e) {
-		//System.out.println("Incoming communication event : "+e.getClass().getSimpleName());
-		this.gui.handleCommEvent(e,comm.getGame());
+		this.gui.handleCommEvent(e,comms.get(comms.keySet().iterator().next()).getGame());
 	}
 
 
