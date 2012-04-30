@@ -89,6 +89,9 @@ public class MovingThread extends Thread {
 							}
 						}
 					}
+					//<Chris> Test - Übertragung von Total
+					//pac.setTotalCoints(30);
+					//</Chris>
 				}
 
 				if (0 == pc.getLevelCoints() || 1 == pacmanCount) {
