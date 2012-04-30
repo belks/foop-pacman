@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -48,17 +49,20 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	private JButton toggleFullScreen = null;
 	private JButton ready = null;
 	private StatsPanel currentRoundStats = null;
-	private int lastKeyCode = -1;
+	private int[] lastKeyCode = null;
 	private boolean threadRunning = true;
 	private JLabel currentRound = new JLabel();
+	private LinkedList<String> localPlayers = null;
 	
 
 	/**
 	 * Constructor
 	 * @param client
 	 */
-	public ActiveGame(PacmanGUI gui){
-		super("ActiveGame", gui);	
+	public ActiveGame(PacmanGUI gui, LinkedList<String> localPlayers){
+		super("ActiveGame", gui);
+		this.lastKeyCode = new int[ this.getConfig().getInteger("client.playable.players") ];
+		this.localPlayers = localPlayers;
 		this.setLayout(new BorderLayout());
 		this.gameArea = new GameArea(gui.getConfig());
 		this.currentRoundStats = new StatsPanel(gui.getConfig());
@@ -127,7 +131,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 
 
 	@Override
-	public void handleCommEvent(CommEventObject e, Game g) {	
+	public synchronized void handleCommEvent(CommEventObject e, Game g) {	
 		
 		if(e.getMsg() instanceof CommMsg_ServerFull){
 			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.serverfull"));
@@ -157,7 +161,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	public void run() {
 		int millis = this.getGUI().getConfig().getInteger("client.activegame.repaint.intervall.milliseconds");
 		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
-		
+		this.gameArea.setIgnoreRepaint(true);
 		
 		while(this.threadRunning){
 			try {
@@ -206,34 +210,45 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		Config config = this.getGUI().getConfig();
 		
-		if (e.getID() == KeyEvent.KEY_PRESSED && this.lastKeyCode!=e.getKeyCode()) {
-			IStrategy move = null;
-			
-			if(e.getKeyCode() == config.getInteger("client.keys.up")){
-				move = new Up();
-				
-				
-			}else if(e.getKeyCode() == config.getInteger("client.keys.down")){
-				move = new Down();
-			
-			}else if(e.getKeyCode() == config.getInteger("client.keys.left")){
-				move = new Left();
-				
-			}else if(e.getKeyCode() == config.getInteger("client.keys.right")){
-				move = new Right();
-				
-			}else{
-				move = null;
+		int maxPlayers = config.getInteger("client.playable.players");
+		for(int i=1; i<=maxPlayers; i++){
+			if(i>this.localPlayers.size()){
+				break;
 			}
 			
-			
-			if(move != null){
-				this.lastKeyCode = e.getKeyCode();
-				for(GUIListener l : this.getGUI().getListeners()){
-					l.changeDirection(move);
+			if (e.getID() == KeyEvent.KEY_PRESSED && this.lastKeyCode[i-1]!=e.getKeyCode()) {
+				IStrategy move = null;
+				
+				if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".up")){
+					move = new Up();
+					
+				}else if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".down")){
+					move = new Down();
+				
+				}else if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".left")){
+					move = new Left();
+					
+				}else if(e.getKeyCode() == config.getInteger("client.keys.p"+i+".right")){
+					move = new Right();
+					
+				}else{
+					move = null;
 				}
+				
+				
+				if(move != null){
+					this.lastKeyCode[i-1] = e.getKeyCode();
+					for(GUIListener l : this.getGUI().getListeners()){
+						l.changeDirection(this.localPlayers.get(i-1), move);
+					}
+				}
+				
+				
 			}
+			
 		}
+		
+		
 		
 		return false;
 	}

@@ -6,17 +6,20 @@ package client.gui.components.menu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
+import java.util.LinkedList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import client.gui.GUIListener;
 import client.gui.PacmanGUI;
@@ -36,7 +39,8 @@ public class ConnectMenu extends View implements ActionListener{
 	private JTextField address = new JTextField(10);
 	private JTextField port = new JTextField(4);
 	private JTextField serverPort = new JTextField(4);
-	private JTextField playerName = new JTextField(10);
+	private PlayerSelection players = new PlayerSelection(3);
+	
 
 	public ConnectMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.connectmenu"), gui);
@@ -64,8 +68,8 @@ public class ConnectMenu extends View implements ActionListener{
 		this.setLabelStyle(playerLabel);
 		north.add(playerLabel);
 		
-		playerName.setText("Player "+(new Random()).nextInt(100));
-		north.add(playerName);
+		
+		north.add(players);
 		
 		mainPanel.add(north);
 		
@@ -113,7 +117,7 @@ public class ConnectMenu extends View implements ActionListener{
 		
 		
 		
-		JComponent[] comps = {serverPort,startServer,address,port,connect,playerName}; 
+		JComponent[] comps = {serverPort,startServer,address,port,connect,players}; 
 		for(JComponent c : comps){
 			c.setFont(View.getDefaultFont());
 			if(c instanceof JTextField){
@@ -134,31 +138,37 @@ public class ConnectMenu extends View implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-	
-		if(arg0.getSource().equals(connect)){			
-			this.connect(this.address.getText(), new Integer(this.port.getText()), this.playerName.getText(), false);		
+		
+		if(arg0.getSource().equals(connect) || arg0.getSource().equals(startServer)){
+			ActiveGame activeGame = new ActiveGame(this.getGUI(), this.players.getActivePlayers());
+			this.getGUI().setView(activeGame);	
+						
+			if(arg0.getSource().equals(startServer)){
+				activeGame.setAsServerHost(true);
+				this.createServer(new Integer(this.serverPort.getText()));
+				this.connect(this.address.getText(), new Integer(this.serverPort.getText()));
+			}else{
+				//only connect
+				this.connect(this.address.getText(), new Integer(this.port.getText()));
+			}
+		
 		}
-				
-		if(arg0.getSource().equals(startServer)){
-			this.createServer(new Integer(this.serverPort.getText()));
-			this.connect(this.address.getText(), new Integer(this.serverPort.getText()), this.playerName.getText(), true);
-		}
+		
 		
 	}
 	
 	
 	
-	private void connect(String address, int port, String playerName, boolean host){
-		ActiveGame activeGame = new ActiveGame(this.getGUI());
-		activeGame.setAsServerHost(host);
-		this.getGUI().setView(activeGame);
-		
-		for(GUIListener l : this.getGUI().getListeners()){
-			boolean ok = l.connect(address,port, playerName);
-			if(!ok){
-				this.getGUI().showMessageBox(true);
-			}
-		}		
+	private void connect(String address, int port){
+		System.out.println("Opening connection for "+this.players.getActivePlayers().size()+" players.");
+		for(String playerName : this.players.getActivePlayers()){
+			for(GUIListener l : this.getGUI().getListeners()){
+				boolean ok = l.connect(address,port, playerName);
+				if(!ok){
+					this.getGUI().showMessageBox(true);
+				}
+			}			
+		}				
 	}
 	
 	
@@ -175,7 +185,53 @@ public class ConnectMenu extends View implements ActionListener{
 
 
 	
+	class PlayerSelection extends JPanel{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private JCheckBox[] activePlayers = null;
+		private JTextField[] playerNames = null;
 
+		
+		PlayerSelection(int players){
+			this.setOpaque(false);
+			this.setLayout(new GridLayout(players,2));
+			
+			activePlayers = new JCheckBox[players];
+			playerNames = new JTextField[players];
+			
+			for(int i=0; i<players; i++){
+				JCheckBox active = new JCheckBox();
+				if(i==0){
+					active.setSelected(true);
+					active.setEnabled(false);
+				}
+				active.setOpaque(false);
+				active.setHorizontalAlignment(SwingConstants.CENTER);
+				active.setFont(View.getDefaultFont());
+				this.add(active);
+				activePlayers[i]=active;
+				
+				JTextField playerName = new JTextField(20);
+				playerName.setText("Player "+i);
+				playerName.setFont(View.getDefaultFont());
+				this.add(playerName);
+				playerNames[i]=playerName;
+			}
+		}
+		
+		
+		public LinkedList<String> getActivePlayers(){
+			LinkedList<String> players = new LinkedList<String>();
+			for(int i=0; i<activePlayers.length; i++){
+				if(activePlayers[i].isSelected()){
+					players.add(playerNames[i].getText());
+				}
+			}						
+			return players;
+		}
+	}
 
 
 	
