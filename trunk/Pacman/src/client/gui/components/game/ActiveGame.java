@@ -137,6 +137,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.serverfull"));
 		}else if(e.getMsg() instanceof CommMsg_Endround){
 			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.endround"));
+			this.ready.setEnabled(true);
 		}else{
 			if(g != null){
 				this.gameArea.setGameMessage(null);
@@ -163,13 +164,25 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		System.out.println("Automatic repainting enabled. Intervall= "+millis+" ms.");
 		this.gameArea.setIgnoreRepaint(true);
 		
+		
+				
+		
 		while(this.threadRunning){
-			try {
-				Thread.sleep(millis);			
-				this.gameArea.repaint();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			long startTime = System.currentTimeMillis();
+			
+			this.gameArea.repaint();
+			
+			long endTime = System.currentTimeMillis();
+						
+			
+			if(endTime-startTime < 40){
+				try {
+					Thread.sleep(millis-(endTime-startTime));			
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			
 		}
 	}
 
@@ -182,6 +195,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 			for(GUIListener l : this.getGUI().getListeners()){
 				l.disconnect();
 			}
+			this.setRepaintThread(false);
 			this.getGUI().setView(new MainMenu(this.getGUI()));
 		}	
 		
