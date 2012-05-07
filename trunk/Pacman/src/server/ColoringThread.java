@@ -26,11 +26,11 @@ public class ColoringThread extends Thread{
 			
 			for (Pacman p : pacmans) {
 				if(Color.RED == p.getColor()){
-					pc.setPacmanColor(p.getId(), Color.BLUE);
-				} else if(Color.BLUE == p.getColor()){
 					pc.setPacmanColor(p.getId(), Color.GREEN);
-				} else if(Color.GREEN == p.getColor()){
+				} else if(Color.BLUE == p.getColor()){
 					pc.setPacmanColor(p.getId(), Color.RED);
+				} else if(Color.GREEN == p.getColor()){
+					pc.setPacmanColor(p.getId(), Color.BLUE);
 				}
 			}
 			

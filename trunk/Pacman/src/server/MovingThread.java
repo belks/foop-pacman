@@ -104,7 +104,8 @@ public class MovingThread extends Thread {
 					pc.setPacmanList(pacmans);
 					pc.incrementRoundCount();
 					pc.sendChanges();
-					// TODO send round end command
+					
+					pc.sendEndCommand();
 
 					break;
 				}
