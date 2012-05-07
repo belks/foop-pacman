@@ -33,7 +33,7 @@ public class LevelGenerator {
 					}
 				}
 				
-				cointSum = 241;
+				cointSum = 321;
 				break;
 			case 1:
 				for (int i = 0; i < temp.length; i++) {

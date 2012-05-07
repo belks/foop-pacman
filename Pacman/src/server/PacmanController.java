@@ -84,7 +84,7 @@ public class PacmanController implements IController {
 			if (game.getTotalRounds() >= game.getCurrentRound()) {
 				movingThread.start();
 			} else {
-				// TODO send finisch command
+				sendEndCommand();
 			}
 		}
 	}
@@ -256,6 +256,10 @@ public class PacmanController implements IController {
 	public void sendChanges() {
 		comServer.sendGame(game);
 	}
+	
+	public void sendEndCommand(){
+		comServer.sendEndRound();
+	}
 
 	public synchronized void decrementLevelCoints() {
 		game.getLevel().decrementCoints();
@@ -280,7 +284,6 @@ public class PacmanController implements IController {
 	
 	/* <Chris>
 	public synchronized void pacmanReadyChanged(int id, boolean ready) {
-		// TODO: Hier Spiel starten oder whatever
 		startGame();
 	}
 	
