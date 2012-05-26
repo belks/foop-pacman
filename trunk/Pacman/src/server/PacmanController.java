@@ -26,7 +26,7 @@ public class PacmanController implements IController {
 	private PacmanController() {
 		Logging.log("Init PacmanController.", java.util.logging.Level.INFO);
 
-		init();
+		init(true);
 	}
 
 	public static PacmanController getInstance() {
@@ -50,7 +50,7 @@ public class PacmanController implements IController {
 //	}
 //	//</Chris>
 
-	private synchronized void init() {
+	private synchronized void init(boolean isNewGame) {
 		isStarted = false;
 		
 		Level level = LevelGenerator.GetLevel();
@@ -71,18 +71,39 @@ public class PacmanController implements IController {
 		level.setFiel(redPacman.getPosition(), FieldState.Pacman);
 		level.setFiel(greenPacman.getPosition(), FieldState.Pacman);
 
-		game = new Game(level, pacmans, 3);
-
+		if(isNewGame){
+			game = new Game(level, pacmans, 3);
+		} else {
+			game.setLevel(level);
+			for(Pacman p : game.getPacmans()){
+				if(1 == p.getId()){
+					p.setColor(Color.BLUE);
+					p.setPosition(new Point(1, 1));
+				} else if(2 == p.getId()){
+					p.setColor(Color.RED);
+					p.setPosition(new Point(1, 18));
+				} else if(3 == p.getId()){
+					p.setColor(Color.GREEN);
+					p.setPosition(new Point(18, 18));
+				}
+			}
+			//game.setPacmans(pacmans);
+		}
 		movingThread = new MovingThread();
 	}
 
 	@Override
 	public synchronized void startGame() {
-		if (null != movingThread && !movingThread.isAlive()) {
+		if (null != movingThread && !isStarted) {
 			isStarted = true;
 			game.incrementRoundCount();
 			if (game.getTotalRounds() >= game.getCurrentRound()) {
-				movingThread.start();
+				try{
+					movingThread.start();
+				} catch(Exception e){
+					init(false);
+					movingThread.start();
+				}
 			} else {
 				sendEndCommand();
 			}
@@ -96,7 +117,7 @@ public class PacmanController implements IController {
 			movingThread.close();
 		}
 
-		init();
+		init(true);
 	}
 
 	@Override
@@ -237,7 +258,7 @@ public class PacmanController implements IController {
 	
 	@Override
 	public void initGame() {
-		init();
+		init(true);
 		
 	}
 
@@ -259,6 +280,8 @@ public class PacmanController implements IController {
 	
 	public void sendEndCommand(){
 		comServer.sendEndRound();
+		movingThread.close();
+		isStarted = false;
 	}
 
 	public synchronized void decrementLevelCoints() {

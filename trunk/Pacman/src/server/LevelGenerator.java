@@ -50,7 +50,7 @@ public class LevelGenerator {
 					}
 				}
 				
-				cointSum = 341;
+				cointSum = 241;
 				break;
 			
 		}
