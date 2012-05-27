@@ -52,29 +52,27 @@ public class PacmanController implements IController {
 
 	private synchronized void init(boolean isNewGame) {
 		isStarted = false;
-		
+	
 		Level level = LevelGenerator.GetLevel();
 		List<Pacman> pacmans = new ArrayList<Pacman>();
-
-		Pacman bluePacman = new Pacman(1, "Player1", Color.BLUE);
-		bluePacman.setPosition(new Point(1, 1));
-		Pacman redPacman = new Pacman(2, "Player2", Color.RED);
-		redPacman.setPosition(new Point(1, 18));
-		Pacman greenPacman = new Pacman(3, "Player3", Color.GREEN);
-		greenPacman.setPosition(new Point(18, 18));
-
-		pacmans.add(bluePacman);
-		pacmans.add(redPacman);
-		pacmans.add(greenPacman);
-
-		level.setFiel(bluePacman.getPosition(), FieldState.Pacman);
-		level.setFiel(redPacman.getPosition(), FieldState.Pacman);
-		level.setFiel(greenPacman.getPosition(), FieldState.Pacman);
-
 		if(isNewGame){
+			Pacman bluePacman = new Pacman(1, "Player1", Color.BLUE);
+			bluePacman.setPosition(new Point(1, 1));
+			Pacman redPacman = new Pacman(2, "Player2", Color.RED);
+			redPacman.setPosition(new Point(1, 18));
+			Pacman greenPacman = new Pacman(3, "Player3", Color.GREEN);
+			greenPacman.setPosition(new Point(18, 18));
+	
+			pacmans.add(bluePacman);
+			pacmans.add(redPacman);
+			pacmans.add(greenPacman);
+	
+			level.setFiel(bluePacman.getPosition(), FieldState.Pacman);
+			level.setFiel(redPacman.getPosition(), FieldState.Pacman);
+			level.setFiel(greenPacman.getPosition(), FieldState.Pacman);
+		
 			game = new Game(level, pacmans, 3);
 		} else {
-			game.setLevel(level);
 			for(Pacman p : game.getPacmans()){
 				if(1 == p.getId()){
 					p.setColor(Color.BLUE);
@@ -86,9 +84,14 @@ public class PacmanController implements IController {
 					p.setColor(Color.GREEN);
 					p.setPosition(new Point(18, 18));
 				}
+				
+				level.setFiel(p.getPosition(), FieldState.Pacman);
+				p.setDirection(new Stop());
 			}
-			//game.setPacmans(pacmans);
+			
+			game.setLevel(level);
 		}
+		
 		movingThread = new MovingThread();
 	}
 
