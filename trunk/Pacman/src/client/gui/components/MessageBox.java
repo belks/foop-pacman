@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 
@@ -38,13 +39,20 @@ public class MessageBox extends JPanel{
 	}
 	
 	
-	class FilteredStream extends FilterOutputStream {
+	class FilteredStream extends FilterOutputStream  implements Runnable{
 	      public FilteredStream(OutputStream aStream) {
 	         super(aStream);
 	      }
+	      
+	      private int maxTextLenght = 50000;
 
 	      public void write(byte b[]) throws IOException {
 	         String aString = new String(b).trim();
+	         
+	         if(text.getText().length() > maxTextLenght){
+	        	 SwingUtilities.invokeLater(this);
+	         }
+	         
 	         if(!aString.isEmpty()){
 	        	 text.append(getTime()+" - "+aString+"\n");
 	        	 text.setCaretPosition(text.getText().length());
@@ -60,6 +68,17 @@ public class MessageBox extends JPanel{
 	    	  SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
 	    	  return df.format(new Date(System.currentTimeMillis()));
 	      }
-	   }
+	      
+	      
+	      @Override
+	  	  public void run() {
+	  			if(text.getText().length() > maxTextLenght && maxTextLenght > 0){
+	  				text.setText(text.getText().substring(maxTextLenght-1, text.getText().length()-1));
+	  			}
+	  	  }
+	}
+
+
+	
 	
 }

@@ -18,11 +18,11 @@ import client.gui.GUIListener;
 
 
 
-public class Client extends Thread implements GUIListener, CommEventListener{
+public class Client implements GUIListener, CommEventListener{
 	private PacmanGUI gui = null;	
 	private Map<String, CommWorker_Client> comms = new LinkedHashMap<String, CommWorker_Client>();
 	private ServerMain localServer = null;
-	//private TestServer testServer = null;
+	
 	
 	public Client(String[] args){
 		gui = new PacmanGUI(args);
@@ -84,12 +84,7 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 		}
 		
 		
-		/*
-		if(this.testServer != null){
-			testServer.shutdown();
-			testServer = null;
-		}
-		*/
+		
 	}
 	
 	
@@ -113,19 +108,6 @@ public class Client extends Thread implements GUIListener, CommEventListener{
 			return false;
 		}
 		
-		/*
-		if(testServer == null){
-			try {
-				System.out.print("Starting a server at port "+port);
-				testServer = new TestServer(port);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.print(e.getMessage());
-			}
-		}else{
-			System.out.print("A server is already running!");
-		}
-		*/
 	}
 	
 	
