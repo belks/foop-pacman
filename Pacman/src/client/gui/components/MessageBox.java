@@ -44,7 +44,7 @@ public class MessageBox extends JPanel{
 	         super(aStream);
 	      }
 	      
-	      private int maxTextLenght = 50000;
+	      private int maxTextLenght = 5000000;
 
 	      public void write(byte b[]) throws IOException {
 	         String aString = new String(b).trim();
