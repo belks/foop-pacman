@@ -32,6 +32,9 @@ public class MovingThread extends Thread {
 				pacmans = pc.getPacmanList();
 
 				for (Pacman pac : pacmans) {
+					//<Chris>
+					pac.setTotalCoints(pac.getTotalCoints() + 1);
+					//</Chris>
 					if (pac.getPosition().equals(new Point(0, 0))) {
 						continue;
 					}
@@ -89,9 +92,6 @@ public class MovingThread extends Thread {
 							}
 						}
 					}
-					//<Chris> Test - Übertragung von Total
-					//pac.setTotalCoints(30);
-					//</Chris>
 				}
 
 				if (0 == pc.getLevelCoints() || 1 == pacmanCount) {
