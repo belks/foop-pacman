@@ -28,6 +28,8 @@ public class CommWorker_Client extends CommWorker {
 			if (msg instanceof CommMsg_Level) {
 				newGameState = new Game(((CommMsg_Level) msg).getLevel(),
 						new Vector<Pacman>());
+				newGameState.setCurrentRound(((CommMsg_Level) msg).getCurrentRound());
+				newGameState.setTotalRounds(((CommMsg_Level) msg).getTotalRounds());
 			} else if (msg instanceof CommMsg_Pacman) {
 				newGameState.addPacman(((CommMsg_Pacman) msg).getPacman());
 			} else if (msg instanceof CommMsg_Fin) {

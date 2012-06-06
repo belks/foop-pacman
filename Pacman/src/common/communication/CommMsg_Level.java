@@ -7,13 +7,20 @@ public class CommMsg_Level extends CommMsg {
 	static final String PREFIX = "LEVEL:";
 	
 	private Level level;
+	private int currentRound;
+	private int totalRounds;
 	
 	public Level getLevel() {
 		return level;
 	}
+	
+	public int getCurrentRound() { return currentRound; }
+	public int getTotalRounds() {return totalRounds; }
 
-	public CommMsg_Level(Level level) {
+	public CommMsg_Level(Level level, int currentRound, int totalRounds) {
 		this.level = level;
+		this.currentRound = currentRound;
+		this.totalRounds = totalRounds;
 		levelToMsg();
 	}
 
@@ -41,6 +48,9 @@ public class CommMsg_Level extends CommMsg {
 				b.append(map[i][j]).append(SEPARATOR);
 			}
 		}
+		b.append(currentRound).append(SEPARATOR);
+		b.append(totalRounds).append(SEPARATOR);
+		
 		b.deleteCharAt(b.length() - 1); // Remove last separator
 
 		this.msg = b.toString();
@@ -61,6 +71,8 @@ public class CommMsg_Level extends CommMsg {
 				map[i][j] = Byte.parseByte(split[current++]);
 			}
 		}
+		this.currentRound = Integer.parseInt(split[current++]);
+		this.totalRounds = Integer.parseInt(split[current++]);
 		
 		this.level=new Level(length,width);
 		this.level.setMap(map);
