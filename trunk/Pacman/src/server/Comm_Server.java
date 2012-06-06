@@ -131,7 +131,7 @@ public class Comm_Server implements Runnable, CommEventListener {
 	public void sendGame(common.gameobjects.Game game) {
 		List<CommMsg> msgs = new Vector<CommMsg>();
 
-		msgs.add(new CommMsg_Level(game.getLevel()));
+		msgs.add(new CommMsg_Level(game.getLevel(), game.getCurrentRound(), game.getTotalRounds()));
 		for (Pacman p : game.getPacmans()) {
 			msgs.add(new CommMsg_Pacman(p));
 		}
