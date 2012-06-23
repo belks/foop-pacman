@@ -40,15 +40,6 @@ public class PacmanController implements IController {
 
 		return instance;
 	}
-	
-//	//<Chris>ResetInstance für wiederholtes Starten von neuen Games
-//	public synchronized static void resetInstance() {
-//		PacmanController pc = getInstance();
-//		if (pc.movingThread == null) {
-//			pc = new PacmanController();			
-//		}
-//	}
-//	//</Chris>
 
 	private synchronized void init(boolean isNewGame) {
 		isStarted = false;
@@ -61,7 +52,7 @@ public class PacmanController implements IController {
 			Pacman redPacman = new Pacman(2, "Player2", Color.RED);
 			redPacman.setPosition(new Point(1, 18));
 			Pacman greenPacman = new Pacman(3, "Player3", Color.GREEN);
-			greenPacman.setPosition(new Point(18, 18));
+			greenPacman.setPosition(new Point(19, 18));
 	
 			pacmans.add(bluePacman);
 			pacmans.add(redPacman);
@@ -82,7 +73,7 @@ public class PacmanController implements IController {
 					p.setPosition(new Point(1, 18));
 				} else if(3 == p.getId()){
 					p.setColor(Color.GREEN);
-					p.setPosition(new Point(18, 18));
+					p.setPosition(new Point(19, 18));
 				}
 				
 				level.setFiel(p.getPosition(), FieldState.Pacman);
@@ -269,7 +260,6 @@ public class PacmanController implements IController {
 
 	@Override
 	public void connect() {
-		//<Chris> Die Methode wird nach connectClient aufgerufen.
 		Logging.log("New client connected.", java.util.logging.Level.INFO);
 		if(!isStarted){
 			comServer.sendGame(game);
@@ -307,26 +297,6 @@ public class PacmanController implements IController {
 		this.comServer = comServer;
 	}
 
-	
-	/* <Chris>
-	public synchronized void pacmanReadyChanged(int id, boolean ready) {
-		startGame();
-	}
-	
-	public synchronized void setPacmanConnected(int id, boolean connected) {
-		List<Pacman> pacmans = game.getPacmans();
-		for (Pacman pac : pacmans) {
-			if (id == pac.getId()) {
-				pac.setConnected(connected);
-				break;
-			}
-		}
-
-		game.setPacmans(pacmans);
-	}
-	</Chris>
-	*/
-
 	@Override
 	public synchronized int connectClient() {
 		List<Pacman> pacmans = game.getPacmans();
@@ -335,10 +305,6 @@ public class PacmanController implements IController {
 				pac.setConnected(true);
 				game.setPacmans(pacmans);
 				
-				//<Chris> 
-				// sendGame erst nach der Zuweisung der pacmanID 
-				// -> connect() wird später aufgerufen
-				//comServer.sendGame(game); 
 				return pac.getId();
 			}
 		}
