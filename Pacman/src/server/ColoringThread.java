@@ -7,7 +7,11 @@ import java.util.Random;
 import java.awt.Color;
 import common.gameobjects.Pacman;
 import common.tools.Logging;
-
+/**
+ * @author Manuel Mundorf
+ * This Class change the colors of the pacman every 10 seconds.
+ *
+ */
 public class ColoringThread extends Thread{
 	private volatile Thread thisTread = null;
 	
@@ -43,7 +47,7 @@ public class ColoringThread extends Thread{
 			}
 		
 			try {
-				sleep(3000);
+				sleep(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

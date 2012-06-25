@@ -7,6 +7,7 @@ import common.gameobjects.Level;
 
 
 /**
+ * @author Manuel Mundorf
  * this class generate levels for the pacman game 
  */
 public class LevelGenerator {

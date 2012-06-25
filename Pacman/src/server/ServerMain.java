@@ -1,7 +1,10 @@
 package server;
 
 import java.io.IOException;
-
+/**
+ * @author m-mundorf
+ * the servers main class.
+ */
 public class ServerMain {
 	public static void main(String[] args) throws IOException {
 		new ServerMain(4444);

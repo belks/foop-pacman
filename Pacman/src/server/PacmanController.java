@@ -15,7 +15,11 @@ import common.gameobjects.Right;
 import common.gameobjects.Stop;
 import common.gameobjects.Up;
 import common.tools.Logging;
-
+/**
+ * @author manuel mundorf
+ * This class is the main controller for the pacman game. It starts the moving thread and change
+ * the game state and call the communication layer to transfer the game object.
+ */
 public class PacmanController implements IController {
 	private Game game = null;
 	private static volatile PacmanController instance = null;
