@@ -9,7 +9,11 @@ import common.gameobjects.IStrategy;
 import common.gameobjects.Pacman;
 import common.gameobjects.Stop;
 import common.tools.Logging;
-
+/**
+ * @author m-mundorf
+ * This class calculates the moving steps for each pacman, detect collision with walls and other pacmans
+ * calculates the coint sum. 
+ */
 public class MovingThread extends Thread {
 	private volatile Thread _thisTread = null;
 
