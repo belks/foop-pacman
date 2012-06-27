@@ -133,8 +133,9 @@ public class Client implements GUIListener, CommEventListener{
 			CommWorker_Client comm = comms.get(player);
 			if(comm!=null){
 				comm.ChangeReady(true);
+				break;
 			}
-		}		
+		}	
 	}
 
 
