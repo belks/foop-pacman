@@ -25,24 +25,29 @@ import common.tools.Config;
 import client.gui.PacmanGUI;
 import client.gui.components.View;
 
-
+/**
+ * Users can change their keys for the game in this menu. Also offers the possibility to save the changed configuration to a file.
+ * @author Stefan
+ *
+ */
 public class OptionsMenu extends View implements ActionListener {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton toggleFullScreen = null;
 	private JButton saveValues = null;
 	
 	
-	
+	/**
+	 * Constructor
+	 * @param gui
+	 */
 	public OptionsMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.optionsmenu"), gui);
 		this.setLayout(new BorderLayout());
 		this.add(createPanel(), BorderLayout.CENTER);	
 	}
 
+	
 	private JPanel createPanel(){
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setOpaque(false);
@@ -74,7 +79,6 @@ public class OptionsMenu extends View implements ActionListener {
 		
 		return optionsPanel;
 	}
-	
 	
 	
 	
@@ -115,7 +119,12 @@ public class OptionsMenu extends View implements ActionListener {
 	
 	
 	
-	
+	/**
+	 * Creates a panel which represents the key configuration for one player. If key assignments are changed 
+	 * they will automatically be changed in the config class.
+	 * @author Stefan
+	 *
+	 */
 	class PlayerKeyConfigPanel extends JPanel implements KeyListener{
 		/**
 		 * 

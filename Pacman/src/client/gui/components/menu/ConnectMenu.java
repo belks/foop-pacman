@@ -28,7 +28,8 @@ import client.gui.components.game.ActiveGame;
 
 
 /**
- * Menu that offers buttons and input fields for server creation and connection
+ * Menu that offers buttons and input fields for server creation and connection. Players can set their names.
+ * Allows multiple players form offline gaming.
  */
 public class ConnectMenu extends View implements ActionListener{
 
@@ -42,6 +43,10 @@ public class ConnectMenu extends View implements ActionListener{
 	private PlayerSelection players = new PlayerSelection(3);
 	
 
+	/**
+	 * Constructor
+	 * @param gui
+	 */
 	public ConnectMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.connectmenu"), gui);
 		this.setLayout(new BorderLayout());
@@ -158,7 +163,11 @@ public class ConnectMenu extends View implements ActionListener{
 	}
 	
 	
-	
+	/**
+	 * Sends a conncet command to the communication interface.
+	 * @param address
+	 * @param port
+	 */
 	private void connect(String address, int port){
 		System.out.println("Opening connection for "+this.players.getActivePlayers().size()+" players.");
 		for(String playerName : this.players.getActivePlayers()){
@@ -172,6 +181,11 @@ public class ConnectMenu extends View implements ActionListener{
 	}
 	
 	
+	/**
+	 * Sends a create server command to the communication interface. This will always be executed before the first execution of connect if
+	 * the server is hosted locally.
+	 * @param port
+	 */
 	private void createServer(int port){
 		for(GUIListener l : this.getGUI().getListeners()){
 			boolean ok = l.createServer(port);
@@ -184,7 +198,11 @@ public class ConnectMenu extends View implements ActionListener{
 
 
 
-	
+	/**
+	 * A panel which displays three rows where the number of offline players can be selected and where they can set their names.
+	 * @author Stefan
+	 *
+	 */
 	class PlayerSelection extends JPanel{
 		/**
 		 * 

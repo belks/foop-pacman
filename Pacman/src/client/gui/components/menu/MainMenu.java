@@ -15,19 +15,23 @@ import client.gui.images.ImageDealer;
 import common.tools.Config;
 
 
-
+/**
+ * The menu that will be displayed at the start of the game. 
+ * @author Stefan
+ *
+ */
 public class MainMenu extends View implements ActionListener{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton newGame = null;
 	private JButton options = null;
 	private JButton exit = null;
 	
 	
-	
+	/**
+	 * Constructor
+	 * @param gui
+	 */
 	public MainMenu(PacmanGUI gui){
 		super(gui.getConfig().get("client.mainmenu"), gui);
 		this.setLayout(new BorderLayout());
@@ -36,6 +40,10 @@ public class MainMenu extends View implements ActionListener{
 	}
 
 	
+	/**
+	 * Creates and aligns the buttons at the left side of the screen.
+	 * @return
+	 */
 	private JPanel createButtonPanel(){
 		JPanel buttonPanel = new JPanel(new BorderLayout());
 		buttonPanel.setOpaque(false);
