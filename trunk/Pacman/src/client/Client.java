@@ -76,15 +76,10 @@ public class Client implements GUIListener, CommEventListener{
 			}
 		}
 		
-		
-		
 		if(this.localServer != null){
 			localServer.shutdown();
 			localServer = null;
-		}
-		
-		
-		
+		}	
 	}
 	
 	
