@@ -9,9 +9,9 @@ public class PacmanGame {
 	
 	public static void main(String[] args){
 		
-		if(arrayContains(args, "server")){
+		if(args.length >= 2 && args[0].equals("server")){
 			try {
-				new ServerMain(4444);
+				new ServerMain(new Integer(args[1]));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -20,18 +20,5 @@ public class PacmanGame {
 		}
 		
 	}
-	
-	
-	private static boolean arrayContains(String[] array, String item){
-		boolean found = false;
-		for(Object o : array){
-			if(o.equals(item)){
-				found=true;
-				break;
-			}
-		}
-		return found;
-	}
-	
 
 }
