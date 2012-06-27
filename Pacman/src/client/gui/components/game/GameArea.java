@@ -17,18 +17,24 @@ import common.gameobjects.Pacman;
 import common.tools.Config;
 
 
-
+/**
+ * Handles the drawing of the level and the pacmans.
+ * @author Stefan
+ *
+ */
 public class GameArea extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Level level = null;
 	private List<Pacman> pacmans = new LinkedList<Pacman>();
 	private Config config = null;
 	private JLabel gameMessage = new JLabel();
 
+	
+	/**
+	 * Constructor
+	 * @param c Config values needed for image loading.
+	 */
 	public GameArea(Config c) {
 		super();
 		this.setBorder(BorderFactory.createEtchedBorder());
@@ -44,10 +50,14 @@ public class GameArea extends JPanel{
 	
 	
 	
-	
+	/**
+	 * Sets the pacmans for drawing.
+	 * @param pacs
+	 */
 	public void setPacmans(List<Pacman> pacs){
 		this.pacmans = pacs;
 	}
+	
 	
 	
 	public void paintComponent(Graphics g){
@@ -57,7 +67,7 @@ public class GameArea extends JPanel{
 
 	
 	/**
-	 * 
+	 * Displays a string at the top of the map.
 	 * @param msg
 	 */
 	public void setGameMessage(String msg){
@@ -72,8 +82,11 @@ public class GameArea extends JPanel{
 
 
 
-
-
+	
+	/**
+	 * This is where the actual drawing happens.
+	 * @param g
+	 */
 	private void paintGameField(Graphics g){
 		List<Pacman> pacsCopy = new LinkedList<Pacman>(pacmans);
 		
@@ -132,6 +145,13 @@ public class GameArea extends JPanel{
 	}
 	
 	
+	/**
+	 * Checks weather on the currently drawn field there is a pacman on it.
+	 * @param x
+	 * @param y
+	 * @param pacs
+	 * @return
+	 */
 	private Pacman pacmanOnField(int x, int y, List<Pacman> pacs){
 		Pacman pacman = null;
 		
@@ -155,17 +175,15 @@ public class GameArea extends JPanel{
 
 
 
-
+	/**
+	 * Sets the game map.
+	 * @param level
+	 */
 	public void setLevel(Level level) {
 		this.level = level;
 	}
 
-
-
-
-
-	public Level getLevel() {
-		return level;
-	}
+	
+	
 	
 }
