@@ -4,7 +4,11 @@ import java.io.IOException;
 import server.ServerMain;
 import client.Client;
 
-
+/**
+ * Main class for the game.
+ * @author Stefan
+ *
+ */
 public class PacmanGame {
 	
 	public static void main(String[] args){

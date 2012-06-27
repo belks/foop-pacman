@@ -24,11 +24,13 @@ import common.tools.Config;
 
 
 
-
+/**
+ * The main class for the graphical user interface. Extends a JFrame for displaying the game's content.
+ * @author Stefan
+ *
+ */
 public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyEventDispatcher{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Config config = new Config(this.getClass().getResourceAsStream("gui.properties"));
 	private View currentView = null;
@@ -37,7 +39,10 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	private LinkedList<GUIListener> listeners = new LinkedList<GUIListener>();
 	
 
-	
+	/**
+	 * Constructor
+	 * @param args = the application arguments from the start of the came. They are currently not used. 
+	 */
 	public PacmanGUI(String[] args){
 		super();
 		System.out.println("Application started.");
@@ -91,11 +96,19 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	}
 	
 	
+	/**
+	 * Returns a config class containing the configuration values from the config file.
+	 * @return 
+	 */
 	public Config getConfig(){
 		return this.config;
 	}
 	
 	
+	/**
+	 * Changes the application from windowed to fullscreen and vice-versa.
+	 * @param b - true changes the app to fullscreen.
+	 */
 	public void setFullScreen(boolean b){
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		this.dispose();
@@ -125,12 +138,19 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	}
 	
 	
+	/**
+	 * 
+	 * @return true if the application is currently in fullscreen mode.
+	 */
 	public boolean isFullScreen(){
 		return this.fullScreenMode;
 	}
 	
 	
-	
+	/**
+	 * Changes the content of the JFrame at once replacing the old view. A view is an extention of a JPanel.
+	 * @param c
+	 */
 	public void setView(View c){
 		System.out.println("Changing from "+currentView+" to "+c);
 		
@@ -145,11 +165,19 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	}
 	
 	
+	/**
+	 * Shows the log messages at the top of the screen. If not changed by the config this can be shown by pressing F1 while the
+	 * application is running.
+	 * @param b
+	 */
 	public void showMessageBox(boolean b){
 		messages.setVisible(b);;
 	}
 
 
+	/**
+	 * Listens to global key events for fullscreen and log.
+	 */
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		if (e.getID() == KeyEvent.KEY_PRESSED) {
@@ -193,21 +221,35 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 	}
 
 
+	/**
+	 * Add a listener to listen for GUI commands such as connect, disconnect,...
+	 * @param listener
+	 */
 	public void addListener(GUIListener listener) {
 		this.listeners.add(listener);
 	}
 
 
+	/**
+	 * Remove a GUILIstener.
+	 * @param listener
+	 */
 	public void removeListener(GUIListener listener) {
 		listeners.remove(listener);
 	}
 	
+	/**
+	 * Get all currently enlisted listeners.
+	 * @return
+	 */
 	public List<GUIListener> getListeners(){
 		return this.listeners;
 	}
 
 
-
+	/**
+	 * Handles the input from the communication interface which transmits changed from the server.
+	 */
 	@Override
 	public void handleCommEvent(CommEventObject e, Game g) {
 		if(this.currentView instanceof ExtendedCommEventListener){

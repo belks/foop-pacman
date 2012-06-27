@@ -7,6 +7,11 @@ import common.communication.*;
 import common.gameobjects.Game;
 import common.gameobjects.Pacman;
 
+/**
+ * The communication interface for the clients.
+ * @author Chris
+ *
+ */
 public class CommWorker_Client extends CommWorker {
 
 	private Game game = new Game(null, new Vector<Pacman>());
@@ -18,7 +23,6 @@ public class CommWorker_Client extends CommWorker {
 
 	public CommWorker_Client(Socket address) {
 		super(address);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
