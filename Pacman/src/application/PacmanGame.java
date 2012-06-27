@@ -1,9 +1,7 @@
 package application;
 
 import java.io.IOException;
-
 import server.ServerMain;
-import common.tools.Tools;
 import client.Client;
 
 
@@ -11,7 +9,7 @@ public class PacmanGame {
 	
 	public static void main(String[] args){
 		
-		if(Tools.arrayContains(args, "server")){
+		if(arrayContains(args, "server")){
 			try {
 				new ServerMain(4444);
 			} catch (IOException e) {
@@ -21,6 +19,18 @@ public class PacmanGame {
 			new Client(args);
 		}
 		
+	}
+	
+	
+	private static boolean arrayContains(String[] array, String item){
+		boolean found = false;
+		for(Object o : array){
+			if(o.equals(item)){
+				found=true;
+				break;
+			}
+		}
+		return found;
 	}
 	
 
