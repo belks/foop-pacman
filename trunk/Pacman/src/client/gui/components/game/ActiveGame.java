@@ -53,6 +53,7 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 	private boolean threadRunning = true;
 	private JLabel currentRound = new JLabel();
 	private LinkedList<String> localPlayers = null;
+	private boolean lastRound = false;
 	
 
 	/**
@@ -138,6 +139,10 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 		}else if(e.getMsg() instanceof CommMsg_Endround){
 			this.gameArea.setGameMessage(this.getConfig().get("client.activegame.messages.endround"));
 			this.ready.setEnabled(true);
+			if(this.lastRound){
+				this.getGUI().setView(new Scores("Scores", this.getGUI(), g.getPacmans()));
+			}
+			
 		}else{
 			if(g != null){
 				this.gameArea.setGameMessage(null);
@@ -146,7 +151,12 @@ public class ActiveGame extends View implements KeyEventDispatcher, ExtendedComm
 						+" "+g.getCurrentRound()+"/"+g.getTotalRounds());
 				this.gameArea.setLevel(g.getLevel());						
 				this.gameArea.setPacmans(g.getPacmans());
-				this.currentRoundStats.updatePacmans(g.getPacmans());			
+				this.currentRoundStats.updatePacmans(g.getPacmans());	
+				
+				if(g.getCurrentRound() == g.getTotalRounds()){
+					this.ready.setVisible(false);
+					this.lastRound = true;
+				}
 			}
 		}
 	}
