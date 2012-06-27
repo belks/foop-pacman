@@ -216,11 +216,6 @@ public class PacmanGUI extends JFrame implements ExtendedCommEventListener, KeyE
 
 
 
-	public void printMessage(String msg){
-		this.currentView.printMessage(msg);
-	}
-
-
 	/**
 	 * Add a listener to listen for GUI commands such as connect, disconnect,...
 	 * @param listener

@@ -17,13 +17,23 @@ import client.gui.PacmanGUI;
 import client.gui.components.View;
 import client.gui.components.menu.MainMenu;
 
+/**
+ * Displays the players total points at the end of the game.
+ * @author Stefan
+ *
+ */
 public class Scores extends View implements ActionListener {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JButton backToMenu = null;
 
+	
+	/**
+	 * Constructor
+	 * @param title
+	 * @param client
+	 * @param pacs
+	 */
 	public Scores(String title, PacmanGUI client, List<Pacman> pacs) {
 		super(title, client);
 		
@@ -67,6 +77,10 @@ public class Scores extends View implements ActionListener {
 		
 	}
 
+	/**
+	 * Shorthand for styling labels.
+	 * @param l
+	 */
 	private void setStyle(JLabel l){
 		l.setHorizontalAlignment(JLabel.CENTER);
 		l.setForeground(Color.WHITE);
@@ -74,6 +88,7 @@ public class Scores extends View implements ActionListener {
 		l.setOpaque(false);
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		this.getGUI().setView(new MainMenu(this.getGUI()));

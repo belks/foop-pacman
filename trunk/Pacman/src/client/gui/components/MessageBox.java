@@ -17,7 +17,8 @@ import javax.swing.border.TitledBorder;
 
 
 /**
- * Displays System.out during game
+ * Displays System.out during game at the top of the screen.
+ * If not changed in config press F1 to show.
  */
 public class MessageBox extends JPanel{
 
@@ -26,7 +27,9 @@ public class MessageBox extends JPanel{
 	private JTextArea text = new JTextArea("");
 	private PrintStream aPrintStream  = new PrintStream(new FilteredStream(new ByteArrayOutputStream()));
 	
-	
+	/**
+	 * Constructor
+	 */
 	public MessageBox(){
 		super(new BorderLayout());
 		text.setEditable(false);
@@ -39,6 +42,11 @@ public class MessageBox extends JPanel{
 	}
 	
 	
+	/**
+	 * A stream to which System.out is written.
+	 * @author Stefan
+	 *
+	 */
 	class FilteredStream extends FilterOutputStream  implements Runnable{
 	      public FilteredStream(OutputStream aStream) {
 	         super(aStream);
